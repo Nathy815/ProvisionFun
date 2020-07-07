@@ -4,6 +4,7 @@ using Domain.ViewModels;
 using Persistence.Contexts;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
@@ -45,7 +46,7 @@ namespace Application.Services
                 return await Send(new EmailVM(email, "Sua inscrição está completa!", FinishTemplate()));
         }
 
-        private async Task<bool> Send(EmailVM request)
+        private async Task<bool> Send(EmailVM request, byte[] attach = null)
         {
             try
             {
@@ -69,6 +70,9 @@ namespace Application.Services
                                                         request.Message.Trim());
 
                     email.IsBodyHtml = request.IsBodyHTML;
+
+                    if (attach != null)
+                        email.Attachments.Add(new Attachment(new MemoryStream(attach), "BoletoBancario.pdf"));
 
                     SmtpClient client = new SmtpClient(host, port);
                     client.EnableSsl = request.UseSSL;

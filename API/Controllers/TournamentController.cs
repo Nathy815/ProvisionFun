@@ -1,6 +1,4 @@
-﻿using Application.TournamentContext.Commands.CreateGame;
-using Application.TournamentContext.Commands.CreateTournament;
-using Application.TournamentContext.Commands.UpdateGame;
+﻿using Application.TournamentContext.Commands.CreateTournament;
 using Application.TournamentContext.Commands.UpdateTournament;
 using Application.TournamentContext.Queries;
 using Domain.ViewModels;
@@ -20,13 +18,6 @@ namespace API.Controllers
     {
         public TournamentController(IMediator mediator) : base(mediator) { }
 
-        [HttpPost("/game/create"), DisableRequestSizeLimit]
-        [Authorize(Roles = "Administrador")]
-        public async Task<bool> CreateGame([FromForm] CreateGameCommand request)
-        {
-            return await _mediator.Send(request);
-        }
-
         [HttpGet("/game/{gameID}")]
         [Authorize(Roles = "Administrador")]
         public async Task<GetGameQueryVM> GetGame([FromRoute] Guid gameID)
@@ -39,13 +30,6 @@ namespace API.Controllers
         public async Task<List<GetGameQueryVM>> ListGames()
         {
             return await _mediator.Send(new ListGamesQuery());
-        }
-
-        [HttpPatch("/game/update"), DisableRequestSizeLimit]
-        [Authorize(Roles = "Administrador")]
-        public async Task<bool> UpdateGame([FromForm] UpdateGameCommand request)
-        {
-            return await _mediator.Send(request);
         }
 
         [HttpPost("/tournament/create"), DisableRequestSizeLimit]

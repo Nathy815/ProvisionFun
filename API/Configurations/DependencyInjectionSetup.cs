@@ -6,9 +6,7 @@ using Application.SystemContext.Commands.UpdateUser;
 using Application.SystemContext.Queries;
 using Application.TemplateContext.Commands.UpdateSetup;
 using Application.TemplateContext.Queries;
-using Application.TournamentContext.Commands.CreateGame;
 using Application.TournamentContext.Commands.CreateTournament;
-using Application.TournamentContext.Commands.UpdateGame;
 using Application.TournamentContext.Commands.UpdateTournament;
 using Application.TournamentContext.Queries;
 using Domain.ViewModels;
@@ -53,7 +51,7 @@ namespace API.Configurations
 
             services.AddTransient<IRequestHandler<UpdateSetupCommand, bool>, UpdateSetupCommandHandler>();
 
-            services.AddTransient<IRequestHandler<ListTemplateTournamentsQuery, List<TemplateTournamentVM>>, ListTemplateTournamentsQueryHandler>()
+            services.AddTransient<IRequestHandler<ListTemplateTournamentsQuery, List<TemplateGameVM>>, ListTemplateTournamentsQueryHandler>()
                     .AddTransient<IRequestHandler<GetHomeQuery, GetHomeQueryVM>, GetHomeQueryHandler>()
                     .AddTransient<IRequestHandler<ListSetupsQuery, GetSetupQueryVM>, ListSetupsQueryHandler>();
 
@@ -61,9 +59,7 @@ namespace API.Configurations
 
             #region Tournament
 
-            services.AddTransient<IRequestHandler<CreateGameCommand, bool>, CreateGameCommandHandler>()
-                    .AddTransient<IRequestHandler<CreateTournamentCommand, bool>, CreateTournamentCommandHandler>()
-                    .AddTransient<IRequestHandler<UpdateGameCommand, bool>, UpdateGameCommandHandler>()
+            services.AddTransient<IRequestHandler<CreateTournamentCommand, bool>, CreateTournamentCommandHandler>()
                     .AddTransient<IRequestHandler<UpdateTournamentCommand, bool>, UpdateTournamentCommandHandler>();
 
             services.AddTransient<IRequestHandler<GetGameQuery, GetGameQueryVM>, GetGameQueryHandler>()
@@ -71,9 +67,7 @@ namespace API.Configurations
                     .AddTransient<IRequestHandler<ListGamesQuery, List<GetGameQueryVM>>, ListGamesQueryHandler>()
                     .AddTransient<IRequestHandler<ListTournamentsQuery, List<GetTournamentQueryVM>>, ListTournamentQueryHandler>();
 
-            services.AddScoped<IValidator<CreateGameCommand>, CreateGameCommandValidator>()
-                    .AddScoped<IValidator<CreateTournamentCommand>, CreateTournamentCommandValidator>()
-                    .AddScoped<IValidator<UpdateGameCommand>, UpdateGameCommandValidator>()
+            services.AddScoped<IValidator<CreateTournamentCommand>, CreateTournamentCommandValidator>()
                     .AddScoped<IValidator<UpdateTournamentCommand>, UpdateTournamentCommandValidator>();
 
             #endregion

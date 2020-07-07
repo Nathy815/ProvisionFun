@@ -25,7 +25,6 @@ namespace Persistence.Contexts
         public DbSet<Team> Teams { get; set; }
         public DbSet<TeamPlayer> TeamPlayers { get; set; }
         public DbSet<Condominium> Condominiums { get; set; }
-        public DbSet<Subscryption> Subscryptions { get; set; }
 
         #endregion
 

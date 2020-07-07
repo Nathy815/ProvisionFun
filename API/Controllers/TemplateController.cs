@@ -18,7 +18,7 @@ namespace API.Controllers
         public TemplateController(IMediator mediator) : base(mediator) { }
 
         [HttpGet("tournaments")]
-        public async Task<List<TemplateTournamentVM>> GetAllTournaments()
+        public async Task<List<TemplateGameVM>> GetAllTournaments()
         {
             return await _mediator.Send(new ListTemplateTournamentsQuery());
         }

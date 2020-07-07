@@ -6,3 +6,12 @@ C:\Users\nathy\source\repos\ProvisionService.Game\Domain\obj\Debug\netcoreapp2.0
 C:\Users\nathy\source\repos\ProvisionService.Game\Domain\obj\Debug\netcoreapp2.0\Domain.AssemblyInfo.cs
 C:\Users\nathy\source\repos\ProvisionService.Game\Domain\obj\Debug\netcoreapp2.0\Domain.dll
 C:\Users\nathy\source\repos\ProvisionService.Game\Domain\obj\Debug\netcoreapp2.0\Domain.pdb
+C:\Users\nathy\Documents\NLC_Tecnologia_da_Informacao\Projetos\game_tournament\ProvisionService.Game\Domain\obj\Debug\netcoreapp2.0\Domain.csproj.CoreCompileInputs.cache
+C:\Users\nathy\Documents\NLC_Tecnologia_da_Informacao\Projetos\game_tournament\ProvisionService.Game\Domain\obj\Debug\netcoreapp2.0\Domain.AssemblyInfoInputs.cache
+C:\Users\nathy\Documents\NLC_Tecnologia_da_Informacao\Projetos\game_tournament\ProvisionService.Game\Domain\obj\Debug\netcoreapp2.0\Domain.AssemblyInfo.cs
+C:\Users\nathy\Documents\NLC_Tecnologia_da_Informacao\Projetos\game_tournament\ProvisionService.Game\Domain\obj\Debug\netcoreapp2.0\Domain.dll
+C:\Users\nathy\Documents\NLC_Tecnologia_da_Informacao\Projetos\game_tournament\ProvisionService.Game\Domain\obj\Debug\netcoreapp2.0\Domain.pdb
+C:\Users\nathy\Documents\NLC_Tecnologia_da_Informacao\Projetos\game_tournament\ProvisionService.Game\Domain\bin\Debug\netcoreapp2.0\Domain.deps.json
+C:\Users\nathy\Documents\NLC_Tecnologia_da_Informacao\Projetos\game_tournament\ProvisionService.Game\Domain\bin\Debug\netcoreapp2.0\Domain.dll
+C:\Users\nathy\Documents\NLC_Tecnologia_da_Informacao\Projetos\game_tournament\ProvisionService.Game\Domain\bin\Debug\netcoreapp2.0\Domain.pdb
+C:\Users\nathy\Documents\NLC_Tecnologia_da_Informacao\Projetos\game_tournament\ProvisionService.Game\Domain\obj\Debug\netcoreapp2.0\Domain.csprojAssemblyReference.cache

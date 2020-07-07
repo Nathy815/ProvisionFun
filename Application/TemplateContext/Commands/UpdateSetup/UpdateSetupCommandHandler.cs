@@ -39,7 +39,7 @@ namespace Application.TemplateContext.Commands.UpdateSetup
                 {
                     var _term = _setups.Where(s => s.Key.Equals("ResponsibilityTerm")).FirstOrDefault();
 
-                    var _newTerm = UploadFile(request.ResponsabilityTerm, _term.Id, request.virtualPath);
+                    var _newTerm = UploadFile(request.ResponsabilityTerm, _term.Id.ToString(), request.virtualPath);
                     if (string.IsNullOrEmpty(_newTerm))
                         throw new Exception();
 

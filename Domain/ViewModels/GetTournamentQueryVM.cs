@@ -17,7 +17,6 @@ namespace Domain.ViewModels
         public eMode Mode { get; set; }
         public Guid GameID { get; set; }
         public string Game { get; set; }
-        public string GameImage { get; set; }
 
         public GetTournamentQueryVM(Tournament tournament)
         {
@@ -30,7 +29,6 @@ namespace Domain.ViewModels
             Mode = tournament.Mode;
             GameID = tournament.Game.Id;
             Game = tournament.Game.Name;
-            GameImage = tournament.Game.Image;
         }
     }
 }

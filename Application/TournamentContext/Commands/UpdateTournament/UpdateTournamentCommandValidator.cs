@@ -1,14 +1,21 @@
-﻿using FluentValidation;
+﻿using Domain.Entities;
+using FluentValidation;
+using Persistence.Contexts;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Application.TournamentContext.Commands.UpdateTournament
 {
     public class UpdateTournamentCommandValidator : AbstractValidator<UpdateTournamentCommand>
     {
-        public UpdateTournamentCommandValidator()
+        private readonly MySqlContext _sqlContext;
+
+        public UpdateTournamentCommandValidator(MySqlContext sqlContext)
         {
+            _sqlContext = sqlContext;
+
             RuleFor(t => t.Id)
                 .NotEmpty()
                     .WithMessage("Por favor, informe o id do campeonato.");
@@ -38,7 +45,13 @@ namespace Application.TournamentContext.Commands.UpdateTournament
             RuleFor(t => t.GameID)
                 .NotEmpty()
                     .When(t => string.IsNullOrEmpty(t.Game))
-                    .WithMessage("Por favor, selecione ou cadastre um jogo.");
+                    .WithMessage("Por favor, selecione ou cadastre um jogo.")
+                .Must((model, el) => _sqlContext.Set<Tournament>()
+                                         .Where(t => t.GameID == el &&
+                                                     t.Active &&
+                                                     t.Mode == model.Mode)
+                                         .FirstOrDefault() == null)
+                    .WithMessage("Já existe um torneio ativo para este jogo e modo. Exclua-o antes de criar um novo.");
 
             RuleFor(t => t.Game)
                 .NotEmpty()

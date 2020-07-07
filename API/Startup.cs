@@ -16,6 +16,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Persistence.Contexts;
+using Wkhtmltopdf.NetCore;
 
 namespace API
 {
@@ -41,7 +42,9 @@ namespace API
             services.AddAuthentication(Configuration);
 
             services.AddDependencyInjection();
-            
+
+            services.AddWkhtmltopdf("wkhtmltopdf");
+
             services.AddMediatR(typeof(Startup));
         }
 

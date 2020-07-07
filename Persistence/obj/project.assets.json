@@ -2,6 +2,18 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v2.0": {
+      "Microsoft.AspNetCore.Http.Features/2.2.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Primitives": "2.2.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.AspNetCore.Http.Features.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.AspNetCore.Http.Features.dll": {}
+        }
+      },
       "Microsoft.Bcl.AsyncInterfaces/1.1.0": {
         "type": "package",
         "dependencies": {
@@ -586,6 +598,9 @@
       "Domain/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v2.0",
+        "dependencies": {
+          "Microsoft.AspNetCore.Http.Features": "2.2.0"
+        },
         "compile": {
           "bin/placeholder/Domain.dll": {}
         },
@@ -596,6 +611,19 @@
     }
   },
   "libraries": {
+    "Microsoft.AspNetCore.Http.Features/2.2.0": {
+      "sha512": "ziFz5zH8f33En4dX81LW84I6XrYXKf9jg6aM39cM+LffN9KJahViKZ61dGMSO2gd3e+qe5yBRwsesvyqlZaSMg==",
+      "type": "package",
+      "path": "microsoft.aspnetcore.http.features/2.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/Microsoft.AspNetCore.Http.Features.dll",
+        "lib/netstandard2.0/Microsoft.AspNetCore.Http.Features.xml",
+        "microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512",
+        "microsoft.aspnetcore.http.features.nuspec"
+      ]
+    },
     "Microsoft.Bcl.AsyncInterfaces/1.1.0": {
       "sha512": "1Am6l4Vpn3/K32daEqZI+FFr96OlZkgwK2LcT3pZ2zWubR5zTPW3/FkO1Rat9kb7oQOa4rxgl9LJHc5tspCWfg==",
       "type": "package",
@@ -1806,11 +1834,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\nathy\\source\\repos\\ProvisionService.Game\\Persistence\\Persistence.csproj",
+      "projectUniqueName": "C:\\Users\\nathy\\Documents\\NLC_Tecnologia_da_Informacao\\Projetos\\game_tournament\\ProvisionService.Game\\Persistence\\Persistence.csproj",
       "projectName": "Persistence",
-      "projectPath": "C:\\Users\\nathy\\source\\repos\\ProvisionService.Game\\Persistence\\Persistence.csproj",
+      "projectPath": "C:\\Users\\nathy\\Documents\\NLC_Tecnologia_da_Informacao\\Projetos\\game_tournament\\ProvisionService.Game\\Persistence\\Persistence.csproj",
       "packagesPath": "C:\\Users\\nathy\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\nathy\\source\\repos\\ProvisionService.Game\\Persistence\\obj\\",
+      "outputPath": "C:\\Users\\nathy\\Documents\\NLC_Tecnologia_da_Informacao\\Projetos\\game_tournament\\ProvisionService.Game\\Persistence\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -1829,8 +1857,8 @@
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "C:\\Users\\nathy\\source\\repos\\ProvisionService.Game\\Domain\\Domain.csproj": {
-              "projectPath": "C:\\Users\\nathy\\source\\repos\\ProvisionService.Game\\Domain\\Domain.csproj"
+            "C:\\Users\\nathy\\Documents\\NLC_Tecnologia_da_Informacao\\Projetos\\game_tournament\\ProvisionService.Game\\Domain\\Domain.csproj": {
+              "projectPath": "C:\\Users\\nathy\\Documents\\NLC_Tecnologia_da_Informacao\\Projetos\\game_tournament\\ProvisionService.Game\\Domain\\Domain.csproj"
             }
           }
         }
