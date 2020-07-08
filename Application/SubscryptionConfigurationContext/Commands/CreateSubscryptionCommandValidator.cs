@@ -14,7 +14,6 @@ namespace Application.SubscryptionConfigurationContext.Commands
     public class CreateSubscryptionCommandValidator : AbstractValidator<CreateSubscryptionCommand>
     {
         private readonly MySqlContext _sqlContext;
-        private string errorMessage = null;
 
         public CreateSubscryptionCommandValidator(MySqlContext sqlContext)
         {
@@ -73,6 +72,11 @@ namespace Application.SubscryptionConfigurationContext.Commands
                 .NotEmpty()
                     .When(c => c.Mode == Domain.Enums.eMode.Team)
                     .WithMessage("Por favor, preencha os dados dos integrantes do time.")
+                .Must((model, el) => _sqlContext.Set<Tournament>()
+                                          .Where(t => t.Id == model.TournamentId)
+                                          .FirstOrDefault()
+                                          .PlayerLimit > el.Count)
+                    .WithMessage("Número de integrantes ultrapassou o limite do campeonato.")
                 .ForEach(item =>
                 {
                     item

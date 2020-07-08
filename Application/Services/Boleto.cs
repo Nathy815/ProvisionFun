@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Wkhtmltopdf.NetCore;
+using Application.Services.Interfaces;
 
 namespace Application.Services
 {
-    public class Boleto
+    public class Boleto : IBoleto
     {
         private readonly IGeneratePdf _generatePdf;
 

@@ -23,8 +23,26 @@ namespace API.Controllers
             return await _mediator.Send(new ListTemplateTournamentsQuery());
         }
 
+        [HttpGet("address")]
+        public async Task<GetCondominiumQueryVM> Address([FromBody] GetAddressQuery request)
+        {
+            return await _mediator.Send(request);
+        }
+
+        [HttpGet("condominiums")]
+        public async Task<List<GetCondominiumQueryVM>> Condominiums()
+        {
+            return await _mediator.Send(new GetCondominiumsQuery());
+        }
+
         [HttpGet]
-        public async Task<GetSetupQueryVM> Home()
+        public async Task<GetHomeQueryVM> Home()
+        {
+            return await _mediator.Send(new GetHomeQuery());
+        }
+
+        [HttpGet("setups")]
+        public async Task<GetSetupQueryVM> Setups()
         {
             return await _mediator.Send(new ListSetupsQuery());
         }

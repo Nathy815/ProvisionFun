@@ -17,6 +17,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Services.Interfaces;
+using Application.SubscryptionConfigurationContext.Commands;
+using Application.SubscryptionConfigurationContext.Queries;
 
 namespace API.Configurations
 {
@@ -26,7 +29,18 @@ namespace API.Configurations
         {
             #region Services
 
-            services.AddTransient<Util>();
+            services.AddTransient<IEmail, Email>()
+                    .AddTransient<IBoleto, Boleto>();
+
+            #endregion
+
+            #region Subscryptions
+
+            services.AddTransient<IRequestHandler<CreateSubscryptionCommand, bool>, CreateSubscryptionCommandHandler>();
+
+            services.AddTransient<IRequestHandler<ListSubscryptionsQuery, List<GetSubscryptionVM>>, ListSubscryptionsQueryHandler>();
+
+            services.AddTransient<IValidator<CreateSubscryptionCommand>, CreateSubscryptionCommandValidator>();
 
             #endregion
 
@@ -53,7 +67,9 @@ namespace API.Configurations
 
             services.AddTransient<IRequestHandler<ListTemplateTournamentsQuery, List<TemplateGameVM>>, ListTemplateTournamentsQueryHandler>()
                     .AddTransient<IRequestHandler<GetHomeQuery, GetHomeQueryVM>, GetHomeQueryHandler>()
-                    .AddTransient<IRequestHandler<ListSetupsQuery, GetSetupQueryVM>, ListSetupsQueryHandler>();
+                    .AddTransient<IRequestHandler<ListSetupsQuery, GetSetupQueryVM>, ListSetupsQueryHandler>()
+                    .AddTransient<IRequestHandler<GetAddressQuery, GetCondominiumQueryVM>, GetAddressQueryHandler>()
+                    .AddTransient<IRequestHandler<ListCondominuimsQuery, List<GetCondominiumQueryVM>>, ListCondominiumsQueryHandler>();
 
             #endregion
 

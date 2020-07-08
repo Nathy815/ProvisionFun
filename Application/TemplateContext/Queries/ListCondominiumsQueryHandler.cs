@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Application.TemplateContext.Queries
 {
-    public class ListCondominiumsQueryHandler : IRequestHandler<ListCondominuimsQuery, List<GetCondominiumQueryVM>>
+    public class ListCondominiumsQueryHandler : IRequestHandler<ListCondominiumsQuery, List<GetCondominiumQueryVM>>
     {
         private readonly MySqlContext _sqlContext;
 

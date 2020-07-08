@@ -16,6 +16,8 @@ namespace Domain.Entities
         public bool SubscryptionSent { get; set; }
         public bool PaymentSent { get; set; }
         public bool FinishedSent { get; set; }
+        public DateTime? ValidatedDate { get; set; }
+        public DateTime? PaymentDate { get; set; }
 
         // Relational
         public Guid CondominiumID { get; set; }
