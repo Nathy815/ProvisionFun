@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Application.TemplateContext.Queries
 {
-    public class ListCondominuimsQuery : IRequest<List<GetCondominiumQueryVM>>
+    public class ListCondominiumsQuery : IRequest<List<GetCondominiumQueryVM>>
     {
     }
 }

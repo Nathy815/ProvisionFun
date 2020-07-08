@@ -1,4 +1,6 @@
 ﻿using Application.SubscryptionConfigurationContext.Commands;
+using Application.SubscryptionConfigurationContext.Commands.Create;
+using Application.SubscryptionConfigurationContext.Commands.Validate;
 using Application.SubscryptionConfigurationContext.Queries;
 using Domain.ViewModels;
 using MediatR;
@@ -35,6 +37,13 @@ namespace API.Controllers
         public async Task<GetSubscryptionDetailVM> SubscryptionDetail([FromRoute] Guid id)
         {
             return await _mediator.Send(new GetSubscryptionQuery(id));
+        }
+
+        [HttpPatch("validate")]
+        [Authorize]
+        public async Task<bool> Validate([FromBody] ValidateSubscryptionCommand request)
+        {
+            return await _mediator.Send(request);
         }
     }
 }

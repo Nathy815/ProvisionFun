@@ -21,7 +21,7 @@ namespace Application.TemplateContext.Queries
             _sqlContext = sqlContext;
         }
 
-        public async Task<List<GetCondominiumQueryVM>> Handle(ListCondominuimsQuery request, CancellationToken cancellationToken)
+        public async Task<List<GetCondominiumQueryVM>> Handle(ListCondominiumsQuery request, CancellationToken cancellationToken)
         {
             try
             {

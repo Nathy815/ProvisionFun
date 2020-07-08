@@ -36,14 +36,21 @@ namespace Application.Services
             return null;
         }
 
+        private string CancelledTemplate()
+        {
+            return null;
+        }
+
         public async Task<bool> SendEmail(string email, eStatus status)
         {
             if (status == eStatus.Validation)
                 return await Send(new EmailVM(email, "Bem-vindo ao campeonato!", ConfirmationTemplate()));
             else if (status == eStatus.Payment)
                 return await Send(new EmailVM(email, "Envio de boleto", ChargeTemplate()));
-            else
+            else if (status == eStatus.Finished)
                 return await Send(new EmailVM(email, "Sua inscrição está completa!", FinishTemplate()));
+            else
+                return await Send(new EmailVM(email, "Sua inscrição foi cancelada!", CancelledTemplate()));
         }
 
         private async Task<bool> Send(EmailVM request, byte[] attach = null)

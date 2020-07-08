@@ -8,6 +8,7 @@ namespace Domain.Enums
     {
         Validation,
         Payment,
-        Finished
+        Finished,
+        Cancelled
     }
 }

@@ -18,8 +18,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Services.Interfaces;
-using Application.SubscryptionConfigurationContext.Commands;
+using Application.SubscryptionConfigurationContext.Commands.Create;
 using Application.SubscryptionConfigurationContext.Queries;
+using Application.SubscryptionConfigurationContext.Commands.Validate;
 
 namespace API.Configurations
 {
@@ -36,7 +37,8 @@ namespace API.Configurations
 
             #region Subscryptions
 
-            services.AddTransient<IRequestHandler<CreateSubscryptionCommand, bool>, CreateSubscryptionCommandHandler>();
+            services.AddTransient<IRequestHandler<CreateSubscryptionCommand, bool>, CreateSubscryptionCommandHandler>()
+                    .AddTransient<IRequestHandler<ValidateSubscryptionCommand, bool>, ValidateSubscryptionCommandHandler>();
 
             services.AddTransient<IRequestHandler<ListSubscryptionsQuery, List<GetSubscryptionVM>>, ListSubscryptionsQueryHandler>();
 
@@ -69,7 +71,7 @@ namespace API.Configurations
                     .AddTransient<IRequestHandler<GetHomeQuery, GetHomeQueryVM>, GetHomeQueryHandler>()
                     .AddTransient<IRequestHandler<ListSetupsQuery, GetSetupQueryVM>, ListSetupsQueryHandler>()
                     .AddTransient<IRequestHandler<GetAddressQuery, GetCondominiumQueryVM>, GetAddressQueryHandler>()
-                    .AddTransient<IRequestHandler<ListCondominuimsQuery, List<GetCondominiumQueryVM>>, ListCondominiumsQueryHandler>();
+                    .AddTransient<IRequestHandler<ListCondominiumsQuery, List<GetCondominiumQueryVM>>, ListCondominiumsQueryHandler>();
 
             #endregion
 

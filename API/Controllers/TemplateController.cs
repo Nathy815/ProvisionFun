@@ -32,7 +32,7 @@ namespace API.Controllers
         [HttpGet("condominiums")]
         public async Task<List<GetCondominiumQueryVM>> Condominiums()
         {
-            return await _mediator.Send(new GetCondominiumsQuery());
+            return await _mediator.Send(new ListCondominiumsQuery());
         }
 
         [HttpGet]

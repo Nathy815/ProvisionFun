@@ -1,4 +1,4 @@
-﻿using Application.SubscryptionConfigurationContext.Commands;
+﻿using Application.SubscryptionConfigurationContext.Commands.Create;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
