@@ -14,5 +14,6 @@ namespace Domain.Entities
 
         // Collection
         public virtual ICollection<TeamPlayer> Teams { get; set; }
+        public virtual ICollection<Match> Matches { get; set; }
     }
 }

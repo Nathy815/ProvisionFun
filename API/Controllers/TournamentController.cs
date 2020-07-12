@@ -1,5 +1,6 @@
 ﻿using Application.TournamentContext.Commands.CreateTournament;
 using Application.TournamentContext.Commands.UpdateTournament;
+using Application.TournamentContext.Commands.Validate;
 using Application.TournamentContext.Queries;
 using Domain.ViewModels;
 using MediatR;
@@ -46,6 +47,12 @@ namespace API.Controllers
             return await _mediator.Send(new GetTournamentQuery(tournamentID));
         }
 
+        [HttpGet("/tournament/top")]
+        public async Task<List<GetMatchQueryVM>> TopTournaments()
+        {
+            return await _mediator.Send(new GetTopMatchesQuery());
+        }
+
         [HttpGet("/tournament")]
         [Authorize(Roles = "Administrador")]
         public async Task<List<GetTournamentQueryVM>> ListTournaments()
@@ -53,9 +60,29 @@ namespace API.Controllers
             return await _mediator.Send(new ListTournamentsQuery());
         }
 
+        [HttpGet("/tournament/auditors")]
+        [Authorize]
+        public async Task<List<GetAuditorsQueryVM>> Auditors()
+        {
+            return await _mediator.Send(new ListAuditorsQuery());
+        }
+
+        [HttpGet("/tournament/search")]
+        public async Task<List<GetMatchQueryVM>> Search([FromBody] SearchMatchQuery request)
+        {
+            return await _mediator.Send(request);
+        }
+
         [HttpPatch("/tournament/update")]
         [Authorize(Roles = "Administrador")]
         public async Task<bool> UpdateTournament(UpdateTournamentCommand request)
+        {
+            return await _mediator.Send(request);
+        }
+
+        [HttpPatch("/match/validate")]
+        [Authorize]
+        public async Task<bool> ValidateMatch([FromBody] ValidateMatchCommand request)
         {
             return await _mediator.Send(request);
         }

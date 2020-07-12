@@ -41,12 +41,12 @@ namespace Application.Services
             return null;
         }
 
-        public async Task<bool> SendEmail(string email, eStatus status)
+        public async Task<bool> SendEmail(string email, eStatus status, byte[] attach = null)
         {
             if (status == eStatus.Validation)
                 return await Send(new EmailVM(email, "Bem-vindo ao campeonato!", ConfirmationTemplate()));
             else if (status == eStatus.Payment)
-                return await Send(new EmailVM(email, "Envio de boleto", ChargeTemplate()));
+                return await Send(new EmailVM(email, "Envio de boleto", ChargeTemplate()), attach);
             else if (status == eStatus.Finished)
                 return await Send(new EmailVM(email, "Sua inscrição está completa!", FinishTemplate()));
             else

@@ -28,5 +28,6 @@ namespace Domain.Entities
 
         // Collections
         public virtual ICollection<TeamPlayer> Players { get; set; }
+        public virtual ICollection<Payment> Payments { get; set; }
     }
 }

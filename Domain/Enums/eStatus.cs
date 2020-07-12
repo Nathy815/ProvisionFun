@@ -9,6 +9,8 @@ namespace Domain.Enums
         Validation,
         Payment,
         Finished,
-        Cancelled
+        Cancelled,
+        Eliminated,
+        Winner
     }
 }

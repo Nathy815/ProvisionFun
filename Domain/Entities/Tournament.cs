@@ -14,6 +14,7 @@ namespace Domain.Entities
         public int PlayerLimit { get; set; }
         public eMode Mode { get; set; }
         public string Plataform { get; set; }
+        public eType Type { get; set; }
 
         // Relational
         public Guid GameID { get; set; }
@@ -21,5 +22,6 @@ namespace Domain.Entities
 
         // Collections
         public virtual ICollection<Team> Teams { get; set; }
+        public virtual ICollection<Match> Matches { get; set; }
     }
 }

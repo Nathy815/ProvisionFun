@@ -25,7 +25,9 @@ namespace Persistence.Contexts
         public DbSet<Team> Teams { get; set; }
         public DbSet<TeamPlayer> TeamPlayers { get; set; }
         public DbSet<Condominium> Condominiums { get; set; }
-
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<Match> Matches { get; set; }
+             
         #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

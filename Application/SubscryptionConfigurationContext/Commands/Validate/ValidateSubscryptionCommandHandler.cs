@@ -16,11 +16,13 @@ namespace Application.SubscryptionConfigurationContext.Commands.Validate
     {
         private readonly MySqlContext _sqlContext;
         private readonly IEmail _email;
+        private readonly IBoleto _boleto;
 
-        public ValidateSubscryptionCommandHandler(MySqlContext sqlContext, IEmail email)
+        public ValidateSubscryptionCommandHandler(MySqlContext sqlContext, IEmail email, IBoleto boleto)
         {
             _sqlContext = sqlContext;
             _email = email;
+            _boleto = boleto;
         }
 
         public async Task<bool> Handle(ValidateSubscryptionCommand request, CancellationToken cancellationToken)
@@ -30,6 +32,7 @@ namespace Application.SubscryptionConfigurationContext.Commands.Validate
                 var _team = await _sqlContext.Set<Team>()
                                         .Include(t => t.Players)
                                             .ThenInclude(tp => tp.Player)
+                                        .Include(t => t.Condominium)
                                         .Where(t => t.Id == request.Id)
                                         .FirstOrDefaultAsync();
 
@@ -39,7 +42,10 @@ namespace Application.SubscryptionConfigurationContext.Commands.Validate
 
                 bool _result = false;
                 if (request.Validate)
-                    _result = await _email.SendEmail(_player.Email, Domain.Enums.eStatus.Payment);
+                {
+                    var _boleto_bancario = await _boleto.GeneratePayment(_team);
+                    _result = await _email.SendEmail(_player.Email, Domain.Enums.eStatus.Payment, _boleto_bancario);
+                }
                 else
                     _result = await _email.SendEmail(_player.Email, Domain.Enums.eStatus.Cancelled);
 
@@ -49,6 +55,12 @@ namespace Application.SubscryptionConfigurationContext.Commands.Validate
                 {
                     _team.ValidatedDate = DateTime.Now;
                     _team.Status = request.Validate ? Domain.Enums.eStatus.Payment : Domain.Enums.eStatus.Cancelled;
+                }
+
+                if (!_team.Condominium.Validated)
+                {
+                    _team.Condominium.Name = request.Condominium;
+                    _team.Condominium.Validated = true;
                 }
 
                 _sqlContext.Teams.Update(_team);

@@ -27,6 +27,7 @@ namespace Application.Services
                 var fileExtension = string.Empty;
                 if (file.ContentType != null)
                     fileExtension = file.ContentType.Split("/")[1];
+
                 else
                 {
                     string[] split = file.FileName.Split(".");
@@ -46,6 +47,17 @@ namespace Application.Services
             {
                 return null;
             }
+        }
+
+        public string GetFileName(string name)
+        {
+            return string.Format("{0}_{1}-{2}-{3}_{4}{5}.REM",
+                                  name,
+                                  DateTime.Now.Year,
+                                  DateTime.Now.Month.ToString().PadLeft(2, '0'),
+                                  DateTime.Now.Day.ToString().PadLeft(2, '0'),
+                                  DateTime.Now.Hour.ToString().PadLeft(2, '0'),
+                                  DateTime.Now.Minute.ToString().PadLeft(2, '0'));
         }
     }
 }

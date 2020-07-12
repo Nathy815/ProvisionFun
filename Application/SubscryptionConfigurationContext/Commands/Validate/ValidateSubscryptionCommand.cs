@@ -9,5 +9,6 @@ namespace Application.SubscryptionConfigurationContext.Commands.Validate
     {
         public Guid Id { get; set; }
         public bool Validate { get; set; }
+        public string Condominium { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Application.SubscryptionConfigurationContext.Commands;
 using Application.SubscryptionConfigurationContext.Commands.Create;
+using Application.SubscryptionConfigurationContext.Commands.Payment;
 using Application.SubscryptionConfigurationContext.Commands.Validate;
 using Application.SubscryptionConfigurationContext.Queries;
 using Domain.ViewModels;
@@ -18,6 +19,12 @@ namespace API.Controllers
     public class SubscryptionController : BaseController
     {
         public SubscryptionController(IMediator mediator) : base(mediator) { }
+
+        [HttpPatch("confirm/{id}")]
+        public async Task<bool> Confirm([FromRoute] Guid id)
+        {
+            return await _mediator.Send(new ConfirmPaymentCommand(id));
+        }
 
         [HttpPost("create")]
         public async Task<bool> Create([FromForm] CreateSubscryptionCommand request)
@@ -38,7 +45,7 @@ namespace API.Controllers
         {
             return await _mediator.Send(new GetSubscryptionQuery(id));
         }
-
+        
         [HttpPatch("validate")]
         [Authorize]
         public async Task<bool> Validate([FromBody] ValidateSubscryptionCommand request)
