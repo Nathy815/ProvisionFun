@@ -1,0 +1,6 @@
+C:\Users\nathy\Desktop\ProvisionService\ProvisionService\PS.Game.Persistance\bin\Debug\netcoreapp2.2\PS.Game.Persistance.deps.json
+C:\Users\nathy\Desktop\ProvisionService\ProvisionService\PS.Game.Persistance\bin\Debug\netcoreapp2.2\PS.Game.Persistance.dll
+C:\Users\nathy\Desktop\ProvisionService\ProvisionService\PS.Game.Persistance\obj\Debug\netcoreapp2.2\PS.Game.Persistance.csprojAssemblyReference.cache
+C:\Users\nathy\Desktop\ProvisionService\ProvisionService\PS.Game.Persistance\obj\Debug\netcoreapp2.2\PS.Game.Persistance.csproj.CoreCompileInputs.cache
+C:\Users\nathy\Desktop\ProvisionService\ProvisionService\PS.Game.Persistance\obj\Debug\netcoreapp2.2\PS.Game.Persistance.AssemblyInfoInputs.cache
+C:\Users\nathy\Desktop\ProvisionService\ProvisionService\PS.Game.Persistance\obj\Debug\netcoreapp2.2\PS.Game.Persistance.AssemblyInfo.cs
