@@ -13,7 +13,7 @@ namespace API.Configurations
         {
             services.AddSwaggerGen(s =>
             {
-                s.SwaggerDoc("v1.0", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Provision Service - Game Tournament v1.0", Version = "v1.0" });
+                s.SwaggerDoc("v1.0", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Provision Fun v1.0", Version = "v1.0" });
 
                 s.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
                 {
@@ -50,7 +50,7 @@ namespace API.Configurations
             {
                 s.RoutePrefix = "swagger";
                 s.SwaggerEndpoint("../swagger/v1.0/swagger.json", "v1.0");
-                s.DocumentTitle = "Provision Service - Game Tournament API v1.0";
+                s.DocumentTitle = "Provision Fun API v1.0";
                 s.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
             });
         }

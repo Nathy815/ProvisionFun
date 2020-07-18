@@ -10,7 +10,7 @@ namespace Application.Services.Interfaces
 {
     public interface IBoleto
     {
-        Task<byte[]> GeneratePayment(Team team);
+        Task<string> GeneratePayment(Team team);
         Task<string> GenerateShipping(List<Team> teams, string virtualPath);
         Task<bool> ImportReturn(IFormFile file, string virtualPath);
     }

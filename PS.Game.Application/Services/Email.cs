@@ -1,6 +1,9 @@
 ﻿using Application.Services.Interfaces;
 using Domain.Enums;
 using Domain.ViewModels;
+using iText.Html2pdf;
+using iText.Kernel.Pdf;
+using iText.Layout;
 using Persistence.Contexts;
 using System;
 using System.Collections.Generic;
@@ -41,7 +44,7 @@ namespace Application.Services
             return "<p>Sua inscrição foi cancelada.</p>";
         }
 
-        public async Task<bool> SendEmail(string email, eStatus status, byte[] attach = null)
+        public async Task<bool> SendEmail(string email, eStatus status, string attach = null)
         {
             if (status == eStatus.Validation)
                 return await Send(new EmailVM(email, "Bem-vindo ao campeonato!", ConfirmationTemplate()));
@@ -53,7 +56,7 @@ namespace Application.Services
                 return await Send(new EmailVM(email, "Sua inscrição foi cancelada!", CancelledTemplate()));
         }
 
-        private async Task<bool> Send(EmailVM request, byte[] attach = null)
+        private async Task<bool> Send(EmailVM request, string attach = null)
         {
             try
             {
@@ -78,8 +81,16 @@ namespace Application.Services
 
                     email.IsBodyHtml = request.IsBodyHTML;
 
-                    if (attach != null)
-                        email.Attachments.Add(new Attachment(new MemoryStream(attach), "BoletoBancario.pdf"));
+                    if (!string.IsNullOrEmpty(attach))
+                    {
+                        MemoryStream ms = new MemoryStream();
+                        PdfWriter writer = new PdfWriter(ms);
+                        Document document = HtmlConverter.ConvertToDocument(attach, writer);
+                        writer.SetCloseStream(false);
+                        document.Close();
+                        ms.Position = 0;
+                        email.Attachments.Add(new Attachment(ms, "Boleto.pdf"));
+                    }
 
                     SmtpClient client = new SmtpClient(host, port);
                     client.EnableSsl = request.UseSSL;

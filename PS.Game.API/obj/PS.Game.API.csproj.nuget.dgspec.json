@@ -1,0 +1,313 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.API\\PS.Game.API.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.API\\PS.Game.API.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.API\\PS.Game.API.csproj",
+        "projectName": "PS.Game.API",
+        "projectPath": "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.API\\PS.Game.API.csproj",
+        "packagesPath": "C:\\Users\\nathy\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.API\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\nathy\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.1": {
+            "projectReferences": {
+              "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.Application\\PS.Game.Application.csproj": {
+                "projectPath": "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.Application\\PS.Game.Application.csproj"
+              },
+              "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.Domain\\PS.Game.Domain.csproj": {
+                "projectPath": "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.Domain\\PS.Game.Domain.csproj"
+              },
+              "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.Persistance\\PS.Game.Persistance.csproj": {
+                "projectPath": "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.Persistance\\PS.Game.Persistance.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.1": {
+          "dependencies": {
+            "FluentValidation.AspNetCore": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "MediatR.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[8.0.1, )"
+            },
+            "Microsoft.AspNetCore.All": {
+              "target": "Package",
+              "version": "[2.1.0, )"
+            },
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.1.0, )",
+              "autoReferenced": true
+            },
+            "Swashbuckle.AspNetCore.Swagger": {
+              "target": "Package",
+              "version": "[5.1.0, )"
+            },
+            "Swashbuckle.AspNetCore.SwaggerGen": {
+              "target": "Package",
+              "version": "[5.1.0, )"
+            },
+            "Swashbuckle.AspNetCore.SwaggerUi": {
+              "target": "Package",
+              "version": "[5.5.1, )"
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    },
+    "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.Application\\PS.Game.Application.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.Application\\PS.Game.Application.csproj",
+        "projectName": "PS.Game.Application",
+        "projectPath": "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.Application\\PS.Game.Application.csproj",
+        "packagesPath": "C:\\Users\\nathy\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.Application\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\nathy\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.1": {
+            "projectReferences": {
+              "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.Domain\\PS.Game.Domain.csproj": {
+                "projectPath": "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.Domain\\PS.Game.Domain.csproj"
+              },
+              "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.Persistance\\PS.Game.Persistance.csproj": {
+                "projectPath": "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.Persistance\\PS.Game.Persistance.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.1": {
+          "dependencies": {
+            "BCrypt.Net-Core": {
+              "target": "Package",
+              "version": "[1.6.0, )"
+            },
+            "BoletoNetCore": {
+              "target": "Package",
+              "version": "[3.0.1.39, )"
+            },
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "MediatR": {
+              "target": "Package",
+              "version": "[8.0.2, )"
+            },
+            "Microsoft.AspNetCore.Http": {
+              "target": "Package",
+              "version": "[2.1.0, )"
+            },
+            "Microsoft.IdentityModel.Tokens": {
+              "target": "Package",
+              "version": "[6.7.1, )"
+            },
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.1.0, )",
+              "autoReferenced": true
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[6.7.1, )"
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    },
+    "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.Domain\\PS.Game.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.Domain\\PS.Game.Domain.csproj",
+        "projectName": "PS.Game.Domain",
+        "projectPath": "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.Domain\\PS.Game.Domain.csproj",
+        "packagesPath": "C:\\Users\\nathy\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\nathy\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.1": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.1": {
+          "dependencies": {
+            "Microsoft.AspNetCore.Http": {
+              "target": "Package",
+              "version": "[2.1.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[2.1.0, )"
+            },
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.1.0, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    },
+    "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.Persistance\\PS.Game.Persistance.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.Persistance\\PS.Game.Persistance.csproj",
+        "projectName": "PS.Game.Persistance",
+        "projectPath": "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.Persistance\\PS.Game.Persistance.csproj",
+        "packagesPath": "C:\\Users\\nathy\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.Persistance\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\nathy\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.1": {
+            "projectReferences": {
+              "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.Domain\\PS.Game.Domain.csproj": {
+                "projectPath": "C:\\Users\\nathy\\Desktop\\ProvisionService\\ProvisionService\\PS.Game.Domain\\PS.Game.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.1": {
+          "dependencies": {
+            "BCrypt.Net-Core": {
+              "target": "Package",
+              "version": "[1.6.0, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[2.1.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[2.1.0, )"
+            },
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.1.0, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    }
+  }
+}

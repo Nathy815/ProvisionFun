@@ -1,10 +1,12 @@
 ﻿using Application.Services.Interfaces;
 using Domain.Entities;
+using iText.Html2pdf;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Contexts;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -40,6 +42,7 @@ namespace Application.SubscryptionConfigurationContext.Commands.Validate
 
                 bool _result = false;
                 var _boleto_bancario = await _boleto.GeneratePayment(_team);
+
                 _result = await _email.SendEmail(_player.Email, Domain.Enums.eStatus.Payment, _boleto_bancario);
 
                 _team.PaymentSent = _result;
@@ -50,15 +53,44 @@ namespace Application.SubscryptionConfigurationContext.Commands.Validate
                     _team.Status = Domain.Enums.eStatus.Payment;
                 }
 
+                var _ids = new List<Guid>();
+
                 if (!_team.Condominium.Validated)
                 {
                     _team.Condominium.Name = request.Condominium;
                     _team.Condominium.Validated = true;
+
+                    var _dbTeams = await _sqlContext.Set<Team>()
+                                            .Include(t => t.Condominium)
+                                            .Where(t => t.Condominium.ZipCode.Equals(_team.Condominium.ZipCode) &&
+                                                        t.Condominium.Number.Equals(_team.Condominium.Number) &&
+                                                        t.CondominiumID != _team.CondominiumID)
+                                            .ToListAsync();
+                    
+                    foreach (var _db in _dbTeams)
+                    {
+                        _ids.Add(_db.CondominiumID);
+                        _db.CondominiumID = _team.CondominiumID;
+                    }
+
+                    _sqlContext.Teams.UpdateRange(_dbTeams);
                 }
 
                 _sqlContext.Teams.Update(_team);
 
                 await _sqlContext.SaveChangesAsync(cancellationToken);
+
+                // Limpar condomínios iguais não validados (CEP e Número iguais)
+                if (_ids.Count > 0)
+                {
+                    var _condominiums = await _sqlContext.Set<Condominium>()
+                                                    .Where(c => _ids.Any(id => id == c.Id))
+                                                    .ToListAsync();
+
+                    _sqlContext.Condominiums.RemoveRange(_condominiums);
+
+                    await _sqlContext.SaveChangesAsync(cancellationToken);
+                }
 
                 return true;
             }

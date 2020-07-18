@@ -32,7 +32,7 @@ namespace Application.TemplateContext.Queries
                 var _result = new GetSetupQueryVM();
                 _result.HomeTitle = _setups.Where(s => s.Key.Equals("HomeTitle")).FirstOrDefault().Value;
                 _result.Regulation = _setups.Where(s => s.Key.Equals("Regulation")).FirstOrDefault().Value;
-                _result.ResponsabilityTerm = _setups.Where(s => s.Key.Equals("ResponsabilityTerm")).FirstOrDefault().Value;
+                _result.ResponsabilityTerm = _setups.Where(s => s.Key.Equals("ResponsibilityTerm")).FirstOrDefault().Value;
 
                 return _result;
             }

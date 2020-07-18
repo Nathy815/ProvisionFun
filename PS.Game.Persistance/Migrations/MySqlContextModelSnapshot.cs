@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.Contexts;
 
@@ -16,8 +15,7 @@ namespace PS.Game.Persistance.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Domain.Entities.Condominium", b =>
                 {
@@ -240,6 +238,16 @@ namespace PS.Game.Persistance.Migrations
                         .IsUnique();
 
                     b.ToTable("Setups");
+
+                    b.HasData(
+                        new { Id = new Guid("0707aff8-0901-4f67-bfa4-52a19bbe4237"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Key = "BannerHome", ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Value = "" },
+                        new { Id = new Guid("7e5b0a5b-80e8-43ea-8cb1-0b6d8a302a6d"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Key = "HomeTitle", ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Value = "" },
+                        new { Id = new Guid("8e0ef355-af58-46ca-80a3-d76c4b68927c"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Key = "ResponsibilityTerm", ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Value = "" },
+                        new { Id = new Guid("c8578be5-ead7-48cc-aac0-cf33a97fca04"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Key = "Regulation", ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Value = "Regras" },
+                        new { Id = new Guid("f970ccaa-5a0d-41dd-a302-eab3072f8c09"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Key = "Logo", ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Value = "" },
+                        new { Id = new Guid("8aae9ff9-48ae-4222-a144-0abf5070d798"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Key = "NossoNumero", ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Value = "" },
+                        new { Id = new Guid("e8989e76-346f-457d-ba42-5e669e1eec84"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Key = "ShippingFile", ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Value = "" }
+                    );
                 });
 
             modelBuilder.Entity("Domain.Entities.Team", b =>
@@ -391,8 +399,8 @@ namespace PS.Game.Persistance.Migrations
                     b.ToTable("Users");
 
                     b.HasData(
-                        new { Id = new Guid("0f054b3e-aaf0-44ae-a2af-4d1f1fa69b02"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Email = "master@master.com", IsMaster = true, ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Name = "Master", Password = "$2b$10$rQIR35rdgoOGxRrBp64LNePDn59FgwHYByr1P4Xo5eD9wxNjJocAe", RoleID = new Guid("66300219-e7f6-4f17-a859-d8cc11315796") },
-                        new { Id = new Guid("d06fc2b3-d60b-4ad2-8794-829daa444506"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Email = "adm@adm.com", IsMaster = false, ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Name = "Administrator", Password = "$2b$10$ooYzZ.LEF8yOciUetR2E9e2zRkARr/EnWDsnVKUpM2PabUAqGtkjS", RoleID = new Guid("66300219-e7f6-4f17-a859-d8cc11315796") }
+                        new { Id = new Guid("0f054b3e-aaf0-44ae-a2af-4d1f1fa69b02"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Email = "master@master.com", IsMaster = true, ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Name = "Master", Password = "$2b$10$CyWSzLpMjcCTOk8UHeiR8.ooyxWRYgf0GmwSDecx0I71M4h95QWHa", RoleID = new Guid("66300219-e7f6-4f17-a859-d8cc11315796") },
+                        new { Id = new Guid("d06fc2b3-d60b-4ad2-8794-829daa444506"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Email = "adm@adm.com", IsMaster = false, ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Name = "Administrator", Password = "$2b$10$aYRoeIG4CST.BCseIAJ3PO1oLw1ThAIi9hpMOIoSyKmqQukRRmQbi", RoleID = new Guid("66300219-e7f6-4f17-a859-d8cc11315796") }
                     );
                 });
 

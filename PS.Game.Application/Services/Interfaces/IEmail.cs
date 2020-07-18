@@ -8,6 +8,6 @@ namespace Application.Services.Interfaces
 {
     public interface IEmail
     { 
-        Task<bool> SendEmail(string email, eStatus status, byte[] attach = null);
+        Task<bool> SendEmail(string email, eStatus status, string attach = null);
     }
 }

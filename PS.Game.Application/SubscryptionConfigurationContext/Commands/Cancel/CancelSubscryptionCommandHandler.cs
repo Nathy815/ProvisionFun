@@ -34,6 +34,7 @@ namespace PS.Game.Application.SubscryptionConfigurationContext.Commands.Cancel
                                         .FirstOrDefaultAsync();
 
                 _team.Active = false;
+                _team.Status = Domain.Enums.eStatus.Cancelled;
                 _team.CancellationComments = request.Comments;
 
                 var _player = _team.Players.Where(p => p.IsPrincipal).FirstOrDefault().Player;

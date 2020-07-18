@@ -69,7 +69,7 @@ namespace Persistence.Configurations
                 },
                 new Setup
                 {
-                    Id = new Guid("f970ccaa-5a0d-41dd-a302-eab3072f8c09"),
+                    Id = new Guid("8aae9ff9-48ae-4222-a144-0abf5070d798"),
                     Active = true,
                     CreatedDate = Convert.ToDateTime("04/07/2020 13:55:00"),
                     ModifiedDate = Convert.ToDateTime("04/07/2020 13:55:00"),
@@ -78,7 +78,7 @@ namespace Persistence.Configurations
                 },
                 new Setup
                 {
-                    Id = new Guid("f970ccaa-5a0d-41dd-a302-eab3072f8c09"),
+                    Id = new Guid("e8989e76-346f-457d-ba42-5e669e1eec84"),
                     Active = true,
                     CreatedDate = Convert.ToDateTime("04/07/2020 13:55:00"),
                     ModifiedDate = Convert.ToDateTime("04/07/2020 13:55:00"),

@@ -25,7 +25,7 @@ namespace API.Controllers
             var prefix = "http://";
             if (Request.IsHttps)
                 prefix = "https://";
-            var virtualPath = prefix + Request.Host.ToString() + "/fileserver_api/resources";
+            var virtualPath = prefix + Request.Host.ToString() + "/resources/";
 
             return virtualPath;
         }

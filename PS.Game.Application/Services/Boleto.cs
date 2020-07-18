@@ -25,35 +25,15 @@ namespace Application.Services
         private readonly IEmail _email;
         private readonly IUtil _util;
         private IBanco _banco { get; set; }
-        private BoletoNetCore.Boleto _boleto { get; set; }
 
-        public Boleto(/*IGeneratePdf generatePdf, */MySqlContext sqlContext, IEmail email, IUtil util)
+        private Beneficiario GerarBeneficiario()
         {
-            //_generatePdf = generatePdf;
-            _sqlContext = sqlContext;
-            _email = email;
-            _util = util;
-
-            var bancoEnum = (Bancos)short.Parse("33"); // Santander
-
-            var contaBancaria = new ContaBancaria
-            {
-                Agencia = "1590",
-                DigitoAgencia = "",
-                Conta = "13001027",
-                DigitoConta = "3",
-                CarteiraPadrao = "101",
-                TipoCarteiraPadrao = TipoCarteira.CarteiraCobrancaSimples,
-                TipoFormaCadastramento = TipoFormaCadastramento.SemRegistro,
-                TipoImpressaoBoleto = TipoImpressaoBoleto.Banco
-            };
-
-            _banco = Banco.Instancia(bancoEnum);
-
-            _banco.Beneficiario = new Beneficiario
+            return new Beneficiario
             {
                 CPFCNPJ = "30.850.441/0001-43",
-                Nome = "C. R. L Ferreira e Cia Ltda",
+                Nome = "C R L Ferreira e Cia Ltda EPP",
+                Codigo = "4592875",
+                CodigoDV = "",
                 Endereco = new Endereco
                 {
                     LogradouroEndereco = "Av. Dr. Eneas Pinheiro",
@@ -62,58 +42,115 @@ namespace Application.Services
                     Bairro = "Pedreira",
                     Cidade = "Belém",
                     UF = "PA",
-                    CEP = "66080-290",
+                    CEP = "66080290",
                 },
-                ContaBancaria = contaBancaria
+                ContaBancaria = new ContaBancaria
+                {
+                    Agencia = "1590",
+                    DigitoAgencia = "0",
+                    Conta = "13001027",
+                    DigitoConta = "3",
+                    CarteiraPadrao = "101",
+                    TipoCarteiraPadrao = TipoCarteira.CarteiraCobrancaSimples,
+                    TipoFormaCadastramento = TipoFormaCadastramento.SemRegistro,
+                    TipoImpressaoBoleto = TipoImpressaoBoleto.Empresa
+                }
             };
-
-            _banco.Beneficiario.Codigo = "";
-            _banco.Beneficiario.CodigoDV = "";
-
-            _banco.FormataBeneficiario();
-
-            _boleto = new BoletoNetCore.Boleto(_banco);
         }
 
-        public async Task<byte[]> GeneratePayment(Team team)
+        public Boleto(MySqlContext sqlContext, IEmail email, IUtil util)
+        {
+            _sqlContext = sqlContext;
+            _email = email;
+            _util = util;
+        }
+
+        private string GetDVNossoNumero(string nossoNumero)
+        {
+            var _char = nossoNumero.ToCharArray();
+            var _count = 0;
+            int dv = 0;
+
+            for (var i = _char.Length - 1; i >= 0; i--)
+            {
+                var val = Convert.ToInt32(Char.GetNumericValue(_char[i]));
+
+                if (_count == 0 || _count == 8)
+                    dv += val * 2;
+                else if (_count == 1 || _count == 9)
+                    dv += val * 3;
+                else if (_count == 2 || _count == 10)
+                    dv += val * 4;
+                else if (_count == 3 || _count == 11)
+                    dv += val * 5;
+                else if (_count == 4)
+                    dv += val * 6;
+                else if (_count == 5)
+                    dv += val * 7;
+                else if (_count == 6)
+                    dv += val * 8;
+                else
+                    dv += val * 9;
+
+                _count++;
+            }
+
+            var _mod = dv % 11;
+            if (_mod == 10)
+                return "1";
+            else if (_mod == 1 || _mod == 0)
+                return "0";
+            else
+                return (11 - _mod).ToString();
+        }
+
+        public async Task<string> GeneratePayment(Team team)
         {
             try
             {
                 var player = team.Players.Where(p => p.IsPrincipal).Select(t => t.Player).FirstOrDefault();
                 var nossoNumero = await _sqlContext.Set<Setup>().Where(s => s.Key.Equals("NossoNumero")).FirstOrDefaultAsync();
 
-                _boleto.Pagador = new Pagador
+                _banco = Banco.Instancia(Bancos.Santander);
+                _banco.Beneficiario = GerarBeneficiario();
+                _banco.FormataBeneficiario();
+                
+                var _boleto = new BoletoNetCore.Boleto(_banco)
                 {
-                    CPFCNPJ = player.CPF,
-                    Nome = player.Name,
-                    Endereco = new Endereco
+                    DataVencimento = DateTime.Now.AddDays(3),
+                    ValorTitulo = (decimal)team.Price,
+                    NossoNumero = (Convert.ToInt32(nossoNumero.Value) + 1).ToString(),
+                    NumeroDocumento = "BB834A",
+                    EspecieDocumento = TipoEspecieDocumento.DM,
+                    Pagador = new Pagador
                     {
-                        LogradouroEndereco = team.Condominium.Address,
-                        LogradouroNumero = team.Condominium.Number,
-                        Cidade = team.Condominium.City,
-                        UF = team.Condominium.State,
-                        CEP = team.Condominium.ZipCode.Replace("-", "")
+                        CPFCNPJ = player.CPF,
+                        Nome = player.Name,
+                        Endereco = new Endereco
+                        {
+                            LogradouroEndereco = team.Condominium.Address,
+                            LogradouroNumero = team.Condominium.Number,
+                            Cidade = team.Condominium.City,
+                            UF = team.Condominium.State,
+                            CEP = team.Condominium.ZipCode.Replace("-", "")
+                        }
                     }
                 };
 
-                _boleto.NumeroDocumento = "";
-                _boleto.NossoNumero = (Convert.ToInt32(nossoNumero) + 1).ToString();
-                _boleto.NossoNumeroDV = "";
-                _boleto.NossoNumeroFormatado = "";
-                _boleto.DataEmissao = DateTime.Today;
-                _boleto.DataVencimento = DateTime.Today.AddDays(3);
-
-                _boleto.ValorTitulo = (decimal)(team.Price); // custo do boleto
-                _boleto.EspecieDocumento = TipoEspecieDocumento.DM;
-
-                _boleto.MensagemInstrucoesCaixa = ""; // instruções
-
                 _boleto.ValidarDados();
 
-                var boletoBancario = new BoletoBancario { Boleto = _boleto };
+                var boletoBancario = new BoletoBancario {
+                    Boleto = _boleto,
+                    OcultarInstrucoes = false,
+                    MostrarComprovanteEntrega = false,
+                    MostrarEnderecoBeneficiario = true,
+                    ExibirDemonstrativo = true
+                };
 
-                var html = boletoBancario.MontaHtmlEmbedded();
-                //var _pdf = _generatePdf.GetPDF(html);
+                var html = new StringBuilder();
+                html.Append("<div style=\"page-break-after: always;\">");
+                html.Append(boletoBancario.MontaHtmlEmbedded());
+                html.Append("</div>");
 
                 var _payment = new Payment
                 {
@@ -137,7 +174,7 @@ namespace Application.Services
 
                 await _sqlContext.SaveChangesAsync();
 
-                return null;
+                return html.ToString().Replace("<td class=\"w150 cn8 Al Ab\"></td>", "").Replace("w450 Ar Ab ld", "Ar Ab ld").Replace("w450 Ar ld", "Ar ld").Replace("Pagadorr", "Pagador");
             }
             catch(Exception ex)
             {

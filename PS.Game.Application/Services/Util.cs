@@ -15,7 +15,7 @@ namespace Application.Services
 
         public Util()
         {
-            pathToSave = Path.Combine(Directory.GetCurrentDirectory(), "Resources");
+            pathToSave = Path.Combine(Directory.GetCurrentDirectory(), "Resources/");
         }
         
         public string HashPassword(string password)

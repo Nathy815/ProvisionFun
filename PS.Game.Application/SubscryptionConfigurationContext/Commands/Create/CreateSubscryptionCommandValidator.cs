@@ -65,18 +65,21 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
                         string.IsNullOrEmpty(el.Name) || el.Document == null)
                         validator.AddFailure("Preencha todos os campos obrigatórios");
                 })
-                .Must((model, el) => IsPlayerInTournament(el, model.TournamentId).Result == null)
+                .Must((model, el) => IsPlayerInTournament(el, model.Mode, model.TournamentId).Result == null)
                     .WithMessage("Jogador já está inscrito no torneio.");
 
             RuleFor(c => c.Team)
-                .NotEmpty()
+                .Must((model, el) => el != null &&
+                                     el.Count > 0)
                     .When(c => c.Mode == Domain.Enums.eMode.Team)
-                    .WithMessage("Por favor, preencha os dados dos integrantes do time.")
-                .Must((model, el) => _sqlContext.Set<Tournament>()
+                    .WithMessage("Por favor, informe ao menos mais um integrante da equipe.")
+                .Must((model, el) => el != null && 
+                                     el.Count > 0 && 
+                                     _sqlContext.Set<Tournament>()
                                           .Where(t => t.Id == model.TournamentId)
                                           .FirstOrDefault()
                                           .PlayerLimit > el.Count)
-                    .When(c => c.Team != null && c.Team.Count > 0)
+                    .When(c => c.Mode == Domain.Enums.eMode.Team)
                     .WithMessage("Número de integrantes ultrapassou o limite do campeonato.")
                 .ForEach(item =>
                 {
@@ -87,7 +90,7 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
                                 string.IsNullOrEmpty(el.Name) || el.Document == null)
                                 validator.AddFailure("Preencha todos os campos obrigatórios");
                         })
-                        .Must((model, el) => IsPlayerInTournament(el).Result == null)
+                        .Must((model, el) => IsPlayerInTournament(el, Domain.Enums.eMode.Team).Result == null)
                             .WithMessage("Jogador já está inscrito no torneio.");
                 });
         }
@@ -103,6 +106,10 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
             var _avaliable = true;
 
             if (_tournament.StartSubscryption > DateTime.Now || _tournament.EndSubscryption < DateTime.Now)
+                _avaliable = false;
+
+            if (_tournament.Mode == Domain.Enums.eMode.Solo && mode == Domain.Enums.eMode.Team ||
+                _tournament.Mode == Domain.Enums.eMode.Team && mode == Domain.Enums.eMode.Solo)
                 _avaliable = false;
 
             if (_avaliable && mode == Domain.Enums.eMode.Solo)
@@ -121,7 +128,7 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
 
             return _avaliable;
         }
-        private async Task<Tournament> IsPlayerInTournament(TemplatePlayerVM player, Guid? id = null)
+        private async Task<Tournament> IsPlayerInTournament(TemplatePlayerVM player, Domain.Enums.eMode mode, Guid? id = null)
         {
             if (id.HasValue) tournamentID = id.Value;
 
@@ -131,6 +138,7 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
                                .ThenInclude(p => p.Player)
                        .Where(t => t.Id == tournamentID.Value &&
                                    t.Teams.Any(te => te.Active &&
+                                                     te.Mode == mode &&
                                                      te.Players.Any(p => p.Player.CPF.Equals(player.CPF))))
                        .FirstOrDefaultAsync();
         }
