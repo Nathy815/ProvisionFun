@@ -49,13 +49,13 @@ namespace Application.TournamentContext.Commands.Validate
                         _match.Winner = _match.Player2ID;
                 }
 
-                if (_match.Type == Domain.Enums.eType.Tournament)
+                /*if (_match.Type == PS.Game.Domain.Enums.eType.Tournament)
                 {
                     if (_match.Winner.Value == _match.Player1ID)
-                        _match.Player2.Status = Domain.Enums.eStatus.Eliminated;
+                        _match.Player2.Status = PS.Game.Domain.Enums.eStatus.Eliminated;
                     else
-                        _match.Player1.Status = Domain.Enums.eStatus.Eliminated;
-                }
+                        _match.Player1.Status = PS.Game.Domain.Enums.eStatus.Eliminated;
+                }*/
 
                 _sqlContext.Matches.Update(_match);
 
@@ -65,11 +65,11 @@ namespace Application.TournamentContext.Commands.Validate
                                             .Where(t => t.Id == _match.TournamentID)
                                             .FirstOrDefaultAsync();
 
-                if (_tournament.Type == Domain.Enums.eType.League &&
+                /*if (_tournament.Type == PS.Game.Domain.Enums.eType.League &&
                     _tournament.Matches.Where(m => m.Active && (!m.Date.HasValue || !m.Winner.HasValue)).Count() == 0)
                 {
 
-                }
+                }*/
 
                 await _sqlContext.SaveChangesAsync(cancellationToken);
 

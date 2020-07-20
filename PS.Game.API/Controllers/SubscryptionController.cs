@@ -8,6 +8,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PS.Game.Application.SubscryptionConfigurationContext.Commands.Cancel;
+using PS.Game.Application.SubscryptionConfigurationContext.Queries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,22 +42,30 @@ namespace API.Controllers
             return await _mediator.Send(request);
         }
 
+        [HttpPost("shipping")]
+        [Authorize(Roles = "Administrador")]
+        public async Task<string> Shipping([FromBody] GetShippingQuery request)
+        {
+            request.virtualPath = GetVirtualPath();
+            return await _mediator.Send(request);
+        }
+
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         public async Task<List<GetSubscryptionVM>> Subscryptions()
         {
             return await _mediator.Send(new ListSubscryptionsQuery());
         }
 
         [HttpGet("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         public async Task<GetSubscryptionDetailVM> SubscryptionDetail([FromRoute] Guid id)
         {
             return await _mediator.Send(new GetSubscryptionQuery(id));
         }
         
         [HttpPatch("validate")]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         public async Task<bool> Validate([FromBody] ValidateSubscryptionCommand request)
         {
             return await _mediator.Send(request);

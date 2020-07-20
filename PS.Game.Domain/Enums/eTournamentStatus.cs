@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Enums
+namespace PS.Game.Domain.Enums
 {
     public enum eTournamentStatus
     {

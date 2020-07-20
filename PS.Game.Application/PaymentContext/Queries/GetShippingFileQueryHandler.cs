@@ -49,7 +49,7 @@ namespace Application.PaymentContext.Queries
                                         .Include(t => t.Condominium)
                                         .Include(t => t.Payments)
                                         .Where(t => t.Active &&
-                                                    t.Status == Domain.Enums.eStatus.Payment)
+                                                    t.Status == PS.Game.Domain.Enums.eStatus.Payment)
                                         .ToListAsync();
                 }
 

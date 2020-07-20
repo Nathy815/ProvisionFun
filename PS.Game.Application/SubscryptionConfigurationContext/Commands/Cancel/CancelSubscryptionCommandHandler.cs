@@ -34,12 +34,12 @@ namespace PS.Game.Application.SubscryptionConfigurationContext.Commands.Cancel
                                         .FirstOrDefaultAsync();
 
                 _team.Active = false;
-                _team.Status = Domain.Enums.eStatus.Cancelled;
+                _team.Status = PS.Game.Domain.Enums.eStatus.Cancelled;
                 _team.CancellationComments = request.Comments;
 
                 var _player = _team.Players.Where(p => p.IsPrincipal).FirstOrDefault().Player;
 
-                _team.CancellationSent = await _email.SendEmail(_player.Email, Domain.Enums.eStatus.Cancelled);
+                _team.CancellationSent = await _email.SendEmail(_player.Email, PS.Game.Domain.Enums.eStatus.Cancelled);
 
                 _sqlContext.Teams.Update(_team);
 

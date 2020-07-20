@@ -26,6 +26,7 @@ using Application.PaymentContext.Queries;
 using Application.TournamentContext.Commands.Validate;
 using PS.Game.Application.Services.Interfaces;
 using PS.Game.Application.SubscryptionConfigurationContext.Commands.Cancel;
+using PS.Game.Application.SubscryptionConfigurationContext.Queries;
 
 namespace API.Configurations
 {
@@ -48,7 +49,9 @@ namespace API.Configurations
                     .AddTransient<IRequestHandler<CancelSubscryptionCommand, bool>, CancelSubscryptionCommandHandler>();
 
             services.AddTransient<IRequestHandler<ListSubscryptionsQuery, List<GetSubscryptionVM>>, ListSubscryptionsQueryHandler>()
-                    .AddTransient<IRequestHandler<GetSubscryptionQuery, GetSubscryptionDetailVM>, GetSubscryptionQueryHandler>();
+                    .AddTransient<IRequestHandler<GenerateMatchesQuery, bool>, GenerateMatchesQueryHandler>()
+                    .AddTransient<IRequestHandler<GetSubscryptionQuery, GetSubscryptionDetailVM>, GetSubscryptionQueryHandler>()
+                    .AddTransient<IRequestHandler<GetShippingQuery, string>, GetShippingQueryHandler>();
 
             services.AddTransient<IValidator<CreateSubscryptionCommand>, CreateSubscryptionCommandValidator>()
                     .AddTransient<IValidator<ValidateSubscryptionCommand>, ValidateSubscryptionCommandValidator>()
@@ -109,7 +112,8 @@ namespace API.Configurations
 
             services.AddTransient<IEmail, Email>()
                     .AddTransient<IBoleto, Boleto>()
-                    .AddTransient<IUtil, Util>();
+                    .AddTransient<IUtil, Util>()
+                    .AddTransient<IHangfire, Application.Services.Hangfire>();
 
             #endregion
         }

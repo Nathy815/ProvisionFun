@@ -1,4 +1,4 @@
-﻿using Domain.Enums;
+﻿using PS.Game.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,7 +13,7 @@ namespace Domain.Entities
         public double Player1Score { get; set; }
         public double Player2Score { get; set; }
         public Guid? Winner { get; set; }
-        public eType Type { get; set; }
+        public eRound Round { get; set; }
 
         // Relational
         public Guid Player1ID { get; set; }

@@ -26,15 +26,17 @@ namespace Application.TournamentContext.Commands.UpdateTournament
 
             RuleFor(t => t.StartSubscryption)
                 .NotEmpty()
-                    .WithMessage("Por favor, informe a data de início de inscrições do campeonato.")
-                .GreaterThanOrEqualTo(DateTime.Now)
-                    .WithMessage("Por favor, informe uma data atual.");
+                    .WithMessage("Por favor, informe a data de início de inscrições do campeonato.");
+                /*.GreaterThanOrEqualTo(DateTime.Now)
+                    .WithMessage("Por favor, informe uma data atual.");*/
 
             RuleFor(t => t.EndSubscryption)
                 .NotEmpty()
                     .WithMessage("Por favor, informe a data de encerramento das incrições do campeonato.")
                 .GreaterThan(t => t.StartSubscryption)
-                    .WithMessage("A data de encerramento deve ser maior que a de início.");
+                    .WithMessage("A data de encerramento deve ser maior que a de início.")
+                .GreaterThan(DateTime.Now)
+                    .WithMessage("A data de encerramento deve ser maior que a data atual.");
 
             RuleFor(t => t.Mode)
                 .NotEmpty()

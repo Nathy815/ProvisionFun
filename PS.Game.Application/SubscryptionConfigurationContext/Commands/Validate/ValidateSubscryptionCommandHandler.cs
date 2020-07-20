@@ -43,14 +43,14 @@ namespace Application.SubscryptionConfigurationContext.Commands.Validate
                 bool _result = false;
                 var _boleto_bancario = await _boleto.GeneratePayment(_team);
 
-                _result = await _email.SendEmail(_player.Email, Domain.Enums.eStatus.Payment, _boleto_bancario);
+                _result = await _email.SendEmail(_player.Email, PS.Game.Domain.Enums.eStatus.Payment, _boleto_bancario);
 
                 _team.PaymentSent = _result;
                 
                 if (_result)
                 {
                     _team.ValidatedDate = DateTime.Now;
-                    _team.Status = Domain.Enums.eStatus.Payment;
+                    _team.Status = PS.Game.Domain.Enums.eStatus.Payment;
                 }
 
                 var _ids = new List<Guid>();

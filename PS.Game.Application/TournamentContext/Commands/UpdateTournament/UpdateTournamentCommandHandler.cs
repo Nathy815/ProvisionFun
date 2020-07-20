@@ -54,7 +54,7 @@ namespace Application.TournamentContext.Commands.UpdateTournament
                 _tournament.GameID = request.GameID.Value;
                 _tournament.Mode = request.Mode;
                 _tournament.Plataform = request.Plataform;
-                _tournament.PlayerLimit = request.Mode == Domain.Enums.eMode.Solo ? 1 : request.PlayerLimit;
+                _tournament.PlayerLimit = request.Mode == PS.Game.Domain.Enums.eMode.Solo ? 1 : request.PlayerLimit;
                 _tournament.SubscryptionLimit = request.SubscryptionLimit;
 
                 _sqlContext.Tournaments.Update(_tournament);

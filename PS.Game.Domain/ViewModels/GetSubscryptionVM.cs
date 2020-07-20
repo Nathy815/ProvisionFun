@@ -10,7 +10,7 @@ namespace Domain.ViewModels
         public string Name { get; set; }
         public string Tournament { get; set; }
         public int Players { get; set; }
-        public Enums.eStatus Status { get; set; }
+        public PS.Game.Domain.Enums.eStatus Status { get; set; }
 
         public GetSubscryptionVM(Entities.Team team)
         {

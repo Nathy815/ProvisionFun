@@ -32,13 +32,13 @@ namespace Application.TournamentContext.Commands.Start
                                             .Where(t => t.Id == request.TournamentID)
                                             .FirstOrDefaultAsync();
 
-                var _mode = _tournament.Mode == Domain.Enums.eMode.Both ? Domain.Enums.eMode.Solo : _tournament.Mode;
-                var _count = _tournament.Mode == Domain.Enums.eMode.Both ? 2 : 1;
+                var _mode = _tournament.Mode == PS.Game.Domain.Enums.eMode.Both ? PS.Game.Domain.Enums.eMode.Solo : _tournament.Mode;
+                var _count = _tournament.Mode == PS.Game.Domain.Enums.eMode.Both ? 2 : 1;
 
                 while (_count > 0)
                 {
                     var _teams = _tournament.Teams.Where(t => t.Active &&
-                                                                     t.Status == Domain.Enums.eStatus.Finished &&
+                                                                     t.Status == PS.Game.Domain.Enums.eStatus.Finished &&
                                                                      t.Mode == _mode)
                                                          .OrderByDescending(t => t.PaymentDate.Value)
                                                          .ToList();
@@ -58,7 +58,7 @@ namespace Application.TournamentContext.Commands.Start
                             {
                                 _skip = true;
 
-                                var _matches = GenerateSwitching(_group, _tournament.Id);
+                                var _matches = GenerateSwitching(_group, _tournament, _mode);
 
                                 await _sqlContext.Matches.AddRangeAsync(_matches, cancellationToken);
                             }
@@ -69,19 +69,19 @@ namespace Application.TournamentContext.Commands.Start
                     {
                         if (_condominiums.Count % 2 == 0) // Pares - Chaveamento
                         {
-                            var _matches = GenerateSwitching(_teams, _tournament.Id);
+                            var _matches = GenerateSwitching(_teams, _tournament, _mode);
 
                             await _sqlContext.Matches.AddRangeAsync(_matches, cancellationToken);
                         }
                         else // Ímpares - Liga
                         {
-                            var _matches = GenerateLeague(_teams, _tournament.Id);
+                            var _matches = GenerateLeague(_teams, _tournament, _mode);
 
                             await _sqlContext.Matches.AddRangeAsync(_matches, cancellationToken);
                         }
                     }
 
-                    _mode = _tournament.Mode == Domain.Enums.eMode.Both ? Domain.Enums.eMode.Team : _tournament.Mode;
+                    _mode = _tournament.Mode == PS.Game.Domain.Enums.eMode.Both ? PS.Game.Domain.Enums.eMode.Team : _tournament.Mode;
                     _count--;
                 }
 

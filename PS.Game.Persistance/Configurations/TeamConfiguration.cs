@@ -17,14 +17,14 @@ namespace Persistence.Configurations
             builder.Property(b => b.Mode)
                 .HasConversion(
                     e => e.ToString(),
-                    e => (Domain.Enums.eMode)Enum.Parse(typeof(Domain.Enums.eMode), e)
+                    e => (PS.Game.Domain.Enums.eMode)Enum.Parse(typeof(PS.Game.Domain.Enums.eMode), e)
                 );
 
             builder.Property(b => b.Status)
-                //.HasDefaultValue(Domain.Enums.eStatus.Validation)
+                //.HasDefaultValue(PS.Game.Domain.Enums.eStatus.Validation)
                 .HasConversion(
                     e => e.ToString(),
-                    e => (Domain.Enums.eStatus)Enum.Parse(typeof(Domain.Enums.eStatus), e)
+                    e => (PS.Game.Domain.Enums.eStatus)Enum.Parse(typeof(PS.Game.Domain.Enums.eStatus), e)
                 );
 
             builder.Property(b => b.Name)

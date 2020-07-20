@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using PS.Game.Application.Services.Interfaces;
+using PS.Game.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -68,44 +69,52 @@ namespace Application.Services
                                   DateTime.Now.Minute.ToString().PadLeft(2, '0'));
         }
 
-        public List<Match> GenerateLeague(List<Team> _teams, Guid _tournamentID)
+        public List<Match> GenerateLeague(List<Team> _teams, Tournament _tournament, eMode _mode)
         {
             var _sequence = 1;
             var _list = new List<Match>();
-            var _free = (_teams.Count + 1) / 2;
+            var _count = _teams.Count * (_teams.Count - 1) / 2;
+            var _start = 0;
+            var _end = _teams.Count - 1;
+            var _player1 = _start;
+            var _player2 = _end;
 
-            while (_sequence < _teams.Count)
+            while (_sequence < _count)
             {
-                for (var i = 0; i < _free; i++) // 
+                while (_player1 != _player2)
                 {
-                    var _player1 = _free - 1 > 0 ? _free - 1 : _teams.Count - 1;
-                    var _player2 = _free + 1 < _teams.Count ? _free + 1 : 0;
-
                     var _match = new Match
                     {
                         Id = Guid.NewGuid(),
                         Player1ID = _teams.ElementAt(_player1).Id,
                         Player2ID = _teams.ElementAt(_player2).Id,
-                        Sequence = _sequence,
-                        TournamentID = _tournamentID,
-                        Type = Domain.Enums.eType.League
+                        Round = _mode == eMode.Solo ? _tournament.RoundSolo : _tournament.RoundTeam,
+                        TournamentID = _tournament.Id,
+                        Sequence = _sequence
                     };
 
                     _list.Add(_match);
+
+                    _sequence += 1;
+                    _player1 = _player1 + 1 == _teams.Count ? 0 : _player1 + 1;
+                    _player2 = _player2 - 1 < 0 ? _teams.Count - 1 : _player2 - 1;
                 }
 
-                _free = _free - 1 > 0 ? _free - 1 : _teams.Count - 1;
-                _sequence += 1;
+                _player1 = _start - 1 < 0 ? _teams.Count - 1 : _start - 1;
+                _player2 = _end - 1 < 0 ? _teams.Count - 1 : _end - 1;
+                _start = _player1;
+                _end = _player2;
             }
 
             return _list;
         }
 
-        public List<Match> GenerateSwitching(List<Team> _teams, Guid _tournamentID)
+        public List<Match> GenerateSwitching(List<Team> _teams, Tournament _tournament, eMode _mode)
         {
             var _sequence = 1;
             var _player1 = 0;
             var _list = new List<Match>();
+            _teams = _teams.OrderBy(t => t.PaymentDate).ToList();
 
             while (_player1 < _teams.Count)
             {
@@ -117,8 +126,8 @@ namespace Application.Services
                     Player1ID = _teams.ElementAt(_player1).Id,
                     Player2ID = _teams.ElementAt(_player2).Id,
                     Sequence = _sequence,
-                    Type = Domain.Enums.eType.Tournament,
-                    TournamentID = _tournamentID
+                    TournamentID = _tournament.Id,
+                    Round = _mode == eMode.Solo ? _tournament.RoundSolo : _tournament.RoundTeam
                 };
 
                 _list.Add(_match);

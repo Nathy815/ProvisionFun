@@ -106,7 +106,7 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
 
                 await _sqlContext.TeamPlayers.AddAsync(_teamPlayer, cancellationToken);
 
-                if (request.Mode == Domain.Enums.eMode.Team)
+                if (request.Mode == PS.Game.Domain.Enums.eMode.Team)
                 {
                     foreach (var _component in request.Team)
                     {
@@ -149,7 +149,7 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
                     }
                 }
 
-                _team.SubscryptionSent = await _email.SendEmail(_player.Email, Domain.Enums.eStatus.Validation);
+                _team.SubscryptionSent = await _email.SendEmail(_player.Email, PS.Game.Domain.Enums.eStatus.Validation);
 
                 await _sqlContext.SaveChangesAsync(cancellationToken);
 

@@ -1,5 +1,5 @@
 ﻿using Domain.Entities;
-using Domain.Enums;
+using PS.Game.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +29,8 @@ namespace Domain.ViewModels
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Plataform { get; set; }
-        public eMode Mode { get; set; }
+        public bool SoloAvailable { get; set; }
+        public bool TeamAvailable { get; set; }
         public eTournamentStatus Status { get; set; }
 
         public TemplateTournamentVM(Tournament tournament)
@@ -37,17 +38,17 @@ namespace Domain.ViewModels
             Id = tournament.Id;
             Name = tournament.Name;
             Plataform = tournament.Plataform;
-            Mode = tournament.Mode;
 
             var _soloCount = tournament.Teams.Where(t => t.Active && t.Mode == eMode.Solo).ToList().Count;
             var _teamCount = tournament.Teams.Where(t => t.Active && t.Mode == eMode.Team).ToList().Count;
 
-            if (tournament.StartSubscryption < DateTime.Now)
+            SoloAvailable = tournament.Mode != eMode.Team && _soloCount == tournament.SubscryptionLimit ? false : true;
+            TeamAvailable = tournament.Mode != eMode.Solo && _teamCount == tournament.SubscryptionLimit ? false : true;
+
+            if (tournament.StartSubscryption > DateTime.Now)
                 Status = eTournamentStatus.Soon;
-            else if (tournament.EndSubscryption > DateTime.Now ||
-                    (Mode == eMode.Solo && tournament.SubscryptionLimit == _soloCount) ||
-                    (Mode == eMode.Team && tournament.SubscryptionLimit == _teamCount) ||
-                    (Mode == eMode.Both && tournament.SubscryptionLimit == _soloCount && tournament.SubscryptionLimit == _teamCount))
+            else if (tournament.EndSubscryption < DateTime.Now ||
+                    (!SoloAvailable && !TeamAvailable))
                 Status = eTournamentStatus.Closed;
             else
                 Status = eTournamentStatus.Open;

@@ -28,10 +28,13 @@ namespace Application.TemplateContext.Queries
         {
             try
             {
+                var zipCode = request.ZipCode.Length == 9 ? request.ZipCode
+                                : request.ZipCode.Substring(0, 5) + "-" + request.ZipCode.Substring(5, 3);
+
                 var _condominium = await _sqlContext.Set<Condominium>()
                                                 .Where(c => c.Active &&
                                                             c.Validated &&
-                                                            c.ZipCode.Equals(request.ZipCode) &&
+                                                            c.ZipCode.Equals(zipCode) &&
                                                             c.Number.Equals(request.Number))
                                                 .FirstOrDefaultAsync();
 
@@ -40,7 +43,9 @@ namespace Application.TemplateContext.Queries
                 if (_condominium == null)
                 {
                     var _client = new HttpClient();
-                    var _response = await _client.GetAsync("https://viacep.com.br/ws/" + request.ZipCode + "/json/");
+                    zipCode = zipCode.Replace("-", "");
+
+                    var _response = await _client.GetAsync("https://viacep.com.br/ws/" + zipCode + "/json/");
 
                     if (_response.StatusCode != System.Net.HttpStatusCode.OK)
                         throw new Exception();
@@ -50,6 +55,8 @@ namespace Application.TemplateContext.Queries
 
                     _result = new GetCondominiumQueryVM(_address, request.Number);
                 }
+                else
+                    _result = new GetCondominiumQueryVM(_condominium);
 
                 return _result;
             }

@@ -53,7 +53,7 @@ namespace Application.TournamentContext.Commands.CreateTournament
                     GameID = request.GameID.Value,
                     Mode = request.Mode,
                     Plataform = request.Plataform,
-                    PlayerLimit = request.Mode == Domain.Enums.eMode.Solo ? 1 : request.PlayerLimit,
+                    PlayerLimit = request.Mode == PS.Game.Domain.Enums.eMode.Solo ? 1 : request.PlayerLimit,
                     SubscryptionLimit = request.SubscryptionLimit > 0 ? request.SubscryptionLimit : 0
                 };
 

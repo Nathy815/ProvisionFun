@@ -36,7 +36,8 @@ namespace Application.SubscryptionConfigurationContext.Commands.Payment
                 var _player = _team.Players.Where(p => p.IsPrincipal).Select(p => p.Player).FirstOrDefault();
 
                 _team.PaymentDate = DateTime.Now;
-                _team.PaymentSent = await _email.SendEmail(_player.Email, Domain.Enums.eStatus.Finished);
+                _team.FinishedSent = await _email.SendEmail(_player.Email, PS.Game.Domain.Enums.eStatus.Finished);
+                _team.Status = PS.Game.Domain.Enums.eStatus.Finished;
 
                 _sqlContext.Teams.Update(_team);
 

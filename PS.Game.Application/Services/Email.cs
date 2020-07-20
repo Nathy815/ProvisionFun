@@ -1,5 +1,5 @@
 ﻿using Application.Services.Interfaces;
-using Domain.Enums;
+using PS.Game.Domain.Enums;
 using Domain.ViewModels;
 using iText.Html2pdf;
 using iText.Kernel.Pdf;

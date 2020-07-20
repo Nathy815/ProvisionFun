@@ -14,6 +14,7 @@ namespace Domain.ViewModels
         public string Number { get; set; }
         public string City { get; set; }
         public string State { get; set; }
+        public bool Validated { get; set; }
 
         public GetCondominiumQueryVM() { }
 
@@ -26,6 +27,7 @@ namespace Domain.ViewModels
             Number = condominium.Number;
             City = condominium.City;
             State = condominium.State;
+            Validated = condominium.Validated;
         }
 
         public GetCondominiumQueryVM(AddressVM address, string number)
@@ -35,6 +37,7 @@ namespace Domain.ViewModels
             City = address.localidade.Trim();
             State = address.uf.Trim();
             Number = number;
+            Validated = false;
         }
     }
 }

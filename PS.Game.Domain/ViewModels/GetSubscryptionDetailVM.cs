@@ -10,7 +10,7 @@ namespace Domain.ViewModels
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Tournament { get; set; }
-        public Enums.eStatus Status { get; set; }
+        public PS.Game.Domain.Enums.eStatus Status { get; set; }
         public GetCondominiumQueryVM Condominium { get; set; }
         public List<GetSubscryptionPlayerVM> Players { get; set; }
 

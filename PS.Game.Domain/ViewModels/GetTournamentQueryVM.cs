@@ -1,5 +1,5 @@
 ﻿using Domain.Entities;
-using Domain.Enums;
+using PS.Game.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,6 +14,7 @@ namespace Domain.ViewModels
         public DateTime EndSubscryption { get; set; }
         public int SubscryptionLimit { get; set; }
         public int PlayerLimit { get; set; }
+        public string Plataform { get; set; }
         public eMode Mode { get; set; }
         public Guid GameID { get; set; }
         public string Game { get; set; }
@@ -22,6 +23,7 @@ namespace Domain.ViewModels
         {
             Id = tournament.Id;
             Name = tournament.Name;
+            Plataform = tournament.Plataform;
             StartSubscryption = tournament.StartSubscryption;
             EndSubscryption = tournament.EndSubscryption;
             SubscryptionLimit = tournament.SubscryptionLimit;

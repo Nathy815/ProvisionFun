@@ -53,7 +53,7 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
 
             RuleFor(c => c.Mode)
                 .IsInEnum()
-                .NotEqual(Domain.Enums.eMode.Both)
+                .NotEqual(PS.Game.Domain.Enums.eMode.Both)
                     .WithMessage("Por favor, selecione um modo de jogo.");
 
             RuleFor(c => c.Player)
@@ -71,7 +71,7 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
             RuleFor(c => c.Team)
                 .Must((model, el) => el != null &&
                                      el.Count > 0)
-                    .When(c => c.Mode == Domain.Enums.eMode.Team)
+                    .When(c => c.Mode == PS.Game.Domain.Enums.eMode.Team)
                     .WithMessage("Por favor, informe ao menos mais um integrante da equipe.")
                 .Must((model, el) => el != null && 
                                      el.Count > 0 && 
@@ -79,7 +79,7 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
                                           .Where(t => t.Id == model.TournamentId)
                                           .FirstOrDefault()
                                           .PlayerLimit > el.Count)
-                    .When(c => c.Mode == Domain.Enums.eMode.Team)
+                    .When(c => c.Mode == PS.Game.Domain.Enums.eMode.Team)
                     .WithMessage("Número de integrantes ultrapassou o limite do campeonato.")
                 .ForEach(item =>
                 {
@@ -90,13 +90,13 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
                                 string.IsNullOrEmpty(el.Name) || el.Document == null)
                                 validator.AddFailure("Preencha todos os campos obrigatórios");
                         })
-                        .Must((model, el) => IsPlayerInTournament(el, Domain.Enums.eMode.Team).Result == null)
+                        .Must((model, el) => IsPlayerInTournament(el, PS.Game.Domain.Enums.eMode.Team).Result == null)
                             .WithMessage("Jogador já está inscrito no torneio.");
                 });
         }
 
         private Guid? tournamentID { get; set; }
-        private async Task<bool> IsTournamentAvailable(Domain.Enums.eMode mode, Guid id)
+        private async Task<bool> IsTournamentAvailable(PS.Game.Domain.Enums.eMode mode, Guid id)
         {
             var _tournament = await _sqlContext.Set<Tournament>()
                                           .Include(t => t.Teams)
@@ -108,27 +108,27 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
             if (_tournament.StartSubscryption > DateTime.Now || _tournament.EndSubscryption < DateTime.Now)
                 _avaliable = false;
 
-            if (_tournament.Mode == Domain.Enums.eMode.Solo && mode == Domain.Enums.eMode.Team ||
-                _tournament.Mode == Domain.Enums.eMode.Team && mode == Domain.Enums.eMode.Solo)
+            if (_tournament.Mode == PS.Game.Domain.Enums.eMode.Solo && mode == PS.Game.Domain.Enums.eMode.Team ||
+                _tournament.Mode == PS.Game.Domain.Enums.eMode.Team && mode == PS.Game.Domain.Enums.eMode.Solo)
                 _avaliable = false;
 
-            if (_avaliable && mode == Domain.Enums.eMode.Solo)
+            if (_avaliable && mode == PS.Game.Domain.Enums.eMode.Solo)
             {
-                var _soloSub = _tournament.Teams.Where(s => s.Active && s.Mode == Domain.Enums.eMode.Solo).ToList().Count;
+                var _soloSub = _tournament.Teams.Where(s => s.Active && s.Mode == PS.Game.Domain.Enums.eMode.Solo).ToList().Count;
                 if (_tournament.SubscryptionLimit > 0 && _soloSub == _tournament.SubscryptionLimit)
                     _avaliable = false;
             }
 
-            if (_avaliable && mode == Domain.Enums.eMode.Team)
+            if (_avaliable && mode == PS.Game.Domain.Enums.eMode.Team)
             {
-                var _teamSub = _tournament.Teams.Where(s => s.Active && s.Mode == Domain.Enums.eMode.Team).ToList().Count;
+                var _teamSub = _tournament.Teams.Where(s => s.Active && s.Mode == PS.Game.Domain.Enums.eMode.Team).ToList().Count;
                 if (_tournament.SubscryptionLimit > 0 && _teamSub == _tournament.SubscryptionLimit)
                     _avaliable = false;
             }
 
             return _avaliable;
         }
-        private async Task<Tournament> IsPlayerInTournament(TemplatePlayerVM player, Domain.Enums.eMode mode, Guid? id = null)
+        private async Task<Tournament> IsPlayerInTournament(TemplatePlayerVM player, PS.Game.Domain.Enums.eMode mode, Guid? id = null)
         {
             if (id.HasValue) tournamentID = id.Value;
 

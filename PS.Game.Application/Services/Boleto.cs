@@ -32,7 +32,7 @@ namespace Application.Services
             {
                 CPFCNPJ = "30.850.441/0001-43",
                 Nome = "C R L Ferreira e Cia Ltda EPP",
-                Codigo = "4592875",
+                Codigo = "3279359",
                 CodigoDV = "",
                 Endereco = new Endereco
                 {
@@ -109,7 +109,11 @@ namespace Application.Services
             try
             {
                 var player = team.Players.Where(p => p.IsPrincipal).Select(t => t.Player).FirstOrDefault();
-                var nossoNumero = await _sqlContext.Set<Setup>().Where(s => s.Key.Equals("NossoNumero")).FirstOrDefaultAsync();
+
+                var _parameter = await _sqlContext.Set<Setup>()
+                                            .Where(s => s.Key.Equals("NossoNumero"))
+                                            .FirstOrDefaultAsync();
+                var _novoNossoNumero = Convert.ToInt32(_parameter.Value) + 1;
 
                 _banco = Banco.Instancia(Bancos.Santander);
                 _banco.Beneficiario = GerarBeneficiario();
@@ -119,8 +123,8 @@ namespace Application.Services
                 {
                     DataVencimento = DateTime.Now.AddDays(3),
                     ValorTitulo = (decimal)team.Price,
-                    NossoNumero = (Convert.ToInt32(nossoNumero.Value) + 1).ToString(),
-                    NumeroDocumento = "BB834A",
+                    NossoNumero = _novoNossoNumero.ToString(),
+                    NumeroDocumento = "BB" + _novoNossoNumero.ToString("D6") + (char)(65),
                     EspecieDocumento = TipoEspecieDocumento.DM,
                     Pagador = new Pagador
                     {
@@ -168,9 +172,9 @@ namespace Application.Services
 
                 await _sqlContext.Payments.AddAsync(_payment);
 
-                nossoNumero.Value = _boleto.NossoNumero;
-
-                _sqlContext.Setups.Update(nossoNumero);
+                // Atualiza o último Nosso Número utilizado
+                _parameter.Value = _novoNossoNumero.ToString();
+                _sqlContext.Setups.Update(_parameter);
 
                 await _sqlContext.SaveChangesAsync();
 
@@ -187,43 +191,49 @@ namespace Application.Services
             try
             {
                 var _boletos = new Boletos();
-                _boletos.Banco = _banco;
+                _banco = Banco.Instancia(Bancos.Santander);
+                _banco.Beneficiario = GerarBeneficiario();
+                _banco.FormataBeneficiario();
+                //_boletos.Banco = _banco;
 
                 foreach (var _team in teams)
                 {
                     var _player = _team.Players.Where(p => p.Active && p.IsPrincipal).FirstOrDefault().Player;
                     var _payment = _team.Payments.OrderByDescending(p => p.DueDate).FirstOrDefault();
 
-                    var boleto = new BoletoNetCore.Boleto(_banco);
-                    boleto.Pagador = new Pagador
+                    var _boleto = new BoletoNetCore.Boleto(_banco)
                     {
-                        CPFCNPJ = _player.CPF,
-                        Nome = _player.Name,
-                        Endereco = new Endereco
+                        DataVencimento = _payment.DueDate,
+                        ValorTitulo = (decimal)_payment.Price,
+                        NossoNumero = Convert.ToInt32(_payment.Number).ToString(),
+                        NossoNumeroDV = _payment.NumberVD,
+                        NossoNumeroFormatado = _payment.FormatedNumber,
+                        DataEmissao = _payment.IssueDate,
+                        NumeroDocumento = _payment.DocumentNumber,
+                        EspecieDocumento = TipoEspecieDocumento.DM,
+                        Pagador = new Pagador
                         {
-                            LogradouroEndereco = _team.Condominium.Address,
-                            LogradouroNumero = _team.Condominium.Number,
-                            Cidade = _team.Condominium.City,
-                            UF = _team.Condominium.State,
-                            CEP = _team.Condominium.ZipCode.Replace("-", "")
+                            CPFCNPJ = _player.CPF,
+                            Nome = _player.Name,
+                            Endereco = new Endereco
+                            {
+                                LogradouroEndereco = _team.Condominium.Address,
+                                LogradouroNumero = _team.Condominium.Number,
+                                Cidade = _team.Condominium.City,
+                                UF = _team.Condominium.State,
+                                CEP = _team.Condominium.ZipCode.Replace("-", "")
+                            }
                         }
                     };
-                    boleto.NumeroDocumento = _payment.DocumentNumber;
-                    boleto.NossoNumero = _payment.Number;
-                    boleto.NossoNumeroDV = _payment.NumberVD;
-                    boleto.NossoNumeroFormatado = _payment.FormatedNumber;
-                    boleto.DataEmissao = _payment.IssueDate;
-                    boleto.DataVencimento = _payment.DueDate;
-                    boleto.ValorTitulo = (decimal)(_payment.Price);
-                    boleto.EspecieDocumento = TipoEspecieDocumento.DM;
-                    boleto.MensagemInstrucoesCaixa = ""; // instruções
-                    boleto.ValidarDados();
-                    _boletos.Add(boleto);
+
+                    _boleto.ValidarDados();
+                    _boletos.Add(_boleto);
                 }
 
                 var _parameter = await _sqlContext.Set<Setup>().Where(s => s.Key.Equals("ShippingFile")).FirstOrDefaultAsync();
+                var _remessaCount = Convert.ToInt32(_parameter.Value);
 
-                var _shippingFile = new ArquivoRemessa(_banco, TipoArquivo.CNAB240, Convert.ToInt32(_parameter.Value));
+                var _shippingFile = new ArquivoRemessa(_banco, TipoArquivo.CNAB240, _remessaCount);
                 var _fileName = _util.GetFileName("Remessa");
                 
                 var fullPath = Path.Combine(pathToSave, _fileName);
@@ -233,9 +243,10 @@ namespace Application.Services
                     _shippingFile.GerarArquivoRemessa(_boletos, stream);
                 }
 
-                _parameter.Value = (Convert.ToInt32(_parameter.Value) + 1).ToString();
-
+                _parameter.Value = (_remessaCount + 1).ToString();
                 _sqlContext.Setups.Update(_parameter);
+
+                await _sqlContext.SaveChangesAsync();
 
                 return Path.Combine(virtualPath, _fileName);
             }
@@ -266,18 +277,18 @@ namespace Application.Services
                                             .Include(t => t.Players)
                                                 .ThenInclude(p => p.Player)
                                             .Where(t => t.Active &&
-                                                        t.Status == Domain.Enums.eStatus.Payment &&
+                                                        t.Status == PS.Game.Domain.Enums.eStatus.Payment &&
                                                         t.Payments.Any(p => p.DocumentNumber.Equals(_boleto.NumeroDocumento) &&
                                                                             p.Number.Equals(_boleto.NossoNumero)))
                                             .FirstOrDefaultAsync();
 
                     if (_team != null)
                     {
-                        _team.Status = Domain.Enums.eStatus.Finished;
+                        _team.Status = PS.Game.Domain.Enums.eStatus.Finished;
 
                         var _player = _team.Players.Where(p => p.Active && p.IsPrincipal).FirstOrDefault().Player;
 
-                        _team.FinishedSent = await _email.SendEmail(_player.Email, Domain.Enums.eStatus.Finished);
+                        _team.FinishedSent = await _email.SendEmail(_player.Email, PS.Game.Domain.Enums.eStatus.Finished);
 
                         var _payment = _team.Payments.Where(p => p.DocumentNumber.Equals(_boleto.NumeroDocumento) &&
                                                                  p.Number.Equals(_boleto.NossoNumero)).FirstOrDefault();

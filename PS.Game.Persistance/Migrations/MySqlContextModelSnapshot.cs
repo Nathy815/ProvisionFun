@@ -98,11 +98,11 @@ namespace PS.Game.Persistance.Migrations
 
                     b.Property<Guid?>("PlayerId");
 
+                    b.Property<int>("Round");
+
                     b.Property<int>("Sequence");
 
                     b.Property<Guid>("TournamentID");
-
-                    b.Property<int>("Type");
 
                     b.Property<Guid?>("Winner");
 
@@ -352,11 +352,13 @@ namespace PS.Game.Persistance.Migrations
 
                     b.Property<int>("PlayerLimit");
 
+                    b.Property<int>("RoundSolo");
+
+                    b.Property<int>("RoundTeam");
+
                     b.Property<DateTime>("StartSubscryption");
 
                     b.Property<int>("SubscryptionLimit");
-
-                    b.Property<int>("Type");
 
                     b.HasKey("Id");
 
@@ -399,8 +401,8 @@ namespace PS.Game.Persistance.Migrations
                     b.ToTable("Users");
 
                     b.HasData(
-                        new { Id = new Guid("0f054b3e-aaf0-44ae-a2af-4d1f1fa69b02"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Email = "master@master.com", IsMaster = true, ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Name = "Master", Password = "$2b$10$CyWSzLpMjcCTOk8UHeiR8.ooyxWRYgf0GmwSDecx0I71M4h95QWHa", RoleID = new Guid("66300219-e7f6-4f17-a859-d8cc11315796") },
-                        new { Id = new Guid("d06fc2b3-d60b-4ad2-8794-829daa444506"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Email = "adm@adm.com", IsMaster = false, ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Name = "Administrator", Password = "$2b$10$aYRoeIG4CST.BCseIAJ3PO1oLw1ThAIi9hpMOIoSyKmqQukRRmQbi", RoleID = new Guid("66300219-e7f6-4f17-a859-d8cc11315796") }
+                        new { Id = new Guid("0f054b3e-aaf0-44ae-a2af-4d1f1fa69b02"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Email = "master@master.com", IsMaster = true, ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Name = "Master", Password = "$2b$10$pULpx4mnTZwloXK5uW5JuugokJih/WzBZkABdRO/e/S8n3a1HfYUC", RoleID = new Guid("66300219-e7f6-4f17-a859-d8cc11315796") },
+                        new { Id = new Guid("d06fc2b3-d60b-4ad2-8794-829daa444506"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Email = "adm@adm.com", IsMaster = false, ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Name = "Administrator", Password = "$2b$10$.AM41bg9SFHPqGWCw6398.9BlfKsibsdNUQVqYlkW/6LrDrJIEYn.", RoleID = new Guid("66300219-e7f6-4f17-a859-d8cc11315796") }
                     );
                 });
 

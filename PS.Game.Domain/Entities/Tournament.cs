@@ -1,4 +1,4 @@
-﻿using Domain.Enums;
+﻿using PS.Game.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,7 +14,8 @@ namespace Domain.Entities
         public int PlayerLimit { get; set; }
         public eMode Mode { get; set; }
         public string Plataform { get; set; }
-        public eType Type { get; set; }
+        public eRound RoundSolo { get; set; }
+        public eRound RoundTeam { get; set; }
 
         // Relational
         public Guid GameID { get; set; }
