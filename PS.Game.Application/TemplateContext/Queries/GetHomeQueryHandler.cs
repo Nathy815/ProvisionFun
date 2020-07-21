@@ -30,11 +30,12 @@ namespace Application.TemplateContext.Queries
                                         .ToListAsync();
 
                 var _result = new GetHomeQueryVM();
-                _result.HomeBanner = _setups.Where(s => s.Key.Equals("BannerHome")).FirstOrDefault().Value;
+                _result.HomeBanner = _setups.Where(s => s.Key.Equals("HomeBanner")).FirstOrDefault().Value;
                 _result.HomeTitle = _setups.Where(s => s.Key.Equals("HomeTitle")).FirstOrDefault().Value;
                 _result.ResponsibilityTerm = _setups.Where(s => s.Key.Equals("ResponsibilityTerm")).FirstOrDefault().Value;
                 _result.Regulation = _setups.Where(s => s.Key.Equals("Regulation")).FirstOrDefault().Value;
                 _result.Logo = _setups.Where(s => s.Key.Equals("Logo")).FirstOrDefault().Value;
+                _result.RegistryBanner = _setups.Where(s => s.Key.Equals("RegistryBanner")).FirstOrDefault().Value;
 
                 return _result;
             }

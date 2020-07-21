@@ -53,7 +53,7 @@ namespace API.Controllers
             return await _mediator.Send(new ListAuditorsQuery());
         }
 
-        [HttpGet("search")]
+        [HttpPost("search")]
         public async Task<List<GetMatchQueryVM>> Search([FromBody] SearchMatchQuery request)
         {
             return await _mediator.Send(request);

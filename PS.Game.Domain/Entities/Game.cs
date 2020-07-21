@@ -10,6 +10,6 @@ namespace Domain.Entities
         public string Name { get; set; }
 
         // Collections
-        public virtual ICollection<Tournament> Tournaments { get; set; }
+        //public virtual ICollection<Tournament> Tournaments { get; set; }
     }
 }

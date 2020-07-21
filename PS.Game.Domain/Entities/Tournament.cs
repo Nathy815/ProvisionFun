@@ -16,10 +16,11 @@ namespace Domain.Entities
         public string Plataform { get; set; }
         public eRound RoundSolo { get; set; }
         public eRound RoundTeam { get; set; }
+        public eGame Game { get; set; }
 
         // Relational
-        public Guid GameID { get; set; }
-        public virtual Game Game { get; set; }
+        /*public Guid GameID { get; set; }
+        public virtual Game Game { get; set; }*/
 
         // Collections
         public virtual ICollection<Team> Teams { get; set; }

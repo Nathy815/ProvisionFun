@@ -1,5 +1,5 @@
-﻿using Hangfire;
-using Hangfire.MySql.Core;
+﻿//using Hangfire;
+//using Hangfire.MySql.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +14,7 @@ namespace PS.Game.API.Configurations
 {
     public static class HangfireSetup
     {
-        public static void AddHangfire(this IServiceCollection services, IConfiguration _configuration)
+        /*public static void AddHangfire(this IServiceCollection services, IConfiguration _configuration)
         {
             var _options = new MySqlStorageOptions()
             {
@@ -57,6 +57,6 @@ namespace PS.Game.API.Configurations
             {
                 DashboardTitle = "Provision Fun - Hangfire"
             });
-        }
+        }*/
     }
 }

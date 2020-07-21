@@ -39,12 +39,18 @@ namespace Application.TournamentContext.Commands.UpdateTournament
                     .WithMessage("A data de encerramento deve ser maior que a data atual.");
 
             RuleFor(t => t.Mode)
-                .NotEmpty()
-                    .WithMessage("Por favor, informe o modo de jogo disponível no campeonato.")
+                /*.NotEmpty()
+                    .WithMessage("Por favor, informe o modo de jogo disponível no campeonato.")*/
                 .IsInEnum()
                     .WithMessage("Por favor, informe um modo de jogo válida.");
 
-            RuleFor(t => t.GameID)
+            RuleFor(t => t.Game)
+                /*.NotEmpty()
+                    .WithMessage("Por favor, informe um jogo.")*/
+                .IsInEnum()
+                    .WithMessage("Por favor, informe um jogo válido.");
+
+            /*RuleFor(t => t.GameID)
                 .NotEmpty()
                     .When(t => string.IsNullOrEmpty(t.Game))
                     .WithMessage("Por favor, selecione ou cadastre um jogo.")
@@ -59,7 +65,7 @@ namespace Application.TournamentContext.Commands.UpdateTournament
             RuleFor(t => t.Game)
                 .NotEmpty()
                     .When(t => !t.GameID.HasValue)
-                    .WithMessage("Por favor, selecione ou cadastre um jogo.");
+                    .WithMessage("Por favor, selecione ou cadastre um jogo.");*/
         }
     }
 }

@@ -38,6 +38,8 @@ namespace Application.TournamentContext.Queries
                 
                 var _list = new List<GetMatchQueryVM>();
 
+                if (_matches.Count == 0) throw new Exception();
+
                 foreach (var _match in _matches)
                     _list.Add(new GetMatchQueryVM(_match));
 

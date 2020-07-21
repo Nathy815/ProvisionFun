@@ -24,7 +24,7 @@ namespace Application.TournamentContext.Commands.UpdateTournament
         {
             try
             {
-                if (!request.GameID.HasValue)
+                /*if (!request.GameID.HasValue)
                 {
                     var _game = await _sqlContext.Set<Game>()
                                             .Where(g => g.Name.Equals(request.Game))
@@ -42,7 +42,7 @@ namespace Application.TournamentContext.Commands.UpdateTournament
                     }
 
                     request.GameID = _game.Id;
-                }
+                }*/
 
                 var _tournament = await _sqlContext.Set<Tournament>()
                                             .Where(t => t.Id == request.Id)
@@ -51,11 +51,11 @@ namespace Application.TournamentContext.Commands.UpdateTournament
                 _tournament.Name = request.Name;
                 _tournament.StartSubscryption = request.StartSubscryption;
                 _tournament.EndSubscryption = request.EndSubscryption;
-                _tournament.GameID = request.GameID.Value;
+                _tournament.Game = request.Game;
                 _tournament.Mode = request.Mode;
                 _tournament.Plataform = request.Plataform;
                 _tournament.PlayerLimit = request.Mode == PS.Game.Domain.Enums.eMode.Solo ? 1 : request.PlayerLimit;
-                _tournament.SubscryptionLimit = request.SubscryptionLimit;
+                _tournament.SubscryptionLimit = request.SubscryptionLimit > 0 ? request.SubscryptionLimit : int.MaxValue;
 
                 _sqlContext.Tournaments.Update(_tournament);
 

@@ -24,7 +24,7 @@ namespace Application.TournamentContext.Commands.CreateTournament
         {
             try
             {
-                if (!request.GameID.HasValue)
+                /*if (!request.GameID.HasValue)
                 {
                     var _game = await _sqlContext.Set<Game>()
                                             .Where(g => g.Name.Equals(request.Game))
@@ -42,7 +42,7 @@ namespace Application.TournamentContext.Commands.CreateTournament
                     }
 
                     request.GameID = _game.Id;
-                }
+                }*/
 
                 var _tournament = new Tournament
                 {
@@ -50,11 +50,11 @@ namespace Application.TournamentContext.Commands.CreateTournament
                     StartSubscryption = request.StartSubscryption,
                     EndSubscryption = request.EndSubscryption,
                     Name = request.Name,
-                    GameID = request.GameID.Value,
+                    Game = request.Game,
                     Mode = request.Mode,
                     Plataform = request.Plataform,
                     PlayerLimit = request.Mode == PS.Game.Domain.Enums.eMode.Solo ? 1 : request.PlayerLimit,
-                    SubscryptionLimit = request.SubscryptionLimit > 0 ? request.SubscryptionLimit : 0
+                    SubscryptionLimit = request.SubscryptionLimit > 0 ? request.SubscryptionLimit : int.MaxValue
                 };
 
                 await _sqlContext.Tournaments.AddAsync(_tournament);

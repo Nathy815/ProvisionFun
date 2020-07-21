@@ -32,6 +32,28 @@ namespace Application.TemplateContext.Commands.UpdateSetup
                 var _hometitle = _setups.Where(s => s.Key.Equals("HomeTitle")).FirstOrDefault();
                 _hometitle.Value = request.HomeTitle;
 
+                if (request.HomeBanner != null)
+                {
+                    var _homeBanner = _setups.Where(s => s.Key.Equals("HomeBanner")).FirstOrDefault();
+
+                    var _banner = UploadFile(request.HomeBanner, _homeBanner.Id.ToString(), request.virtualPath);
+                    if (string.IsNullOrEmpty(_banner))
+                        throw new Exception();
+
+                    _homeBanner.Value = _banner;
+                }
+
+                if (request.RegistryBanner != null)
+                {
+                    var _registryBanner = _setups.Where(s => s.Key.Equals("RegistryBanner")).FirstOrDefault();
+
+                    var _banner = UploadFile(request.RegistryBanner, _registryBanner.Id.ToString(), request.virtualPath);
+                    if (string.IsNullOrEmpty(_banner))
+                        throw new Exception();
+
+                    _registryBanner.Value = _banner;
+                }
+
                 var _regulation = _setups.Where(s => s.Key.Equals("Regulation")).FirstOrDefault();
                 _regulation.Value = request.Regulation;
 

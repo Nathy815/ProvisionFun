@@ -34,15 +34,13 @@ namespace PS.Game.Persistance.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("Number")
-                        .IsRequired();
+                    b.Property<string>("Number");
 
                     b.Property<string>("State");
 
                     b.Property<bool>("Validated");
 
-                    b.Property<string>("ZipCode")
-                        .IsRequired();
+                    b.Property<string>("ZipCode");
 
                     b.HasKey("Id");
 
@@ -240,13 +238,14 @@ namespace PS.Game.Persistance.Migrations
                     b.ToTable("Setups");
 
                     b.HasData(
-                        new { Id = new Guid("0707aff8-0901-4f67-bfa4-52a19bbe4237"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Key = "BannerHome", ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Value = "" },
+                        new { Id = new Guid("0707aff8-0901-4f67-bfa4-52a19bbe4237"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Key = "HomeBanner", ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Value = "" },
                         new { Id = new Guid("7e5b0a5b-80e8-43ea-8cb1-0b6d8a302a6d"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Key = "HomeTitle", ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Value = "" },
                         new { Id = new Guid("8e0ef355-af58-46ca-80a3-d76c4b68927c"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Key = "ResponsibilityTerm", ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Value = "" },
                         new { Id = new Guid("c8578be5-ead7-48cc-aac0-cf33a97fca04"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Key = "Regulation", ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Value = "Regras" },
                         new { Id = new Guid("f970ccaa-5a0d-41dd-a302-eab3072f8c09"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Key = "Logo", ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Value = "" },
-                        new { Id = new Guid("8aae9ff9-48ae-4222-a144-0abf5070d798"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Key = "NossoNumero", ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Value = "" },
-                        new { Id = new Guid("e8989e76-346f-457d-ba42-5e669e1eec84"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Key = "ShippingFile", ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Value = "" }
+                        new { Id = new Guid("e067f067-6ff3-48d2-813b-d4373b68bc54"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Key = "RegistryBanner", ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Value = "" },
+                        new { Id = new Guid("8aae9ff9-48ae-4222-a144-0abf5070d798"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Key = "NossoNumero", ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Value = "5504" },
+                        new { Id = new Guid("e8989e76-346f-457d-ba42-5e669e1eec84"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Key = "ShippingFile", ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Value = "1" }
                     );
                 });
 
@@ -340,7 +339,7 @@ namespace PS.Game.Persistance.Migrations
 
                     b.Property<DateTime>("EndSubscryption");
 
-                    b.Property<Guid>("GameID");
+                    b.Property<int>("Game");
 
                     b.Property<int>("Mode");
 
@@ -361,8 +360,6 @@ namespace PS.Game.Persistance.Migrations
                     b.Property<int>("SubscryptionLimit");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GameID");
 
                     b.ToTable("Tournaments");
                 });
@@ -401,8 +398,8 @@ namespace PS.Game.Persistance.Migrations
                     b.ToTable("Users");
 
                     b.HasData(
-                        new { Id = new Guid("0f054b3e-aaf0-44ae-a2af-4d1f1fa69b02"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Email = "master@master.com", IsMaster = true, ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Name = "Master", Password = "$2b$10$pULpx4mnTZwloXK5uW5JuugokJih/WzBZkABdRO/e/S8n3a1HfYUC", RoleID = new Guid("66300219-e7f6-4f17-a859-d8cc11315796") },
-                        new { Id = new Guid("d06fc2b3-d60b-4ad2-8794-829daa444506"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Email = "adm@adm.com", IsMaster = false, ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Name = "Administrator", Password = "$2b$10$.AM41bg9SFHPqGWCw6398.9BlfKsibsdNUQVqYlkW/6LrDrJIEYn.", RoleID = new Guid("66300219-e7f6-4f17-a859-d8cc11315796") }
+                        new { Id = new Guid("0f054b3e-aaf0-44ae-a2af-4d1f1fa69b02"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Email = "master@master.com", IsMaster = true, ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Name = "Master", Password = "$2b$10$wdpKfBmlHOkmtj6t5JNk9OyM43mgJIMFSKqiFXh.8O3tI5eEe/VUG", RoleID = new Guid("66300219-e7f6-4f17-a859-d8cc11315796") },
+                        new { Id = new Guid("d06fc2b3-d60b-4ad2-8794-829daa444506"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Email = "adm@adm.com", IsMaster = false, ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Name = "Administrator", Password = "$2b$10$kjIV5DUbdy11gRE5pgjsu.je6j53/7l1/4KZ1hH1OLUybNHD4R5.W", RoleID = new Guid("66300219-e7f6-4f17-a859-d8cc11315796") }
                     );
                 });
 
@@ -463,14 +460,6 @@ namespace PS.Game.Persistance.Migrations
                     b.HasOne("Domain.Entities.Team", "Team")
                         .WithMany("Players")
                         .HasForeignKey("TeamID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Domain.Entities.Tournament", b =>
-                {
-                    b.HasOne("Domain.Entities.Game", "Game")
-                        .WithMany("Tournaments")
-                        .HasForeignKey("GameID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

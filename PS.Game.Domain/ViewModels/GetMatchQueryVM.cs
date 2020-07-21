@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using PS.Game.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,7 +11,7 @@ namespace Domain.ViewModels
         public Guid Id { get; set; }
         public DateTime Date { get; set; }
         public string Tournament { get; set; }
-        public string Game { get; set; }
+        public eGame Game { get; set; }
         public GetMatchQueryPlayerVM Player1 { get; set; }
         public GetMatchQueryPlayerVM Player2 { get; set; }
 
@@ -19,7 +20,7 @@ namespace Domain.ViewModels
             Id = match.Id;
             Date = match.Date.Value;
             Tournament = match.Tournament.Name;
-            Game = match.Tournament.Game.Name;
+            Game = match.Tournament.Game;
             Player1 = new GetMatchQueryPlayerVM(match.Player1);
             Player2 = new GetMatchQueryPlayerVM(match.Player2);
         }

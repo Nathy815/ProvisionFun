@@ -16,7 +16,6 @@ namespace Application.TournamentContext.Commands.UpdateTournament
         public int PlayerLimit { get; set; }
         public eMode Mode { get; set; }
         public string Plataform { get; set; }
-        public Guid? GameID { get; set; }
-        public string Game { get; set; }
+        public eGame Game { get; set; }
     }
 }

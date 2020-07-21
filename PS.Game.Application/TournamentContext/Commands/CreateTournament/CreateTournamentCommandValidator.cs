@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using FluentValidation;
 using Persistence.Contexts;
+using PS.Game.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,12 +34,18 @@ namespace Application.TournamentContext.Commands.CreateTournament
                     .WithMessage("A data de encerramento deve ser maior que a de início.");
 
             RuleFor(t => t.Mode)
-                .NotEmpty()
-                    .WithMessage("Por favor, informe o modo de jogo disponível no campeonato.")
+                /*.NotEmpty()
+                    .WithMessage("Por favor, informe o modo de jogo disponível no campeonato.")*/
                 .IsInEnum()
                     .WithMessage("Por favor, informe um modo de jogo válida.");
 
-            RuleFor(t => t.GameID)
+            RuleFor(t => t.Game)
+                /*.NotEmpty()
+                    .WithMessage("Por favor, informe um jogo.")*/
+                .IsInEnum()
+                    .WithMessage("Por favor, informe um jogo válido.");
+
+            /*RuleFor(t => t.GameID)
                 .NotEmpty()
                     .When(t => string.IsNullOrEmpty(t.Game))
                     .WithMessage("Por favor, selecione ou cadastre um jogo.")
@@ -52,7 +59,7 @@ namespace Application.TournamentContext.Commands.CreateTournament
             RuleFor(t => t.Game)
                 .NotEmpty()
                     .When(t => !t.GameID.HasValue)
-                    .WithMessage("Por favor, selecione ou cadastre um jogo.");
+                    .WithMessage("Por favor, selecione ou cadastre um jogo.");*/
         }
     }
 }

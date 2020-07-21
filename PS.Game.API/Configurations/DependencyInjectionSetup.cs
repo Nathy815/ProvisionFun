@@ -99,7 +99,7 @@ namespace API.Configurations
                     .AddTransient<IRequestHandler<GetTournamentQuery, GetTournamentQueryVM>, GetTournamentQueryHandler>()
                     .AddTransient<IRequestHandler<ListAuditorsQuery, List<GetAuditorsQueryVM>>, ListAuditorsQueryHandler>()
                     .AddTransient<IRequestHandler<ListGamesQuery, List<GetGameQueryVM>>, ListGamesQueryHandler>()
-                    .AddTransient<IRequestHandler<ListTournamentsQuery, List<GetTournamentQueryVM>>, ListTournamentQueryHandler>()
+                    .AddTransient<IRequestHandler<ListTournamentsQuery, List<GetTournamentQueryVM>>, ListTournamentsQueryHandler>()
                     .AddTransient<IRequestHandler<SearchMatchQuery, List<GetMatchQueryVM>>, SearchMatchQueryHandler>();
 
             services.AddTransient<IValidator<CreateTournamentCommand>, CreateTournamentCommandValidator>()

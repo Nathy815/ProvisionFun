@@ -12,11 +12,11 @@ using System.Threading.Tasks;
 
 namespace Application.TournamentContext.Queries
 {
-    public class ListTournamentQueryHandler : IRequestHandler<ListTournamentsQuery, List<GetTournamentQueryVM>>
+    public class ListTournamentsQueryHandler : IRequestHandler<ListTournamentsQuery, List<GetTournamentQueryVM>>
     {
         private readonly MySqlContext _sqlContext;
 
-        public ListTournamentQueryHandler(MySqlContext sqlContext)
+        public ListTournamentsQueryHandler(MySqlContext sqlContext)
         {
             _sqlContext = sqlContext;
         }

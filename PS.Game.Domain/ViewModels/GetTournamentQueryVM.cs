@@ -16,8 +16,7 @@ namespace Domain.ViewModels
         public int PlayerLimit { get; set; }
         public string Plataform { get; set; }
         public eMode Mode { get; set; }
-        public Guid GameID { get; set; }
-        public string Game { get; set; }
+        public eGame Game { get; set; }
 
         public GetTournamentQueryVM(Tournament tournament)
         {
@@ -29,8 +28,7 @@ namespace Domain.ViewModels
             SubscryptionLimit = tournament.SubscryptionLimit;
             PlayerLimit = tournament.PlayerLimit;
             Mode = tournament.Mode;
-            GameID = tournament.Game.Id;
-            Game = tournament.Game.Name;
+            Game = tournament.Game;
         }
     }
 }

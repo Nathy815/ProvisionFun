@@ -3,6 +3,7 @@ using Domain.ViewModels;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Contexts;
+using PS.Game.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace Application.TemplateContext.Queries
         {
             try
             {
-                var _games = await _sqlContext.Set<Game>()
+                /*var _games = await _sqlContext.Set<Game>()
                                         .Include(g => g.Tournaments)
                                             .ThenInclude(t => t.Teams)
                                         .Where(g => g.Active)
@@ -34,7 +35,18 @@ namespace Application.TemplateContext.Queries
                 var _list = new List<TemplateGameVM>();
                 foreach (var _game in _games)
                     if (_game.Tournaments.Count > 0)
-                        _list.Add(new TemplateGameVM(_game));
+                        _list.Add(new TemplateGameVM(_game));*/
+
+                var _tournaments = await _sqlContext.Set<Tournament>()
+                                             .Include(t => t.Teams)
+                                             .Where(t => t.Active)
+                                             .ToListAsync();
+
+                var _list = new List<TemplateGameVM>();
+                var _games = Enum.GetValues(typeof(eGame));
+
+                foreach (var _game in _games)
+                    _list.Add(new TemplateGameVM((eGame)_game, _tournaments.Where(t => t.Game == (eGame)_game).ToList()));
 
                 return _list;
             }

@@ -28,7 +28,7 @@ namespace Persistence.Configurations
                     Active = true,
                     CreatedDate = Convert.ToDateTime("04/07/2020 13:55:00"),
                     ModifiedDate = Convert.ToDateTime("04/07/2020 13:55:00"),
-                    Key = "BannerHome",
+                    Key = "HomeBanner",
                     Value = ""
                 },
                 new Setup
@@ -69,12 +69,21 @@ namespace Persistence.Configurations
                 },
                 new Setup
                 {
+                    Id = new Guid("e067f067-6ff3-48d2-813b-d4373b68bc54"),
+                    Active = true,
+                    CreatedDate = Convert.ToDateTime("04/07/2020 13:55:00"),
+                    ModifiedDate = Convert.ToDateTime("04/07/2020 13:55:00"),
+                    Key = "RegistryBanner",
+                    Value = ""
+                },
+                new Setup
+                {
                     Id = new Guid("8aae9ff9-48ae-4222-a144-0abf5070d798"),
                     Active = true,
                     CreatedDate = Convert.ToDateTime("04/07/2020 13:55:00"),
                     ModifiedDate = Convert.ToDateTime("04/07/2020 13:55:00"),
                     Key = "NossoNumero",
-                    Value = ""
+                    Value = "5504"
                 },
                 new Setup
                 {
@@ -83,7 +92,7 @@ namespace Persistence.Configurations
                     CreatedDate = Convert.ToDateTime("04/07/2020 13:55:00"),
                     ModifiedDate = Convert.ToDateTime("04/07/2020 13:55:00"),
                     Key = "ShippingFile",
-                    Value = ""
+                    Value = "1"
                 }
             );
         }

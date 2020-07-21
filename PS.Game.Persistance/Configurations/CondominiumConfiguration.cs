@@ -14,11 +14,9 @@ namespace Persistence.Configurations
             builder.Property(b => b.Validated);
                 //.HasDefaultValue(false);
 
-            builder.Property(b => b.ZipCode)
-                .IsRequired();
+            builder.Property(b => b.ZipCode);
 
-            builder.Property(b => b.Number)
-                .IsRequired();
+            builder.Property(b => b.Number);
 
             builder.HasIndex(b => b.ZipCode);
 
