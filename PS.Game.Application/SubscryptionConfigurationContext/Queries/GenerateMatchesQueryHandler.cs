@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using Application.Services;
+using MediatR;
+using Persistence.Contexts;
 using PS.Game.Application.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,20 +12,24 @@ namespace PS.Game.Application.SubscryptionConfigurationContext.Queries
 {
     public class GenerateMatchesQueryHandler : IRequestHandler<GenerateMatchesQuery, bool>
     {
-        private readonly IHangfire _hangfire;
+        private readonly MySqlContext _sqlContext;
+        private readonly IUtil _util;
 
-        public GenerateMatchesQueryHandler(IHangfire hangfire)
+        public GenerateMatchesQueryHandler(MySqlContext sqlContext, IUtil util)
         {
-            _hangfire = hangfire;
+            _sqlContext = sqlContext;
+            _util = util;
         }
 
         public async Task<bool> Handle(GenerateMatchesQuery request, CancellationToken cancellationToken)
         {
             try
             {
-                var _result = await _hangfire.GerarPartidas();
+                /*var _job = new BackgroundService();
 
-                return _result;
+                var _result = await _job.GerarPartidas(new CancellationToken());*/
+
+                return true;
             }
             catch(Exception ex)
             {

@@ -9,6 +9,5 @@ namespace Application.PaymentContext.Commands.Confirm
     public class ConfirmPaymentCommand : IRequest<bool>
     {
         public IFormFile file { get; set; }
-        public string virtualPath { get; set; }
     }
 }

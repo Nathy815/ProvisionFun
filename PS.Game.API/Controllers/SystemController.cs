@@ -12,6 +12,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PS.Game.Domain.ViewModels;
 
 namespace API.Controllers
 {
@@ -36,7 +37,7 @@ namespace API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<string> Login([FromBody] LoginCommand request)
+        public async Task<LoginVM> Login([FromBody] LoginCommand request)
         {
             return await _mediator.Send(request);
         }

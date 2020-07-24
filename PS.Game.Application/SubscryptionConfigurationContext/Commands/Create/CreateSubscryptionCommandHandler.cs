@@ -18,7 +18,7 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
         private readonly MySqlContext _sqlContext;
         private readonly IEmail _email;
 
-        public CreateSubscryptionCommandHandler(MySqlContext sqlContext, IEmail email)
+        public CreateSubscryptionCommandHandler(MySqlContext sqlContext, IEmail email) : base(email)
         {
             _sqlContext = sqlContext;
             _email = email;
@@ -84,14 +84,14 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
                         CPF = request.Player.CPF,
                         Email = request.Player.Email,
                         Name = request.Player.Name,
-                        Document = UploadFile(request.Player.Document, _id.ToString(), request.virtualPath)
+                        Document = UploadFile(request.Player.Document, _id.ToString())
                     };
 
                     await _sqlContext.Players.AddAsync(_player, cancellationToken);
                 }
                 else
                 {
-                    _player.Document = UploadFile(request.Player.Document, _player.Id.ToString(), request.virtualPath);
+                    _player.Document = UploadFile(request.Player.Document, _player.Id.ToString());
 
                     _sqlContext.Players.Update(_player);
                 }
@@ -125,14 +125,14 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
                                 CPF = _component.CPF,
                                 BirthDate = _component.BirthDate,
                                 Email = _component.Email,
-                                Document = UploadFile(_component.Document, _id.ToString(), request.virtualPath),
+                                Document = UploadFile(_component.Document, _id.ToString()),
                             };
 
                             await _sqlContext.Players.AddAsync(_dbPlayer, cancellationToken);
                         }
                         else
                         {
-                            _dbPlayer.Document = UploadFile(_component.Document, _dbPlayer.Id.ToString(), request.virtualPath);
+                            _dbPlayer.Document = UploadFile(_component.Document, _dbPlayer.Id.ToString());
 
                             _sqlContext.Players.Update(_dbPlayer);
                         }
@@ -155,8 +155,16 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
 
                 return true;
             }
-            catch(Exception)
+            catch(Exception ex)
             {
+                var _message = ex.Message;
+                if (ex.InnerException != null)
+                    _message += " | Inner Exception: " + ex.InnerException;
+                if (ex.StackTrace != null)
+                    _message += " | Trace: " + ex.StackTrace;
+
+                await _email.SendLog("CreateSubscryptionCommandHandler", _message);
+
                 return false;
             }
         }

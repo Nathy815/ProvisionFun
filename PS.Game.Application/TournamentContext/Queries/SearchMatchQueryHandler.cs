@@ -27,7 +27,6 @@ namespace Application.TournamentContext.Queries
             {
                 var _matches = await _sqlContext.Set<Match>()
                                         .Include(m => m.Tournament)
-                                            .ThenInclude(t => t.Game)
                                         .Include(m => m.Player1)
                                             .ThenInclude(m => m.Players)
                                                 .ThenInclude(m => m.Player)

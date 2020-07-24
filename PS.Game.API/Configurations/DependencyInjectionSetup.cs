@@ -22,11 +22,11 @@ using Application.SubscryptionConfigurationContext.Commands.Create;
 using Application.SubscryptionConfigurationContext.Queries;
 using Application.SubscryptionConfigurationContext.Commands.Validate;
 using Application.SubscryptionConfigurationContext.Commands.Payment;
-using Application.PaymentContext.Queries;
 using Application.TournamentContext.Commands.Validate;
 using PS.Game.Application.Services.Interfaces;
 using PS.Game.Application.SubscryptionConfigurationContext.Commands.Cancel;
 using PS.Game.Application.SubscryptionConfigurationContext.Queries;
+using PS.Game.Domain.ViewModels;
 
 namespace API.Configurations
 {
@@ -36,8 +36,7 @@ namespace API.Configurations
         {
             #region PaymentCotext
 
-            services.AddTransient<IRequestHandler<Application.PaymentContext.Commands.Confirm.ConfirmPaymentCommand, bool>, Application.PaymentContext.Commands.Confirm.ConfirmPaymentCommandHandler>()
-                    .AddTransient<IRequestHandler<GetShippingFileQuery, string>, GetShippingFileQueryHandler>();
+            services.AddTransient<IRequestHandler<Application.PaymentContext.Commands.Confirm.ConfirmPaymentCommand, bool>, Application.PaymentContext.Commands.Confirm.ConfirmPaymentCommandHandler>();
 
             #endregion
 
@@ -63,7 +62,7 @@ namespace API.Configurations
 
             services.AddTransient<IRequestHandler<CreateUserCommand, bool>, CreateUserCommandHandler>()
                     .AddTransient<IRequestHandler<DeleteUserCommand, bool>, DeleteUserCommandHandler>()
-                    .AddTransient<IRequestHandler<LoginCommand, string>, LoginCommandHandler>()
+                    .AddTransient<IRequestHandler<LoginCommand, LoginVM>, LoginCommandHandler>()
                     .AddTransient<IRequestHandler<UpdateUserCommand, bool>, UpdateUserCommandHandler>();
 
             services.AddTransient<IRequestHandler<ListRolesQuery, List<GetRolesQueryVM>>, ListRolesQueryHandler>()
@@ -112,8 +111,7 @@ namespace API.Configurations
 
             services.AddTransient<IEmail, Email>()
                     .AddTransient<IBoleto, Boleto>()
-                    .AddTransient<IUtil, Util>()
-                    .AddTransient<IHangfire, Application.Services.Hangfire>();
+                    .AddTransient<IUtil, Util>();
 
             #endregion
         }

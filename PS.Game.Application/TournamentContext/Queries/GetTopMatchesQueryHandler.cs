@@ -27,12 +27,11 @@ namespace Application.TournamentContext.Queries
             {
                 var _matches = await _sqlContext.Set<Match>()
                                             .Include(m => m.Tournament)
-                                                .ThenInclude(t => t.Game)
                                             .Include(m => m.Player1)
                                             .Include(m => m.Player2)
                                             .Where(m => m.Active &&
                                                         m.Date > DateTime.Now)
-                                            .OrderBy(m => Guid.NewGuid())
+                                            .OrderBy(m => m.Date)
                                             .Take(3)
                                             .ToListAsync();
                 

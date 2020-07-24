@@ -39,7 +39,7 @@ namespace PS.Game.Application.SubscryptionConfigurationContext.Queries
                                                     t.Status == Domain.Enums.eStatus.Payment))
                                         .ToListAsync();
                 
-                var _file = await _boleto.GenerateShipping(_teams, request.virtualPath);
+                var _file = await _boleto.GenerateShipping(_teams);
 
                 return _file;
             }

@@ -19,3 +19,5 @@ C:\Users\nathy\Desktop\ProvisionService\ProvisionService\PS.Game.API\obj\Release
 C:\Users\nathy\Desktop\ProvisionService\ProvisionService\PS.Game.API\obj\Release\netcoreapp2.1\PS.Game.API.csproj.CopyComplete
 C:\Users\nathy\Desktop\ProvisionService\ProvisionService\PS.Game.API\obj\Release\netcoreapp2.1\PS.Game.API.dll
 C:\Users\nathy\Desktop\ProvisionService\ProvisionService\PS.Game.API\obj\Release\netcoreapp2.1\PS.Game.API.pdb
+C:\Users\nathy\Desktop\ProvisionService\ProvisionService\PS.Game.API\bin\Release\netcoreapp2.1\BoletoNetCore.dll
+C:\Users\nathy\Desktop\ProvisionService\ProvisionService\PS.Game.API\bin\Release\netcoreapp2.1\BoletoNetCore.pdb

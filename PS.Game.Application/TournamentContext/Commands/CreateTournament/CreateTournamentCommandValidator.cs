@@ -24,7 +24,7 @@ namespace Application.TournamentContext.Commands.CreateTournament
             RuleFor(t => t.StartSubscryption)
                 .NotEmpty()
                     .WithMessage("Por favor, informe a data de início de inscrições do campeonato.")
-                .GreaterThanOrEqualTo(DateTime.Now)
+                .GreaterThanOrEqualTo(DateTime.Now.Date)
                     .WithMessage("Por favor, informe uma data atual.");
 
             RuleFor(t => t.EndSubscryption)

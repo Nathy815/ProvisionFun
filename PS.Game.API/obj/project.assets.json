@@ -11,15 +11,6 @@
           "lib/netstandard2.0/BCrypt.Net-Core.dll": {}
         }
       },
-      "BoletoNetCore/3.0.1.39": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard2.0/BoletoNetCore.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/BoletoNetCore.dll": {}
-        }
-      },
       "Common.Logging/3.4.1": {
         "type": "package",
         "dependencies": {
@@ -4968,10 +4959,10 @@
         "framework": ".NETCoreApp,Version=v2.1",
         "dependencies": {
           "BCrypt.Net-Core": "1.6.0",
-          "BoletoNetCore": "3.0.1.39",
           "FluentValidation": "9.0.0",
           "MediatR": "8.0.2",
           "Microsoft.AspNetCore.Http": "2.1.0",
+          "Microsoft.Extensions.Hosting": "2.1.0",
           "Microsoft.IdentityModel.Tokens": "6.7.1",
           "Newtonsoft.Json": "12.0.3",
           "PS.Game.Domain": "1.0.0",
@@ -5040,18 +5031,6 @@
         "lib/netstandard1.3/BCrypt.Net-Core.pdb",
         "lib/netstandard2.0/BCrypt.Net-Core.dll",
         "lib/netstandard2.0/BCrypt.Net-Core.pdb"
-      ]
-    },
-    "BoletoNetCore/3.0.1.39": {
-      "sha512": "izQvUQQNWPK3O2WKqHfntnJ13UqjexmYnGOxOTLYlXdzlfOjz1gAxxNPA7NCYcl/qyQZhURiSnvqmHJvtGhrVg==",
-      "type": "package",
-      "path": "boletonetcore/3.0.1.39",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "boletonetcore.3.0.1.39.nupkg.sha512",
-        "boletonetcore.nuspec",
-        "lib/netstandard2.0/BoletoNetCore.dll"
       ]
     },
     "Common.Logging/3.4.1": {

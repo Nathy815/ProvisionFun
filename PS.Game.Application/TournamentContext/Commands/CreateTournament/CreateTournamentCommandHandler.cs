@@ -47,8 +47,8 @@ namespace Application.TournamentContext.Commands.CreateTournament
                 var _tournament = new Tournament
                 {
                     Id = Guid.NewGuid(),
-                    StartSubscryption = request.StartSubscryption,
-                    EndSubscryption = request.EndSubscryption,
+                    StartSubscryption = request.StartSubscryption.Date,
+                    EndSubscryption = request.EndSubscryption.Date,
                     Name = request.Name,
                     Game = request.Game,
                     Mode = request.Mode,

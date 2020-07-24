@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Services.Interfaces;
+using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using PS.Game.Application.Services.Interfaces;
 using PS.Game.Domain.Enums;
@@ -13,10 +14,13 @@ namespace Application.Services
     public class Util : IUtil
     {
         private static string pathToSave { get; set; }
+        private readonly string virtualPath = "http://provisionfun.com.br/cgi-bin/resources/";
+        private readonly IEmail _email;
 
-        public Util()
+        public Util(IEmail email)
         {
             pathToSave = Path.Combine(Directory.GetCurrentDirectory(), "Resources/");
+            _email = email;
         }
         
         public string HashPassword(string password)
@@ -29,7 +33,7 @@ namespace Application.Services
             return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
         }
 
-        public string UploadFile(IFormFile file, string name, string virtualPath)
+        public string UploadFile(IFormFile file, string name)
         {
             try
             {
@@ -52,8 +56,16 @@ namespace Application.Services
 
                 return virtualPath + filename;
             }
-            catch(Exception)
+            catch(Exception ex)
             {
+                var _message = ex.Message;
+                if (ex.InnerException != null)
+                    _message += " | Inner Exception: " + ex.InnerException;
+                if (ex.StackTrace != null)
+                    _message += " | Trace: " + ex.StackTrace;
+
+                _email.SendLog("UploadFile", _message);
+
                 return null;
             }
         }

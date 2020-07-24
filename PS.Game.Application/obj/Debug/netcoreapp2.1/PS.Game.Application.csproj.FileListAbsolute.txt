@@ -12,3 +12,5 @@ C:\Users\nathy\Desktop\ProvisionService\ProvisionService\PS.Game.Application\obj
 C:\Users\nathy\Desktop\ProvisionService\ProvisionService\PS.Game.Application\bin\Debug\netcoreapp2.1\PS.Game.Application.pdb
 C:\Users\nathy\Desktop\ProvisionService\ProvisionService\PS.Game.Application\obj\Debug\netcoreapp2.1\PS.Game.Application.dll
 C:\Users\nathy\Desktop\ProvisionService\ProvisionService\PS.Game.Application\obj\Debug\netcoreapp2.1\PS.Game.Application.pdb
+C:\Users\nathy\Desktop\ProvisionService\ProvisionService\PS.Game.Application\bin\Debug\netcoreapp2.1\BoletoNetCore.dll
+C:\Users\nathy\Desktop\ProvisionService\ProvisionService\PS.Game.Application\bin\Debug\netcoreapp2.1\BoletoNetCore.pdb

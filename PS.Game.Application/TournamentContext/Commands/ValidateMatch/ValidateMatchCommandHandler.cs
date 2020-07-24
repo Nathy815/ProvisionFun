@@ -1,4 +1,5 @@
 ﻿using Application.Services;
+using Application.Services.Interfaces;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +17,7 @@ namespace Application.TournamentContext.Commands.Validate
     {
         private readonly MySqlContext _sqlContext;
 
-        public ValidateMatchCommandHandler(MySqlContext sqlContext)
+        public ValidateMatchCommandHandler(MySqlContext sqlContext, IEmail email) : base(email)
         {
             _sqlContext = sqlContext;
         }

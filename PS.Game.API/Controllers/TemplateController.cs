@@ -51,7 +51,6 @@ namespace API.Controllers
         [Authorize(Roles = "Administrador")]
         public async Task<bool> UpdateSetup([FromForm] UpdateSetupCommand request)
         {
-            request.virtualPath = GetVirtualPath();
             return await _mediator.Send(request);
         }
     }

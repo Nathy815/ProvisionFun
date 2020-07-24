@@ -21,7 +21,7 @@ namespace Application.PaymentContext.Commands.Confirm
         {
             try
             {
-                var _result = await _boleto.ImportReturn(request.file, request.virtualPath);
+                var _result = await _boleto.ImportReturn(request.file);
 
                 return _result;
             }

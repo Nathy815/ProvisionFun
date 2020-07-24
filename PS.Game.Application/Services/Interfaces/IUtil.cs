@@ -11,7 +11,7 @@ namespace PS.Game.Application.Services.Interfaces
     {
         string HashPassword(string password);
         bool VerifyPassword(string hasehdPassword, string password);
-        string UploadFile(IFormFile file, string name, string virtualPath);
+        string UploadFile(IFormFile file, string name);
         string GetFileName(string name);
         List<Match> GenerateLeague(List<Team> _teams, Tournament _tournament, eMode _mode);
         List<Match> GenerateSwitching(List<Team> _teams, Tournament _tournament, eMode _mode);

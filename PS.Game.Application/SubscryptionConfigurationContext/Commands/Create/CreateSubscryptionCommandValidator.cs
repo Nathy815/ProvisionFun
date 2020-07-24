@@ -30,15 +30,11 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
                     .WithMessage("Por favor, informe o nickname ou nome da equipe.");
 
             RuleFor(c => c.Icon)
-                .NotEmpty()
-                    .WithMessage("Por favor, escolha um ícone.")
-                .ExclusiveBetween(0, 19)
+                .InclusiveBetween(0, 19)
                     .WithMessage("Por favor, escolha um ícone válido.");
 
             RuleFor(c => c.Color)
-                .NotEmpty()
-                    .WithMessage("Por favor, escolha uma cor.")
-                .ExclusiveBetween(0, 5)
+                .InclusiveBetween(0, 5)
                     .WithMessage("Por favor, escolha uma cor válida.");
 
             RuleFor(c => c.CondominiumID)

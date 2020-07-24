@@ -14,10 +14,11 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Configuration;
 using PS.Game.Application.Services.Interfaces;
+using PS.Game.Domain.ViewModels;
 
 namespace Application.SystemContext.Commands.Login
 {
-    public class LoginCommandHandler : IRequestHandler<LoginCommand, string>
+    public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginVM>
     {
         private readonly MySqlContext _sqlContext;
         private readonly IConfiguration _configuration;
@@ -30,7 +31,7 @@ namespace Application.SystemContext.Commands.Login
             _util = util;
         }
 
-        public async Task<string> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<LoginVM> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -64,7 +65,7 @@ namespace Application.SystemContext.Commands.Login
 
                 var _token = _tokenHandler.CreateToken(_tokenDescriptor);
 
-                return _tokenHandler.WriteToken(_token);
+                return new LoginVM(_tokenHandler.WriteToken(_token));
             }
             catch(Exception)
             {

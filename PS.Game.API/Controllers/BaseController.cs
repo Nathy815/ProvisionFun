@@ -19,15 +19,5 @@ namespace API.Controllers
         }
 
         protected Guid LoggedUserID => new Guid(User.Claims.FirstOrDefault().Value);
-
-        protected string GetVirtualPath()
-        {
-            var prefix = "http://";
-            if (Request.IsHttps)
-                prefix = "https://";
-            var virtualPath = prefix + Request.Host.ToString() + "/resources/";
-
-            return virtualPath;
-        }
     }
 }

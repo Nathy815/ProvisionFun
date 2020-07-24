@@ -42,11 +42,16 @@ namespace API.Controllers
             return await _mediator.Send(request);
         }
 
+        [HttpPatch("payment"), DisableRequestSizeLimit]
+        public async Task<bool> Payment([FromForm] ConfirmPaymentCommand request)
+        {
+            return await _mediator.Send(request);
+        }
+
         [HttpPost("shipping")]
         [Authorize(Roles = "Administrador")]
         public async Task<string> Shipping([FromBody] GetShippingQuery request)
         {
-            request.virtualPath = GetVirtualPath();
             return await _mediator.Send(request);
         }
 

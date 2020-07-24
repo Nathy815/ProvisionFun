@@ -9,5 +9,7 @@ namespace Application.Services.Interfaces
     public interface IEmail
     { 
         Task<bool> SendEmail(string email, eStatus status, string attach = null);
+
+        Task<bool> SendLog(string title, string message);
     }
 }

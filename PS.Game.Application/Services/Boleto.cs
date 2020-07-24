@@ -19,8 +19,8 @@ namespace Application.Services
     public class Boleto : IBoleto
     {
         private static string pathToSave = Path.Combine(Directory.GetCurrentDirectory(), "Resources");
-
-        //private readonly IGeneratePdf _generatePdf;
+        private readonly string virtualPath = "http://provisionfun.com.br/cgi-bin/resources/";
+        
         private readonly MySqlContext _sqlContext;
         private readonly IEmail _email;
         private readonly IUtil _util;
@@ -32,8 +32,8 @@ namespace Application.Services
             {
                 CPFCNPJ = "30.850.441/0001-43",
                 Nome = "C R L Ferreira e Cia Ltda EPP",
-                Codigo = "3279359",
-                CodigoDV = "",
+                Codigo = "4592875",
+                CodigoTransmissao = "159000004592875",
                 Endereco = new Endereco
                 {
                     LogradouroEndereco = "Av. Dr. Eneas Pinheiro",
@@ -52,7 +52,7 @@ namespace Application.Services
                     DigitoConta = "3",
                     CarteiraPadrao = "101",
                     TipoCarteiraPadrao = TipoCarteira.CarteiraCobrancaSimples,
-                    TipoFormaCadastramento = TipoFormaCadastramento.SemRegistro,
+                    TipoFormaCadastramento = TipoFormaCadastramento.ComRegistro,
                     TipoImpressaoBoleto = TipoImpressaoBoleto.Empresa
                 }
             };
@@ -118,7 +118,25 @@ namespace Application.Services
                 _banco = Banco.Instancia(Bancos.Santander);
                 _banco.Beneficiario = GerarBeneficiario();
                 _banco.FormataBeneficiario();
-                
+
+                var _pagador = new Pagador
+                {
+                    CPFCNPJ = player.CPF,
+                    Nome = player.Name
+                };
+
+                if (!string.IsNullOrEmpty(team.Condominium.Address))
+                {
+                    _pagador.Endereco = new Endereco
+                    {
+                        LogradouroEndereco = team.Condominium.Address,
+                        LogradouroNumero = team.Condominium.Number,
+                        Cidade = team.Condominium.City,
+                        UF = team.Condominium.State,
+                        CEP = team.Condominium.ZipCode.Replace("-", "")
+                    };
+                }
+
                 var _boleto = new BoletoNetCore.Boleto(_banco)
                 {
                     DataVencimento = DateTime.Now.AddDays(3),
@@ -126,19 +144,7 @@ namespace Application.Services
                     NossoNumero = _novoNossoNumero.ToString(),
                     NumeroDocumento = "BB" + _novoNossoNumero.ToString("D6") + (char)(65),
                     EspecieDocumento = TipoEspecieDocumento.DM,
-                    Pagador = new Pagador
-                    {
-                        CPFCNPJ = player.CPF,
-                        Nome = player.Name,
-                        Endereco = new Endereco
-                        {
-                            LogradouroEndereco = team.Condominium.Address,
-                            LogradouroNumero = team.Condominium.Number,
-                            Cidade = team.Condominium.City,
-                            UF = team.Condominium.State,
-                            CEP = team.Condominium.ZipCode.Replace("-", "")
-                        }
-                    }
+                    Pagador = _pagador
                 };
 
                 _boleto.ValidarDados();
@@ -186,7 +192,7 @@ namespace Application.Services
             }
         }
 
-        public async Task<string> GenerateShipping(List<Team> teams, string virtualPath)
+        public async Task<string> GenerateShipping(List<Team> teams)
         {
             try
             {
@@ -194,12 +200,29 @@ namespace Application.Services
                 _banco = Banco.Instancia(Bancos.Santander);
                 _banco.Beneficiario = GerarBeneficiario();
                 _banco.FormataBeneficiario();
-                //_boletos.Banco = _banco;
-
+                
                 foreach (var _team in teams)
                 {
                     var _player = _team.Players.Where(p => p.Active && p.IsPrincipal).FirstOrDefault().Player;
                     var _payment = _team.Payments.OrderByDescending(p => p.DueDate).FirstOrDefault();
+
+                    var _pagador = new Pagador
+                    {
+                        CPFCNPJ = _player.CPF,
+                        Nome = _player.Name
+                    };
+
+                    if (!string.IsNullOrEmpty(_team.Condominium.Address))
+                    {
+                        _pagador.Endereco = new Endereco
+                        {
+                            LogradouroEndereco = _team.Condominium.Address,
+                            LogradouroNumero = _team.Condominium.Number,
+                            Cidade = _team.Condominium.City,
+                            UF = _team.Condominium.State,
+                            CEP = _team.Condominium.ZipCode.Replace("-", "")
+                        };
+                    }
 
                     var _boleto = new BoletoNetCore.Boleto(_banco)
                     {
@@ -211,19 +234,7 @@ namespace Application.Services
                         DataEmissao = _payment.IssueDate,
                         NumeroDocumento = _payment.DocumentNumber,
                         EspecieDocumento = TipoEspecieDocumento.DM,
-                        Pagador = new Pagador
-                        {
-                            CPFCNPJ = _player.CPF,
-                            Nome = _player.Name,
-                            Endereco = new Endereco
-                            {
-                                LogradouroEndereco = _team.Condominium.Address,
-                                LogradouroNumero = _team.Condominium.Number,
-                                Cidade = _team.Condominium.City,
-                                UF = _team.Condominium.State,
-                                CEP = _team.Condominium.ZipCode.Replace("-", "")
-                            }
-                        }
+                        Pagador = _pagador
                     };
 
                     _boleto.ValidarDados();
@@ -256,12 +267,12 @@ namespace Application.Services
             }
         }
 
-        public async Task<bool> ImportReturn(IFormFile file, string virtualPath)
+        public async Task<bool> ImportReturn(IFormFile file)
         {
             try
             {
                 var _fileName = _util.GetFileName("Retorno");
-                var _file = _util.UploadFile(file, _fileName, virtualPath);
+                var _file = _util.UploadFile(file, _fileName);
 
                 Boletos boletos = new Boletos();
                 var arquivoRetorno = new ArquivoRetorno(_banco, TipoArquivo.CNAB240);

@@ -1,4 +1,5 @@
 ﻿using Application.Services;
+using Application.Services.Interfaces;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +17,7 @@ namespace Application.TemplateContext.Commands.UpdateSetup
     {
         private readonly MySqlContext _sqlContext;
 
-        public UpdateSetupCommandHandler(MySqlContext sqlContext)
+        public UpdateSetupCommandHandler(MySqlContext sqlContext, IEmail email) : base(email)
         {
             _sqlContext = sqlContext;
         }
@@ -36,7 +37,7 @@ namespace Application.TemplateContext.Commands.UpdateSetup
                 {
                     var _homeBanner = _setups.Where(s => s.Key.Equals("HomeBanner")).FirstOrDefault();
 
-                    var _banner = UploadFile(request.HomeBanner, _homeBanner.Id.ToString(), request.virtualPath);
+                    var _banner = UploadFile(request.HomeBanner, _homeBanner.Id.ToString());
                     if (string.IsNullOrEmpty(_banner))
                         throw new Exception();
 
@@ -47,7 +48,7 @@ namespace Application.TemplateContext.Commands.UpdateSetup
                 {
                     var _registryBanner = _setups.Where(s => s.Key.Equals("RegistryBanner")).FirstOrDefault();
 
-                    var _banner = UploadFile(request.RegistryBanner, _registryBanner.Id.ToString(), request.virtualPath);
+                    var _banner = UploadFile(request.RegistryBanner, _registryBanner.Id.ToString());
                     if (string.IsNullOrEmpty(_banner))
                         throw new Exception();
 
@@ -61,7 +62,7 @@ namespace Application.TemplateContext.Commands.UpdateSetup
                 {
                     var _term = _setups.Where(s => s.Key.Equals("ResponsibilityTerm")).FirstOrDefault();
 
-                    var _newTerm = UploadFile(request.ResponsabilityTerm, _term.Id.ToString(), request.virtualPath);
+                    var _newTerm = UploadFile(request.ResponsabilityTerm, _term.Id.ToString());
                     if (string.IsNullOrEmpty(_newTerm))
                         throw new Exception();
 

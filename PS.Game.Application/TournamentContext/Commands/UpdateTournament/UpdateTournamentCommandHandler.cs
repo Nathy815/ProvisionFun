@@ -49,8 +49,8 @@ namespace Application.TournamentContext.Commands.UpdateTournament
                                             .FirstOrDefaultAsync();
 
                 _tournament.Name = request.Name;
-                _tournament.StartSubscryption = request.StartSubscryption;
-                _tournament.EndSubscryption = request.EndSubscryption;
+                _tournament.StartSubscryption = request.StartSubscryption.Date;
+                _tournament.EndSubscryption = request.EndSubscryption.Date;
                 _tournament.Game = request.Game;
                 _tournament.Mode = request.Mode;
                 _tournament.Plataform = request.Plataform;

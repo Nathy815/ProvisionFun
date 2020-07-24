@@ -44,6 +44,11 @@ namespace Application.Services
             return "<p>Sua inscrição foi cancelada.</p>";
         }
 
+        public async Task<bool> SendLog(string title, string message)
+        {
+            return await Send(new EmailVM("nathalialcoimbra@gmail.com", title, message));
+        }
+
         public async Task<bool> SendEmail(string email, eStatus status, string attach = null)
         {
             if (status == eStatus.Validation)

@@ -13,6 +13,5 @@ namespace Application.TemplateContext.Commands.UpdateSetup
         public string HomeTitle { get; set; }
         public string Regulation { get; set; }
         public IFormFile ResponsabilityTerm { get; set; }
-        public string virtualPath { get; set; }
     }
 }

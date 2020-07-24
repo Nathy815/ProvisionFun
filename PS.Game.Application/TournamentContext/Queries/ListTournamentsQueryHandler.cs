@@ -26,7 +26,6 @@ namespace Application.TournamentContext.Queries
             try
             {
                 var _tournaments = await _sqlContext.Set<Tournament>()
-                                                .Include(t => t.Game)
                                                 .Where(t => t.Active)
                                                 .ToListAsync();
 

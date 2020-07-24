@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.1",
-    "signature": "3021ec415d4eb153c432bfc9c8236c7cd6c7eec5"
+    "signature": "1822b55d3ea9578ad486ddc9a24740ce4ff0b683"
   },
   "compilationOptions": {
     "defines": [
@@ -55,17 +55,6 @@
         },
         "compile": {
           "lib/netstandard2.0/BCrypt.Net-Core.dll": {}
-        }
-      },
-      "BoletoNetCore/3.0.1.39": {
-        "runtime": {
-          "lib/netstandard2.0/BoletoNetCore.dll": {
-            "assemblyVersion": "3.0.1.0",
-            "fileVersion": "3.0.1.0"
-          }
-        },
-        "compile": {
-          "lib/netstandard2.0/BoletoNetCore.dll": {}
         }
       },
       "Common.Logging/3.4.1": {
@@ -646,17 +635,18 @@
       "PS.Game.Application/1.0.0": {
         "dependencies": {
           "BCrypt.Net-Core": "1.6.0",
-          "BoletoNetCore": "3.0.1.39",
           "FluentValidation": "9.0.0",
           "MediatR": "8.0.2",
           "Microsoft.AspNetCore.Http": "2.1.0",
+          "Microsoft.Extensions.Hosting": "2.1.0",
           "Microsoft.IdentityModel.Tokens": "6.7.1",
           "Newtonsoft.Json": "12.0.3",
           "PS.Game.Domain": "1.0.0",
           "PS.Game.Persistance": "1.0.0",
           "System.Drawing.Common": "4.5.1",
           "System.IdentityModel.Tokens.Jwt": "6.7.1",
-          "itext7.pdfhtml": "2.1.0"
+          "itext7.pdfhtml": "2.1.0",
+          "BoletoNetCore": "3.0.1.0"
         },
         "runtime": {
           "PS.Game.Application.dll": {}
@@ -688,6 +678,14 @@
         },
         "compile": {
           "PS.Game.Persistance.dll": {}
+        }
+      },
+      "BoletoNetCore.Reference/3.0.1.0": {
+        "runtime": {
+          "BoletoNetCore.dll": {
+            "assemblyVersion": "3.0.1.0",
+            "fileVersion": "3.0.1.0"
+          }
         }
       },
       "Microsoft.AspNet.WebApi.Client/5.2.4": {
@@ -3679,13 +3677,6 @@
       "path": "bcrypt.net-core/1.6.0",
       "hashPath": "bcrypt.net-core.1.6.0.nupkg.sha512"
     },
-    "BoletoNetCore/3.0.1.39": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-izQvUQQNWPK3O2WKqHfntnJ13UqjexmYnGOxOTLYlXdzlfOjz1gAxxNPA7NCYcl/qyQZhURiSnvqmHJvtGhrVg==",
-      "path": "boletonetcore/3.0.1.39",
-      "hashPath": "boletonetcore.3.0.1.39.nupkg.sha512"
-    },
     "Common.Logging/3.4.1": {
       "type": "package",
       "serviceable": true,
@@ -3950,6 +3941,11 @@
     },
     "PS.Game.Persistance/1.0.0": {
       "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "BoletoNetCore.Reference/3.0.1.0": {
+      "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
