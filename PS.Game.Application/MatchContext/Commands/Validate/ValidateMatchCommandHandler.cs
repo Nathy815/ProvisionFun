@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.TournamentContext.Commands.Validate
+namespace Application.MatchContext.Commands.Validate
 {
     public class ValidateMatchCommandHandler : Util, IRequestHandler<ValidateMatchCommand, bool>
     {

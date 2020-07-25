@@ -31,9 +31,9 @@ namespace API.Controllers
 
         [HttpPatch("confirm/{id}")]
         [Authorize(Roles = "Administrador")]
-        public async Task<bool> Confirm([FromRoute] Guid id)
+        public async Task<bool> Confirm([FromForm] ConfirmPaymentCommand request)
         {
-            return await _mediator.Send(new ConfirmPaymentCommand(id));
+            return await _mediator.Send(request);
         }
 
         [HttpPost("create"), DisableRequestSizeLimit]

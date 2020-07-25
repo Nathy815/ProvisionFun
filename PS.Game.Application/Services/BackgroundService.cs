@@ -43,6 +43,92 @@ namespace Application.Services
             throw new NotImplementedException();
         }
 
+        public async Task<bool> GerarPartida(Guid id, MySqlContext _sqlContext, CancellationToken token)
+        {
+            try
+            {
+                var _tournament = await _sqlContext.Set<Tournament>()
+                                              .Include(t => t.Matches)
+                                                .ThenInclude(m => m.Player1)
+                                              .Include(t => t.Teams)
+                                                  .ThenInclude(t => t.Condominium)
+                                              .Where(t => t.Id == id)
+                                              .FirstOrDefaultAsync();
+
+                var _modes = _tournament.Mode == eMode.Both ? 2 : 1;
+
+                while (_modes > 0)
+                {
+                    var _mode = _tournament.Mode == eMode.Solo || _modes == 2 ? eMode.Solo : eMode.Team;
+                    var _round = _mode == eMode.Solo ? _tournament.RoundSolo : _tournament.RoundTeam;
+                    var _matches = new List<Match>();
+
+                    if (_round == eRound.NotStarted)
+                        _matches = await GenerateRound1(_tournament, _mode);
+                    else
+                    {
+                        var _countMatches = _tournament.Matches.Where(m => m.Active &&
+                                                                           m.Round == _round &&
+                                                                           m.Player1.Mode == _mode)
+                                                               .ToList().Count;
+
+                        var _finishedMatches = _tournament.Matches.Where(m => m.Active &&
+                                                                              m.Round == _round &&
+                                                                              m.Player1.Mode == _mode &&
+                                                                              m.Winner.HasValue)
+                                                                  .ToList().Count;
+
+                        if (_countMatches == 0 || _countMatches == _finishedMatches)
+                        {
+                            switch (_round)
+                            {
+                                case eRound.Fase1:
+                                    var _teams = _tournament.Teams.Where(t => t.Active && t.Mode == _mode && t.Status == eStatus.Finished).OrderBy(t => t.PaymentDate).ToList();
+                                    var _condominiums = _teams.Select(t => t.Condominium).Distinct().ToList();
+
+                                    if (_teams.Count != _condominiums.Count)
+                                        _matches = await GenerateRound1(_tournament, _mode);
+                                    else
+                                        _matches = await GenerateRound2(_tournament, _mode);
+
+                                    break;
+                                case eRound.Fase2:
+                                    _matches = await GenerateRound2(_tournament, _mode);
+
+                                    break;
+                                case eRound.Fase3:
+                                    _matches = await GenerateRound3(_tournament, _mode);
+
+                                    break;
+                                case eRound.Fase4:
+                                    if (!_tournament.Teams.Any(t => t.Active && t.Mode == _mode && t.Status == eStatus.Winner))
+                                        _matches = await GenerateRound4(_tournament, _mode);
+
+                                    break;
+                            }
+                        }
+                    }
+
+                    await _sqlContext.Matches.AddRangeAsync(_matches, token);
+
+                    _modes -= 1;
+                }
+
+                if (TournamentEnded(_tournament))
+                    _tournament.Active = false;
+
+                _sqlContext.Tournaments.Update(_tournament);
+
+                await _sqlContext.SaveChangesAsync(token);
+
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+        }
+
         public async Task<bool> GerarPartidas(MySqlContext _sqlContext, CancellationToken token)
         {
             try

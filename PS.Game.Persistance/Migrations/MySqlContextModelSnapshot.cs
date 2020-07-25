@@ -30,6 +30,8 @@ namespace PS.Game.Persistance.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
+                    b.Property<string>("District");
+
                     b.Property<DateTime>("ModifiedDate");
 
                     b.Property<string>("Name");
@@ -398,8 +400,8 @@ namespace PS.Game.Persistance.Migrations
                     b.ToTable("Users");
 
                     b.HasData(
-                        new { Id = new Guid("0f054b3e-aaf0-44ae-a2af-4d1f1fa69b02"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Email = "master@master.com", IsMaster = true, ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Name = "Master", Password = "$2b$10$wdpKfBmlHOkmtj6t5JNk9OyM43mgJIMFSKqiFXh.8O3tI5eEe/VUG", RoleID = new Guid("66300219-e7f6-4f17-a859-d8cc11315796") },
-                        new { Id = new Guid("d06fc2b3-d60b-4ad2-8794-829daa444506"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Email = "adm@adm.com", IsMaster = false, ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Name = "Administrator", Password = "$2b$10$kjIV5DUbdy11gRE5pgjsu.je6j53/7l1/4KZ1hH1OLUybNHD4R5.W", RoleID = new Guid("66300219-e7f6-4f17-a859-d8cc11315796") }
+                        new { Id = new Guid("0f054b3e-aaf0-44ae-a2af-4d1f1fa69b02"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Email = "master@master.com", IsMaster = true, ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Name = "Master", Password = "$2b$10$CIkLiATX3FidNMnFgj8nt.ZmnXaZe9Jlh1vEQPJ7eXZmfDsZ4KZU2", RoleID = new Guid("66300219-e7f6-4f17-a859-d8cc11315796") },
+                        new { Id = new Guid("d06fc2b3-d60b-4ad2-8794-829daa444506"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Email = "adm@adm.com", IsMaster = false, ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Name = "Administrator", Password = "$2b$10$ppPWAXTO5OSr/1YDhiuDDOrJTEie79ZkJStJyfomQSRETs3nG6dBC", RoleID = new Guid("66300219-e7f6-4f17-a859-d8cc11315796") }
                     );
                 });
 

@@ -1,11 +1,7 @@
 ﻿using Application.Services.Interfaces;
-using Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Persistence.Contexts;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,38 +10,22 @@ namespace Application.SubscryptionConfigurationContext.Commands.Payment
 {
     public class ConfirmPaymentCommandHandler : IRequestHandler<ConfirmPaymentCommand, bool>
     {
-        private readonly MySqlContext _sqlContext;
-        private readonly IEmail _email;
-
-        public ConfirmPaymentCommandHandler(MySqlContext sqlContext, IEmail email)
+        private readonly IBoleto _boleto;
+        
+        public ConfirmPaymentCommandHandler(IBoleto boleto)
         {
-            _sqlContext = sqlContext;
-            _email = email;
+            _boleto = boleto;
         }
 
         public async Task<bool> Handle(ConfirmPaymentCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                var _team = await _sqlContext.Set<Team>()
-                                        .Include(t => t.Players)
-                                            .ThenInclude(p => p.Player)
-                                        .Where(t => t.Id == request.Id)
-                                        .FirstOrDefaultAsync();
+                var _result = await _boleto.ImportReturn(request.file);
 
-                var _player = _team.Players.Where(p => p.IsPrincipal).Select(p => p.Player).FirstOrDefault();
-
-                _team.PaymentDate = DateTime.Now;
-                _team.FinishedSent = await _email.SendEmail(_player.Email, PS.Game.Domain.Enums.eStatus.Finished);
-                _team.Status = PS.Game.Domain.Enums.eStatus.Finished;
-
-                _sqlContext.Teams.Update(_team);
-
-                await _sqlContext.SaveChangesAsync(cancellationToken);
-
-                return true;
+                return _result;
             }
-            catch(Exception)
+            catch(Exception ex)
             {
                 return false;
             }

@@ -35,8 +35,7 @@ namespace PS.Game.Application.SubscryptionConfigurationContext.Queries
                                         .Include(t => t.Condominium)
                                         .Include(t => t.Players)
                                             .ThenInclude(p => p.Player)
-                                        .Where(t => request.teams.Any(id => id == t.Id &&
-                                                    t.Status == Domain.Enums.eStatus.Payment))
+                                        .Where(t => request.teams.Any(id => id == t.Id))
                                         .ToListAsync();
                 
                 var _file = await _boleto.GenerateShipping(_teams);

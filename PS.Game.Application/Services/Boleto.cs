@@ -220,7 +220,8 @@ namespace Application.Services
                             LogradouroNumero = _team.Condominium.Number,
                             Cidade = _team.Condominium.City,
                             UF = _team.Condominium.State,
-                            CEP = _team.Condominium.ZipCode.Replace("-", "")
+                            CEP = _team.Condominium.ZipCode,
+                            Bairro = "Vila Santa Catarina"
                         };
                     }
 

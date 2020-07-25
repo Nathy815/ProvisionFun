@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.TournamentContext.Queries
+namespace Application.MatchContext.Queries
 {
     public class GetTopMatchesQueryHandler : IRequestHandler<GetTopMatchesQuery, List<GetMatchQueryVM>>
     {

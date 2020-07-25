@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Application.TournamentContext.Commands.Validate
+namespace Application.MatchContext.Commands.Validate
 {
     public class ValidateMatchCommandValidator : AbstractValidator<ValidateMatchCommand>
     {

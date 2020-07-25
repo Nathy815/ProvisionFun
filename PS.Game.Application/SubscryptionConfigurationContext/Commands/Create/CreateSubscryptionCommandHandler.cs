@@ -44,6 +44,7 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
                         Address = request.Condominium.Address,
                         City = request.Condominium.City,
                         Number = request.Condominium.Number,
+                        District = request.Condominium.District,
                         State = request.Condominium.State,
                         ZipCode = request.Condominium.ZipCode
                     };

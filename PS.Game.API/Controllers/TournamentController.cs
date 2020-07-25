@@ -1,6 +1,6 @@
 ﻿using Application.TournamentContext.Commands.CreateTournament;
 using Application.TournamentContext.Commands.UpdateTournament;
-using Application.TournamentContext.Commands.Validate;
+using Application.MatchContext.Commands.Validate;
 using Application.TournamentContext.Queries;
 using Domain.ViewModels;
 using MediatR;
@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.MatchContext.Queries;
 
 namespace API.Controllers
 {
@@ -33,12 +34,6 @@ namespace API.Controllers
             return await _mediator.Send(new GetTournamentQuery(tournamentID));
         }
 
-        [HttpGet("top")]
-        public async Task<List<GetMatchQueryVM>> TopTournaments()
-        {
-            return await _mediator.Send(new GetTopMatchesQuery());
-        }
-
         [HttpGet]
         [Authorize(Roles = "Administrador")]
         public async Task<List<GetTournamentQueryVM>> ListTournaments()
@@ -51,12 +46,6 @@ namespace API.Controllers
         public async Task<List<GetAuditorsQueryVM>> Auditors()
         {
             return await _mediator.Send(new ListAuditorsQuery());
-        }
-
-        [HttpPost("search")]
-        public async Task<List<GetMatchQueryVM>> Search([FromBody] SearchMatchQuery request)
-        {
-            return await _mediator.Send(request);
         }
 
         [HttpPatch("update")]

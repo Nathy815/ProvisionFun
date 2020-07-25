@@ -23,11 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="PaymentContext\Commands\" />
-    <Folder Include="PaymentContext\Queries\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="BoletoNetCore">
       <HintPath>..\..\..\BoletoNetCore-master\BoletoNetCore\bin\Debug\netstandard2.0\BoletoNetCore.dll</HintPath>
     </Reference>

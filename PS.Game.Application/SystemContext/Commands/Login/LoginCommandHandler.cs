@@ -65,7 +65,7 @@ namespace Application.SystemContext.Commands.Login
 
                 var _token = _tokenHandler.CreateToken(_tokenDescriptor);
 
-                return new LoginVM(_tokenHandler.WriteToken(_token));
+                return new LoginVM(_user.Id, _tokenHandler.WriteToken(_token));
             }
             catch(Exception)
             {

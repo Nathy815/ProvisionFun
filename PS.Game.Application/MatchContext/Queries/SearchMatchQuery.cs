@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Application.TournamentContext.Queries
+namespace Application.MatchContext.Queries
 {
     public class SearchMatchQuery : IRequest<List<GetMatchQueryVM>>
     {

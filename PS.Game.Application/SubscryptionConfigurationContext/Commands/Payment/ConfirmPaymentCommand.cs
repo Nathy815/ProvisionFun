@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,11 +8,6 @@ namespace Application.SubscryptionConfigurationContext.Commands.Payment
 {
     public class ConfirmPaymentCommand : IRequest<bool>
     {
-        public Guid Id { get; set; }
-
-        public ConfirmPaymentCommand(Guid id)
-        {
-            Id = id;
-        }
+        public IFormFile file { get; set; }
     }
 }

@@ -57,8 +57,19 @@ namespace Application.SubscryptionConfigurationContext.Commands.Validate
 
                 if (!_team.Condominium.Validated)
                 {
-                    _team.Condominium.Name = request.Condominium;
                     _team.Condominium.Validated = true;
+
+                    if (string.IsNullOrEmpty(_team.Condominium.Name))
+                        _team.Condominium.Name = request.Condominium;
+                    else
+                    {
+                        _team.Condominium.ZipCode = request.ZipCode;
+                        _team.Condominium.Address = request.Address;
+                        _team.Condominium.Number = request.Number;
+                        _team.Condominium.District = request.District;
+                        _team.Condominium.City = request.City;
+                        _team.Condominium.State = request.State;
+                    }
 
                     var _dbTeams = await _sqlContext.Set<Team>()
                                             .Include(t => t.Condominium)
@@ -94,7 +105,7 @@ namespace Application.SubscryptionConfigurationContext.Commands.Validate
 
                 return true;
             }
-            catch(Exception)
+            catch(Exception ex)
             {
                 return false;
             }

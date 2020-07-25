@@ -31,7 +31,8 @@ namespace Application.SystemContext.Commands.UpdateUser
                                         .FirstOrDefaultAsync();
 
                 _user.Name = request.Name;
-                _user.Password = HashPassword(request.Password);
+                if (!string.IsNullOrEmpty(request.Password))
+                    _user.Password = HashPassword(request.Password);
                 _user.RoleID = request.RoleID;
 
                 _sqlContext.Users.Update(_user);

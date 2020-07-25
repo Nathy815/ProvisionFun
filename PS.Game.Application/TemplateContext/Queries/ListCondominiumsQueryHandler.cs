@@ -26,7 +26,7 @@ namespace Application.TemplateContext.Queries
             try
             {
                 var _condominiums = await _sqlContext.Set<Condominium>()
-                                                .Where(c => c.Active && c.Validated)
+                                                .Where(c => c.Active && !string.IsNullOrEmpty(c.Name))
                                                 .ToListAsync();
 
                 var _list = new List<GetCondominiumQueryVM>();

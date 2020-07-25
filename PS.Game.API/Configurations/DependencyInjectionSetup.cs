@@ -22,11 +22,14 @@ using Application.SubscryptionConfigurationContext.Commands.Create;
 using Application.SubscryptionConfigurationContext.Queries;
 using Application.SubscryptionConfigurationContext.Commands.Validate;
 using Application.SubscryptionConfigurationContext.Commands.Payment;
-using Application.TournamentContext.Commands.Validate;
 using PS.Game.Application.Services.Interfaces;
 using PS.Game.Application.SubscryptionConfigurationContext.Commands.Cancel;
 using PS.Game.Application.SubscryptionConfigurationContext.Queries;
 using PS.Game.Domain.ViewModels;
+using Application.MatchContext.Commands.Update;
+using Application.MatchContext.Commands.Validate;
+using PS.Game.Application.MatchContext.Queries;
+using Application.MatchContext.Queries;
 
 namespace API.Configurations
 {
@@ -34,9 +37,16 @@ namespace API.Configurations
     {
         public static void AddDependencyInjection(this IServiceCollection services)
         {
-            #region PaymentCotext
+            #region Match
 
-            services.AddTransient<IRequestHandler<Application.PaymentContext.Commands.Confirm.ConfirmPaymentCommand, bool>, Application.PaymentContext.Commands.Confirm.ConfirmPaymentCommandHandler>();
+            services.AddTransient<IRequestHandler<UpdateMatchCommand, bool>, UpdateMatchCommandHandler>()
+                    .AddTransient<IRequestHandler<ValidateMatchCommand, bool>, ValidateMatchCommandHandler>();
+
+            services.AddTransient<IRequestHandler<GetMatchQuery, MatchVM>, GetMatchQueryHandler>()
+                    .AddTransient<IRequestHandler<ListMatchesQuery, MatchesVM>, ListMatchesQueryHandler>()
+                    .AddTransient<IRequestHandler<SearchMatchQuery, List<GetMatchQueryVM>>, SearchMatchQueryHandler>();
+
+            services.AddTransient<IValidator<ValidateMatchCommand>, ValidateMatchCommandValidator>();
 
             #endregion
 
@@ -48,7 +58,6 @@ namespace API.Configurations
                     .AddTransient<IRequestHandler<CancelSubscryptionCommand, bool>, CancelSubscryptionCommandHandler>();
 
             services.AddTransient<IRequestHandler<ListSubscryptionsQuery, List<GetSubscryptionVM>>, ListSubscryptionsQueryHandler>()
-                    .AddTransient<IRequestHandler<GenerateMatchesQuery, bool>, GenerateMatchesQueryHandler>()
                     .AddTransient<IRequestHandler<GetSubscryptionQuery, GetSubscryptionDetailVM>, GetSubscryptionQueryHandler>()
                     .AddTransient<IRequestHandler<GetShippingQuery, string>, GetShippingQueryHandler>();
 
@@ -90,20 +99,17 @@ namespace API.Configurations
             #region Tournament
 
             services.AddTransient<IRequestHandler<CreateTournamentCommand, bool>, CreateTournamentCommandHandler>()
-                    .AddTransient<IRequestHandler<UpdateTournamentCommand, bool>, UpdateTournamentCommandHandler>()
-                    .AddTransient<IRequestHandler<ValidateMatchCommand, bool>, ValidateMatchCommandHandler>();
+                    .AddTransient<IRequestHandler<UpdateTournamentCommand, bool>, UpdateTournamentCommandHandler>();
 
             services.AddTransient<IRequestHandler<GetGameQuery, GetGameQueryVM>, GetGameQueryHandler>()
                     .AddTransient<IRequestHandler<GetTopMatchesQuery, List<GetMatchQueryVM>>, GetTopMatchesQueryHandler>()
                     .AddTransient<IRequestHandler<GetTournamentQuery, GetTournamentQueryVM>, GetTournamentQueryHandler>()
                     .AddTransient<IRequestHandler<ListAuditorsQuery, List<GetAuditorsQueryVM>>, ListAuditorsQueryHandler>()
                     .AddTransient<IRequestHandler<ListGamesQuery, List<GetGameQueryVM>>, ListGamesQueryHandler>()
-                    .AddTransient<IRequestHandler<ListTournamentsQuery, List<GetTournamentQueryVM>>, ListTournamentsQueryHandler>()
-                    .AddTransient<IRequestHandler<SearchMatchQuery, List<GetMatchQueryVM>>, SearchMatchQueryHandler>();
+                    .AddTransient<IRequestHandler<ListTournamentsQuery, List<GetTournamentQueryVM>>, ListTournamentsQueryHandler>();
 
             services.AddTransient<IValidator<CreateTournamentCommand>, CreateTournamentCommandValidator>()
-                    .AddTransient<IValidator<UpdateTournamentCommand>, UpdateTournamentCommandValidator>()
-                    .AddTransient<IValidator<ValidateMatchCommand>, ValidateMatchCommandValidator>();
+                    .AddTransient<IValidator<UpdateTournamentCommand>, UpdateTournamentCommandValidator>();
 
             #endregion
 

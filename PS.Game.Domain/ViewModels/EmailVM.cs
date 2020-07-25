@@ -6,13 +6,13 @@ namespace Domain.ViewModels
 {
     public class EmailVM
     {
-        public readonly string EmailFrom = "teste@provisionservice.com.br";
-        public readonly string SMTP = "mail.provisionservice.com.br";
+        public readonly string EmailFrom = "noreply@provisionfun.com.br";
+        public readonly string SMTP = "smtp.provisionfun.com.br";
         public readonly int Port = 587;
         public readonly bool IsBodyHTML = true;
         public readonly bool UseSSL = true;
-        public readonly string User = "teste@provisionservice.com.br";
-        public readonly string Password = "Teste123@";
+        public readonly string User = "noreply@provisionfun.com.br";
+        public readonly string Password = "jTip8wNU";
         public List<string> EmailTo { get; set; }
         public string Subject { get; set; }
         public string Message { get; set; }
