@@ -17,7 +17,7 @@ ao editar este arquivo MSBuild. Para saber mais sobre isso, visite https://go.mi
       <publishTime>07/20/2020 22:43:58</publishTime>
     </File>
     <File Include="BCrypt.Net-Core.dll">
-      <publishTime>12/20/2018 15:32:44</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="BoletoNetCore.dll">
       <publishTime>07/24/2020 13:55:38</publishTime>
@@ -35,13 +35,13 @@ ao editar este arquivo MSBuild. Para saber mais sobre isso, visite https://go.mi
       <publishTime>08/16/2017 06:51:42</publishTime>
     </File>
     <File Include="FluentValidation.AspNetCore.dll">
-      <publishTime>07/06/2020 14:36:36</publishTime>
+      <publishTime>06/07/2020 14:36:36</publishTime>
     </File>
     <File Include="FluentValidation.DependencyInjectionExtensions.dll">
-      <publishTime>07/06/2020 14:36:32</publishTime>
+      <publishTime>06/07/2020 14:36:32</publishTime>
     </File>
     <File Include="FluentValidation.dll">
-      <publishTime>07/06/2020 14:36:32</publishTime>
+      <publishTime>06/07/2020 14:36:32</publishTime>
     </File>
     <File Include="itext.barcodes.dll">
       <publishTime>07/31/2018 09:36:10</publishTime>
@@ -74,67 +74,67 @@ ao editar este arquivo MSBuild. Para saber mais sobre isso, visite https://go.mi
       <publishTime>07/31/2018 09:36:10</publishTime>
     </File>
     <File Include="MediatR.dll">
-      <publishTime>06/30/2020 15:27:48</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="MediatR.Extensions.Microsoft.DependencyInjection.dll">
-      <publishTime>06/30/2020 15:27:20</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Microsoft.Bcl.AsyncInterfaces.dll">
-      <publishTime>09/13/2019 02:27:48</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Microsoft.IdentityModel.JsonWebTokens.dll">
-      <publishTime>06/30/2020 01:04:58</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Microsoft.IdentityModel.Logging.dll">
-      <publishTime>06/30/2020 01:05:58</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Microsoft.IdentityModel.Tokens.dll">
-      <publishTime>06/30/2020 01:09:50</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Microsoft.OpenApi.dll">
-      <publishTime>09/15/2019 16:25:40</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Microsoft.Win32.SystemEvents.dll">
       <publishTime>05/15/2018 13:29:34</publishTime>
     </File>
     <File Include="MySqlConnector.dll">
-      <publishTime>06/16/2018 17:14:06</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Newtonsoft.Json.dll">
-      <publishTime>11/09/2019 00:56:44</publishTime>
+      <publishTime>09/11/2019 00:56:44</publishTime>
     </File>
     <File Include="Pomelo.EntityFrameworkCore.MySql.dll">
-      <publishTime>07/11/2018 23:16:04</publishTime>
+      <publishTime>11/07/2018 23:16:04</publishTime>
     </File>
     <File Include="Pomelo.JsonObject.dll">
-      <publishTime>03/07/2017 20:39:04</publishTime>
+      <publishTime>07/03/2017 20:39:04</publishTime>
     </File>
     <File Include="PS.Game.API.deps.json">
-      <publishTime>07/25/2020 15:57:57</publishTime>
+      <publishTime>07/25/2020 18:29:56</publishTime>
     </File>
     <File Include="PS.Game.API.dll">
-      <publishTime>07/25/2020 15:37:34</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="PS.Game.API.pdb">
-      <publishTime>07/25/2020 15:37:34</publishTime>
+      <publishTime>07/25/2020 18:25:51</publishTime>
     </File>
     <File Include="PS.Game.API.runtimeconfig.json">
-      <publishTime>07/25/2020 15:57:58</publishTime>
+      <publishTime>07/25/2020 18:29:57</publishTime>
     </File>
     <File Include="PS.Game.Application.dll">
-      <publishTime>07/25/2020 15:37:29</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="PS.Game.Application.pdb">
-      <publishTime>07/25/2020 15:37:29</publishTime>
+      <publishTime>07/25/2020 18:25:49</publishTime>
     </File>
     <File Include="PS.Game.Domain.dll">
-      <publishTime>07/25/2020 15:37:24</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="PS.Game.Domain.pdb">
       <publishTime>07/25/2020 15:37:24</publishTime>
     </File>
     <File Include="PS.Game.Persistance.dll">
-      <publishTime>07/25/2020 15:37:26</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="PS.Game.Persistance.pdb">
       <publishTime>07/25/2020 15:37:26</publishTime>
@@ -149,31 +149,31 @@ ao editar este arquivo MSBuild. Para saber mais sobre isso, visite https://go.mi
       <publishTime>09/18/2018 19:38:14</publishTime>
     </File>
     <File Include="Swashbuckle.AspNetCore.Swagger.dll">
-      <publishTime>03/11/2020 13:54:50</publishTime>
+      <publishTime>11/03/2020 13:54:50</publishTime>
     </File>
     <File Include="Swashbuckle.AspNetCore.SwaggerGen.dll">
-      <publishTime>03/11/2020 13:54:52</publishTime>
+      <publishTime>11/03/2020 13:54:52</publishTime>
     </File>
     <File Include="Swashbuckle.AspNetCore.SwaggerUI.dll">
-      <publishTime>06/25/2020 21:14:44</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="System.Drawing.Common.dll">
       <publishTime>09/18/2018 19:38:14</publishTime>
     </File>
     <File Include="System.IdentityModel.Tokens.Jwt.dll">
-      <publishTime>06/30/2020 01:03:46</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="System.Runtime.CompilerServices.Unsafe.dll">
-      <publishTime>09/13/2019 02:40:02</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="System.Text.Encodings.Web.dll">
-      <publishTime>09/13/2019 02:28:36</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="System.Text.Json.dll">
-      <publishTime>09/13/2019 02:28:40</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="web.config">
-      <publishTime>07/25/2020 15:57:58</publishTime>
+      <publishTime>07/25/2020 18:29:57</publishTime>
     </File>
   </ItemGroup>
 </Project>

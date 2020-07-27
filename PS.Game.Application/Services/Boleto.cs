@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-//using Wkhtmltopdf.NetCore;
 using Application.Services.Interfaces;
 using Persistence.Contexts;
 using System.Threading.Tasks;
@@ -221,7 +220,7 @@ namespace Application.Services
                             Cidade = _team.Condominium.City,
                             UF = _team.Condominium.State,
                             CEP = _team.Condominium.ZipCode,
-                            Bairro = "Vila Santa Catarina"
+                            Bairro = _team.Condominium.District
                         };
                     }
 

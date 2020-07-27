@@ -67,18 +67,13 @@ namespace Application.Services
                         _matches = await GenerateRound1(_tournament, _mode);
                     else
                     {
-                        var _countMatches = _tournament.Matches.Where(m => m.Active &&
+                        var _dbMatches = _tournament.Matches.Where(m => m.Active &&
                                                                            m.Round == _round &&
                                                                            m.Player1.Mode == _mode)
-                                                               .ToList().Count;
+                                                               .ToList();
+                        var _finishedMatches = _dbMatches.Where(m => m.Winner.HasValue).ToList().Count;
 
-                        var _finishedMatches = _tournament.Matches.Where(m => m.Active &&
-                                                                              m.Round == _round &&
-                                                                              m.Player1.Mode == _mode &&
-                                                                              m.Winner.HasValue)
-                                                                  .ToList().Count;
-
-                        if (_countMatches == 0 || _countMatches == _finishedMatches)
+                        if (_dbMatches.Count == 0 || _dbMatches.Count == _finishedMatches)
                         {
                             switch (_round)
                             {

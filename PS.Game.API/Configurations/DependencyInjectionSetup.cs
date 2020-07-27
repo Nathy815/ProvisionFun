@@ -27,7 +27,6 @@ using PS.Game.Application.SubscryptionConfigurationContext.Commands.Cancel;
 using PS.Game.Application.SubscryptionConfigurationContext.Queries;
 using PS.Game.Domain.ViewModels;
 using Application.MatchContext.Commands.Update;
-using Application.MatchContext.Commands.Validate;
 using PS.Game.Application.MatchContext.Queries;
 using Application.MatchContext.Queries;
 
@@ -39,14 +38,13 @@ namespace API.Configurations
         {
             #region Match
 
-            services.AddTransient<IRequestHandler<UpdateMatchCommand, bool>, UpdateMatchCommandHandler>()
-                    .AddTransient<IRequestHandler<ValidateMatchCommand, bool>, ValidateMatchCommandHandler>();
+            services.AddTransient<IRequestHandler<UpdateMatchCommand, bool>, UpdateMatchCommandHandler>();
 
             services.AddTransient<IRequestHandler<GetMatchQuery, MatchVM>, GetMatchQueryHandler>()
                     .AddTransient<IRequestHandler<ListMatchesQuery, MatchesVM>, ListMatchesQueryHandler>()
                     .AddTransient<IRequestHandler<SearchMatchQuery, List<GetMatchQueryVM>>, SearchMatchQueryHandler>();
 
-            services.AddTransient<IValidator<ValidateMatchCommand>, ValidateMatchCommandValidator>();
+            services.AddTransient<IValidator<UpdateMatchCommand>, UpdateMatchCommandValidator>();
 
             #endregion
 

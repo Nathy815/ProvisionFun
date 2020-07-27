@@ -40,10 +40,6 @@ namespace Application.MatchContext.Commands.Update
                     _match.Winner = request.Winner.Value;
                     _match.Player1Score = request.ScorePlayer1.HasValue ? request.ScorePlayer1.Value : 0;
                     _match.Player2Score = request.ScorePlayer2.HasValue ? request.ScorePlayer2.Value : 0;
-                    if (_match.Winner.Value == _match.Player1.Id)
-                        _match.Player2.Status = eStatus.Eliminated;
-                    else
-                        _match.Player1.Status = eStatus.Eliminated;
                     _match.Comments = request.Comments;
 
                     var _tournament = await _sqlContext.Set<Tournament>()
