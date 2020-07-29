@@ -1,6 +1,5 @@
 ﻿using Application.TournamentContext.Commands.CreateTournament;
 using Application.TournamentContext.Commands.UpdateTournament;
-using Application.MatchContext.Commands.Validate;
 using Application.TournamentContext.Queries;
 using Domain.ViewModels;
 using MediatR;

@@ -1,6 +1,5 @@
 ﻿using API.Controllers;
 using Application.MatchContext.Commands.Update;
-using Application.MatchContext.Commands.Validate;
 using Application.MatchContext.Queries;
 using Domain.ViewModels;
 using MediatR;

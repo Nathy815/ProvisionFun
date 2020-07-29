@@ -271,17 +271,18 @@ namespace Application.Services
         {
             try
             {
-                var _fileName = _util.GetFileName("Retorno");
-                var _file = _util.UploadFile(file, _fileName);
+                _banco = Banco.Instancia(Bancos.Santander);
+                _banco.Beneficiario = GerarBeneficiario();
+                _banco.FormataBeneficiario();
 
-                Boletos boletos = new Boletos();
                 var arquivoRetorno = new ArquivoRetorno(_banco, TipoArquivo.CNAB240);
-                using (var fileStream = new FileStream(_fileName, FileMode.Open))
+                var result = new StringBuilder();
+                using (var reader = new StreamReader(file.OpenReadStream()))
                 {
-                    boletos = arquivoRetorno.LerArquivoRetorno(fileStream);
+                    arquivoRetorno.LerArquivoRetorno(reader.BaseStream);
                 }
 
-                foreach (var _boleto in boletos)
+                foreach (var _boleto in arquivoRetorno.Boletos)
                 {
                     var _team = await _sqlContext.Set<Team>()
                                             .Include(t => t.Payments)
@@ -289,8 +290,8 @@ namespace Application.Services
                                                 .ThenInclude(p => p.Player)
                                             .Where(t => t.Active &&
                                                         t.Status == PS.Game.Domain.Enums.eStatus.Payment &&
-                                                        t.Payments.Any(p => p.DocumentNumber.Equals(_boleto.NumeroDocumento) &&
-                                                                            p.Number.Equals(_boleto.NossoNumero)))
+                                                        t.Payments.Any(p => p.DocumentNumber.Equals(_boleto.NumeroDocumento.Trim()) &&
+                                                                            p.Number.Equals(_boleto.NossoNumero.Trim())))
                                             .FirstOrDefaultAsync();
 
                     if (_team != null)
@@ -301,7 +302,7 @@ namespace Application.Services
 
                         _team.FinishedSent = await _email.SendEmail(_player.Email, PS.Game.Domain.Enums.eStatus.Finished);
 
-                        var _payment = _team.Payments.Where(p => p.DocumentNumber.Equals(_boleto.NumeroDocumento) &&
+                        var _payment = _team.Payments.Where(p => p.DocumentNumber.Equals(_boleto.NumeroDocumento.Trim()) &&
                                                                  p.Number.Equals(_boleto.NossoNumero)).FirstOrDefault();
 
                         _payment.Validated = true;

@@ -43,76 +43,85 @@ namespace Application.Services
             throw new NotImplementedException();
         }
 
-        public async Task<bool> GerarPartida(Guid id, MySqlContext _sqlContext, CancellationToken token)
+        public async Task<bool> GerarPartida(Tournament _tournament, MySqlContext _sqlContext, eMode _mode, CancellationToken token)
         {
             try
             {
-                var _tournament = await _sqlContext.Set<Tournament>()
-                                              .Include(t => t.Matches)
-                                                .ThenInclude(m => m.Player1)
-                                              .Include(t => t.Teams)
-                                                  .ThenInclude(t => t.Condominium)
-                                              .Where(t => t.Id == id)
-                                              .FirstOrDefaultAsync();
+                var _round = _mode == eMode.Solo ? _tournament.RoundSolo : _tournament.RoundTeam;
+                var _matches = new List<Match>();
 
-                var _modes = _tournament.Mode == eMode.Both ? 2 : 1;
+                var _teams = _tournament.Teams.Where(t => t.Active && t.Mode == _mode && t.Status == eStatus.Finished).ToList();
 
-                while (_modes > 0)
+                if (_round == eRound.Fase4) // Se tiver na Fase 4, gera próximo chaveamento
+                    _matches = GenerateSwitching(_teams, _tournament, _mode);
+                else if (_round == eRound.Fase2) // Na Fase 2, verifica se dá pra pular para Fase 4 antes de gerar Fase 3
                 {
-                    var _mode = _tournament.Mode == eMode.Solo || _modes == 2 ? eMode.Solo : eMode.Team;
-                    var _round = _mode == eMode.Solo ? _tournament.RoundSolo : _tournament.RoundTeam;
-                    var _matches = new List<Match>();
+                    if (_teams.Count == 16)
+                    {
+                        if (_mode == eMode.Solo)
+                            _tournament.RoundSolo = eRound.Fase4;
+                        else
+                            _tournament.RoundTeam = eRound.Fase4;
 
-                    if (_round == eRound.NotStarted)
-                        _matches = await GenerateRound1(_tournament, _mode);
+                        _matches = GenerateSwitching(_teams, _tournament, _mode);
+                    }
                     else
                     {
-                        var _dbMatches = _tournament.Matches.Where(m => m.Active &&
-                                                                           m.Round == _round &&
-                                                                           m.Player1.Mode == _mode)
-                                                               .ToList();
-                        var _finishedMatches = _dbMatches.Where(m => m.Winner.HasValue).ToList().Count;
+                        if (_mode == eMode.Solo)
+                            _tournament.RoundSolo = eRound.Fase3;
+                        else
+                            _tournament.RoundTeam = eRound.Fase3;
 
-                        if (_dbMatches.Count == 0 || _dbMatches.Count == _finishedMatches)
-                        {
-                            switch (_round)
-                            {
-                                case eRound.Fase1:
-                                    var _teams = _tournament.Teams.Where(t => t.Active && t.Mode == _mode && t.Status == eStatus.Finished).OrderBy(t => t.PaymentDate).ToList();
-                                    var _condominiums = _teams.Select(t => t.Condominium).Distinct().ToList();
+                        _matches = GenerateLeague(_teams, _tournament, _mode);
+                    }
+                }
+                else
+                {
+                    // Tanto na Fase 1 quanto na Fase 3, tem que alterar o status dos eliminados
+                    _teams = await EliminateTeams(_teams, _mode, _round);
 
-                                    if (_teams.Count != _condominiums.Count)
-                                        _matches = await GenerateRound1(_tournament, _mode);
-                                    else
-                                        _matches = await GenerateRound2(_tournament, _mode);
+                    _teams = _teams.Where(t => t.Status == eStatus.Finished).ToList();
 
-                                    break;
-                                case eRound.Fase2:
-                                    _matches = await GenerateRound2(_tournament, _mode);
+                    // Se der número ímpar e estiver na Fase 1, pula para a fase 3
+                    if (_teams.Count % 2 != 0 && _round == eRound.Fase1)
+                    {
+                        if (_mode == eMode.Solo)
+                            _tournament.RoundSolo = eRound.Fase3;
+                        else
+                            _tournament.RoundTeam = eRound.Fase3;
 
-                                    break;
-                                case eRound.Fase3:
-                                    _matches = await GenerateRound3(_tournament, _mode);
-
-                                    break;
-                                case eRound.Fase4:
-                                    if (!_tournament.Teams.Any(t => t.Active && t.Mode == _mode && t.Status == eStatus.Winner))
-                                        _matches = await GenerateRound4(_tournament, _mode);
-
-                                    break;
-                            }
-                        }
+                        _round = eRound.Fase3;
                     }
 
-                    await _sqlContext.Matches.AddRangeAsync(_matches, token);
+                    // Se sobrarem 16 competidores, pula para a Fase 4
+                    if (_teams.Count == 16)
+                    {
+                        if (_mode == eMode.Solo)
+                            _tournament.RoundSolo = eRound.Fase4;
+                        else
+                            _tournament.RoundTeam = eRound.Fase4;
 
-                    _modes -= 1;
+                        _matches = GenerateSwitching(_teams, _tournament, _mode);
+                    }
+                    else
+                    {
+                        if (_round == eRound.Fase1)
+                        {
+                            if (_mode == eMode.Solo)
+                                _tournament.RoundSolo = eRound.Fase2;
+                            else
+                                _tournament.RoundTeam = eRound.Fase2;
+
+                            _matches = GenerateSwitching(_teams, _tournament, _mode);
+                        }
+                        else // Só será Fase 3, se atender à segunda condição desse else
+                            _matches = GenerateLeague(_teams, _tournament, _mode);
+                    }
                 }
 
-                if (TournamentEnded(_tournament))
-                    _tournament.Active = false;
-
                 _sqlContext.Tournaments.Update(_tournament);
+
+                await _sqlContext.Matches.AddRangeAsync(_matches, token);
 
                 await _sqlContext.SaveChangesAsync(token);
 
@@ -377,6 +386,49 @@ namespace Application.Services
             catch(Exception ex)
             {
                 return null;
+            }
+        }
+
+        private Task<List<Team>> EliminateTeams(List<Team> _teams, eMode _mode, eRound _round)
+        {
+            try
+            {
+                if (_round == eRound.Fase1) // Eliminar os que tiverem menos vitórias
+                {
+                    // Nas fase 1, eliminar quem tem menos vitórias no condomínio
+                    var _condominiums = _teams.Select(t => t.CondominiumID).Distinct().ToList();
+                    foreach (var _id in _condominiums)
+                    {
+                        var _duplicateTeams = _teams.Where(t => t.CondominiumID == _id)
+                                                    .OrderByDescending(t => (
+                                                            t.MatchesAsPlayer1.Where(m => m.Winner == t.Id).Count() +
+                                                            t.MatchesAsPlayer2.Where(m => m.Winner == t.Id).Count()
+                                                    ))
+                                                    .Skip(1)
+                                                    .ToList();
+
+                        foreach (var _team in _duplicateTeams)
+                            _team.Status = eStatus.Eliminated;
+                    }
+                }
+                else
+                {
+                    var _duplicateTeams = _teams.OrderByDescending(t => (
+                                                        t.MatchesAsPlayer1.Where(m => m.Winner == t.Id).Count() +
+                                                        t.MatchesAsPlayer2.Where(m => m.Winner == t.Id).Count()
+                                                ))
+                                                .Skip(16)
+                                                .ToList();
+
+                    foreach (var _team in _duplicateTeams)
+                        _team.Status = eStatus.Eliminated;
+                }
+
+                return Task.Run(() => { return _teams; });
+            }
+            catch (Exception ex)
+            {
+                return Task.Run(() => { return _teams; });
             }
         }
 

@@ -10,7 +10,7 @@ namespace Domain.ViewModels
         public readonly string SMTP = "smtp.provisionfun.com.br";
         public readonly int Port = 587;
         public readonly bool IsBodyHTML = true;
-        public readonly bool UseSSL = true;
+        public readonly bool UseSSL = false;
         public readonly string User = "noreply@provisionfun.com.br";
         public readonly string Password = "jTip8wNU";
         public List<string> EmailTo { get; set; }
