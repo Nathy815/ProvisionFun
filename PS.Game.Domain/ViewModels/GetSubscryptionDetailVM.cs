@@ -33,6 +33,7 @@ namespace Domain.ViewModels
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public string Cellphone { get; set; }
         public DateTime BirthDate { get; set; }
         public string CPF { get; set; }
         public string Email { get; set; }
@@ -42,6 +43,7 @@ namespace Domain.ViewModels
         {
             Id = player.Id;
             Name = player.Name;
+            Cellphone = player.Cellphone;
             BirthDate = player.BirthDate;
             CPF = player.CPF;
             Email = player.Email;

@@ -14,7 +14,7 @@ namespace Application.Services
     public class Util : IUtil
     {
         private static string pathToSave { get; set; }
-        private readonly string virtualPath = "http://provisionfun.com.br/cgi-bin/resources/";
+        private readonly string virtualPath = "http://provisionfun.com.br/api/resources/";
         private readonly IEmail _email;
 
         public Util(IEmail email)
@@ -40,7 +40,6 @@ namespace Application.Services
                 var fileExtension = string.Empty;
                 if (file.ContentType != null)
                     fileExtension = file.ContentType.Split("/")[1];
-
                 else
                 {
                     string[] split = file.FileName.Split(".");

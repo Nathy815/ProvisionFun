@@ -39,7 +39,7 @@ namespace PS.Game.Application.SubscryptionConfigurationContext.Commands.Cancel
 
                 var _player = _team.Players.Where(p => p.IsPrincipal).FirstOrDefault().Player;
 
-                _team.CancellationSent = await _email.SendEmail(_player.Email, Domain.Enums.eStatus.Cancelled);
+                _team.CancellationSent = await _email.SendEmail(_team, Domain.Enums.eStatus.Cancelled);
 
                 _sqlContext.Teams.Update(_team);
 

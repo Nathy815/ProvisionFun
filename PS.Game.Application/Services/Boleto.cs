@@ -18,7 +18,7 @@ namespace Application.Services
     public class Boleto : IBoleto
     {
         private static string pathToSave = Path.Combine(Directory.GetCurrentDirectory(), "Resources");
-        private readonly string virtualPath = "http://provisionfun.com.br/cgi-bin/resources/";
+        private readonly string virtualPath = "http://provisionfun.com.br/api/resources/";
         
         private readonly MySqlContext _sqlContext;
         private readonly IEmail _email;
@@ -300,7 +300,7 @@ namespace Application.Services
 
                         var _player = _team.Players.Where(p => p.Active && p.IsPrincipal).FirstOrDefault().Player;
 
-                        _team.FinishedSent = await _email.SendEmail(_player.Email, PS.Game.Domain.Enums.eStatus.Finished);
+                        _team.FinishedSent = await _email.SendEmail(_team, PS.Game.Domain.Enums.eStatus.Finished);
 
                         var _payment = _team.Payments.Where(p => p.DocumentNumber.Equals(_boleto.NumeroDocumento.Trim()) &&
                                                                  p.Number.Equals(_boleto.NossoNumero)).FirstOrDefault();

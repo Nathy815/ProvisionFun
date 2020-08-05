@@ -11,16 +11,19 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using System.Threading;
 using Microsoft.Extensions.DependencyInjection;
+using Application.Services.Interfaces;
 
 namespace Application.Services
 {
     public class BackgroundService : IHostedService
     {
         private readonly IServiceScopeFactory _scopeFactory;
+        private readonly IEmail _email;
 
-        public BackgroundService(IServiceScopeFactory scopeFactory)
+        public BackgroundService(IServiceScopeFactory scopeFactory, IEmail email)
         {
             _scopeFactory = scopeFactory;
+            _email = email;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -389,7 +392,7 @@ namespace Application.Services
             }
         }
 
-        private Task<List<Team>> EliminateTeams(List<Team> _teams, eMode _mode, eRound _round)
+        private async Task<List<Team>> EliminateTeams(List<Team> _teams, eMode _mode, eRound _round)
         {
             try
             {
@@ -408,7 +411,10 @@ namespace Application.Services
                                                     .ToList();
 
                         foreach (var _team in _duplicateTeams)
+                        {
                             _team.Status = eStatus.Eliminated;
+                            await _email.SendEmail(_team, eStatus.Eliminated);
+                        }
                     }
                 }
                 else
@@ -421,14 +427,17 @@ namespace Application.Services
                                                 .ToList();
 
                     foreach (var _team in _duplicateTeams)
+                    {
                         _team.Status = eStatus.Eliminated;
+                        await _email.SendEmail(_team, eStatus.Eliminated);
+                    }
                 }
 
-                return Task.Run(() => { return _teams; });
+                return _teams;
             }
             catch (Exception ex)
             {
-                return Task.Run(() => { return _teams; });
+                return _teams;
             }
         }
 

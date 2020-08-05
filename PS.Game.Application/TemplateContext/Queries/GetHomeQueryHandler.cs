@@ -31,6 +31,8 @@ namespace Application.TemplateContext.Queries
 
                 var _result = new GetHomeQueryVM();
                 _result.HomeBanner = _setups.Where(s => s.Key.Equals("HomeBanner")).FirstOrDefault().Value;
+                _result.HomeBanner2 = _setups.Where(s => s.Key.Equals("HomeBanner2")).FirstOrDefault().Value;
+                _result.HomeBanner3 = _setups.Where(s => s.Key.Equals("HomeBanner3")).FirstOrDefault().Value;
                 _result.HomeTitle = _setups.Where(s => s.Key.Equals("HomeTitle")).FirstOrDefault().Value;
                 _result.ResponsibilityTerm = _setups.Where(s => s.Key.Equals("ResponsibilityTerm")).FirstOrDefault().Value;
                 _result.Regulation = _setups.Where(s => s.Key.Equals("Regulation")).FirstOrDefault().Value;

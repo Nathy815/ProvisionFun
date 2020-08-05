@@ -43,7 +43,7 @@ namespace Application.SubscryptionConfigurationContext.Commands.Validate
                 bool _result = false;
                 var _boleto_bancario = await _boleto.GeneratePayment(_team);
 
-                _result = await _email.SendEmail(_player.Email, PS.Game.Domain.Enums.eStatus.Payment, _boleto_bancario);
+                _result = await _email.SendEmail(_team, PS.Game.Domain.Enums.eStatus.Payment, _boleto_bancario);
 
                 _team.PaymentSent = _result;
                 

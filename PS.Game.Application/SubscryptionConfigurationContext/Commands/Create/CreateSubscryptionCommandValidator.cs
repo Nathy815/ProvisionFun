@@ -27,7 +27,12 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
 
             RuleFor(c => c.Nickname)
                 .NotEmpty()
-                    .WithMessage("Por favor, informe o nickname ou nome da equipe.");
+                    .WithMessage("Por favor, informe o nickname ou nome da equipe.")
+                .Must((model, el) => _sqlContext.Set<Team>()
+                                        .Where(t => t.TournamentID == model.TournamentId &&
+                                                    t.Name.Equals(el))
+                                        .FirstOrDefault() == null)
+                    .WithMessage("O nickname deverá ser único.");
 
             RuleFor(c => c.Icon)
                 .InclusiveBetween(0, 19)
@@ -58,7 +63,7 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
                 .Custom((el, validator) =>
                 {
                     if (string.IsNullOrEmpty(el.CPF) || string.IsNullOrEmpty(el.Email) || 
-                        string.IsNullOrEmpty(el.Name) || el.Document == null)
+                        string.IsNullOrEmpty(el.Cellphone) || string.IsNullOrEmpty(el.Name) || el.Document == null)
                         validator.AddFailure("Preencha todos os campos obrigatórios");
                 })
                 .Must((model, el) => IsPlayerInTournament(el, model.Mode, model.TournamentId).Result == null)
@@ -83,7 +88,7 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
                         .Custom((el, validator) =>
                         {
                             if (string.IsNullOrEmpty(el.CPF) || string.IsNullOrEmpty(el.Email) ||
-                                string.IsNullOrEmpty(el.Name) || el.Document == null)
+                                string.IsNullOrEmpty(el.Cellphone) || string.IsNullOrEmpty(el.Name) || el.Document == null)
                                 validator.AddFailure("Preencha todos os campos obrigatórios");
                         })
                         .Must((model, el) => IsPlayerInTournament(el, PS.Game.Domain.Enums.eMode.Team).Result == null)

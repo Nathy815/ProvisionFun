@@ -81,6 +81,7 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
                     _player = new Player
                     {
                         Id = _id,
+                        Cellphone = request.Player.Cellphone,
                         BirthDate = request.Player.BirthDate,
                         CPF = request.Player.CPF,
                         Email = request.Player.Email,
@@ -124,6 +125,7 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
                                 Id = _id,
                                 Name = _component.Name,
                                 CPF = _component.CPF,
+                                Cellphone = _component.Cellphone,
                                 BirthDate = _component.BirthDate,
                                 Email = _component.Email,
                                 Document = UploadFile(_component.Document, _id.ToString()),
@@ -150,7 +152,7 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
                     }
                 }
 
-                _team.SubscryptionSent = await _email.SendEmail(_player.Email, PS.Game.Domain.Enums.eStatus.Validation);
+                _team.SubscryptionSent = await _email.SendEmail(_team, PS.Game.Domain.Enums.eStatus.Validation);
 
                 await _sqlContext.SaveChangesAsync(cancellationToken);
 

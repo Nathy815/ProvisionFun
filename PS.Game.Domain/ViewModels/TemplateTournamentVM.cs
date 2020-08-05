@@ -11,12 +11,15 @@ namespace Domain.ViewModels
     {
         //public Guid Id { get; set; }
         public eGame Game { get; set; }
+        public string Image { get; set; }
         public List<TemplateTournamentVM> Tournaments { get; set; }
 
         public TemplateGameVM(eGame game, List<Tournament> tournaments)
         {
             //Id = game.Id;
             Game = game;
+            var prefix = "http://ec2-54-207-37-149.sa-east-1.compute.amazonaws.com/api/resources/";
+            Image = game == eGame.Fifa ? prefix + "fifa.png" : game == eGame.LoL ? prefix + "lol.png" : prefix + "freefire.jpg";
             Tournaments = new List<TemplateTournamentVM>();
             foreach (var _tournament in tournaments)
                 Tournaments.Add(new TemplateTournamentVM(_tournament));

@@ -169,6 +169,8 @@ namespace PS.Game.Persistance.Migrations
                     b.Property<string>("CPF")
                         .IsRequired();
 
+                    b.Property<string>("Cellphone");
+
                     b.Property<DateTime>("CreatedDate");
 
                     b.Property<string>("Document")
@@ -247,7 +249,9 @@ namespace PS.Game.Persistance.Migrations
                         new { Id = new Guid("f970ccaa-5a0d-41dd-a302-eab3072f8c09"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Key = "Logo", ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Value = "" },
                         new { Id = new Guid("e067f067-6ff3-48d2-813b-d4373b68bc54"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Key = "RegistryBanner", ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Value = "" },
                         new { Id = new Guid("8aae9ff9-48ae-4222-a144-0abf5070d798"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Key = "NossoNumero", ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Value = "5504" },
-                        new { Id = new Guid("e8989e76-346f-457d-ba42-5e669e1eec84"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Key = "ShippingFile", ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Value = "1" }
+                        new { Id = new Guid("e8989e76-346f-457d-ba42-5e669e1eec84"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Key = "ShippingFile", ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Value = "1" },
+                        new { Id = new Guid("b3a92942-b10c-4a82-bc2e-e58627ee7010"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Key = "HomeBanner2", ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Value = "" },
+                        new { Id = new Guid("e180712c-a3a9-489b-ac61-2a64defa8c34"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Key = "HomeBanner3", ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Value = "" }
                     );
                 });
 
@@ -400,8 +404,8 @@ namespace PS.Game.Persistance.Migrations
                     b.ToTable("Users");
 
                     b.HasData(
-                        new { Id = new Guid("0f054b3e-aaf0-44ae-a2af-4d1f1fa69b02"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Email = "master@master.com", IsMaster = true, ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Name = "Master", Password = "$2b$10$CIkLiATX3FidNMnFgj8nt.ZmnXaZe9Jlh1vEQPJ7eXZmfDsZ4KZU2", RoleID = new Guid("66300219-e7f6-4f17-a859-d8cc11315796") },
-                        new { Id = new Guid("d06fc2b3-d60b-4ad2-8794-829daa444506"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Email = "adm@adm.com", IsMaster = false, ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Name = "Administrator", Password = "$2b$10$ppPWAXTO5OSr/1YDhiuDDOrJTEie79ZkJStJyfomQSRETs3nG6dBC", RoleID = new Guid("66300219-e7f6-4f17-a859-d8cc11315796") }
+                        new { Id = new Guid("0f054b3e-aaf0-44ae-a2af-4d1f1fa69b02"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Email = "master@master.com", IsMaster = true, ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Name = "Master", Password = "$2b$10$mdXlj2xksIUjcfGvEFNi5eqZDO2UfuQBpn7591zuLm0Tzhi9sukJa", RoleID = new Guid("66300219-e7f6-4f17-a859-d8cc11315796") },
+                        new { Id = new Guid("d06fc2b3-d60b-4ad2-8794-829daa444506"), Active = true, CreatedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Email = "adm@adm.com", IsMaster = false, ModifiedDate = new DateTime(2020, 7, 4, 13, 55, 0, 0, DateTimeKind.Unspecified), Name = "Administrator", Password = "$2b$10$mTbwIekgJcdw/DTFBj6E9u9ELHieA9xWfnuoOrp1FPJFWN2HDf.Ii", RoleID = new Guid("66300219-e7f6-4f17-a859-d8cc11315796") }
                     );
                 });
 

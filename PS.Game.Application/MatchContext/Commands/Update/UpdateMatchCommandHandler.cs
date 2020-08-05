@@ -1,4 +1,5 @@
 ﻿using Application.Services;
+using Application.Services.Interfaces;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -17,10 +18,12 @@ namespace Application.MatchContext.Commands.Update
     public class UpdateMatchCommandHandler : BackgroundService, IRequestHandler<UpdateMatchCommand, bool>
     {
         private readonly MySqlContext _sqlContext;
+        private readonly IEmail _email;
 
-        public UpdateMatchCommandHandler(MySqlContext sqlContext, IServiceScopeFactory scopeFactory) : base(scopeFactory)
+        public UpdateMatchCommandHandler(MySqlContext sqlContext, IEmail email, IServiceScopeFactory scopeFactory) : base(scopeFactory, email)
         {
             _sqlContext = sqlContext;
+            _email = email;
         }
 
         public async Task<bool> Handle(UpdateMatchCommand request, CancellationToken cancellationToken)
@@ -46,6 +49,12 @@ namespace Application.MatchContext.Commands.Update
                     var _tournament = await _sqlContext.Set<Tournament>()
                                                 .Include(t => t.Matches)
                                                     .ThenInclude(m => m.Player1)
+                                                        .ThenInclude(p => p.Players)
+                                                            .ThenInclude(p => p.Player)
+                                                .Include(t => t.Matches)
+                                                    .ThenInclude(m => m.Player2)
+                                                        .ThenInclude(p => p.Players)
+                                                            .ThenInclude(p => p.Player)
                                                 .Include(t => t.Teams)
                                                     .ThenInclude(t => t.Condominium)
                                                 .Where(t => t.Id == _match.TournamentID)
@@ -68,9 +77,15 @@ namespace Application.MatchContext.Commands.Update
                     if (_round == eRound.Fase2 || _round == eRound.Fase4)
                     {
                         if (_match.Winner.Value == _match.Player1ID)
+                        {
                             _match.Player2.Status = eStatus.Eliminated;
+                            await _email.SendEmail(_match.Player2, eStatus.Eliminated);
+                        }
                         else
+                        {
                             _match.Player1.Status = eStatus.Eliminated;
+                            await _email.SendEmail(_match.Player1, eStatus.Eliminated);
+                        }
                     }
 
                     // Se tiver menos de 3 times na disputa, o vencedor da partida é o campeão
@@ -95,15 +110,30 @@ namespace Application.MatchContext.Commands.Update
                 }
                 else // senão, é uma partida pendente
                 {
+                    var _alter = false;
+
                     if (request.Date.HasValue)
+                    {
+                        _alter = _match.Date.HasValue ? true : false;
                         _match.Date = request.Date;
+                    }
 
                     if (request.AuditorID != null)
+                    {
+                        _alter = _match.AuditorID.HasValue ? true : false;
                         _match.AuditorID = request.AuditorID;
+                    }
 
                     _sqlContext.Matches.Update(_match);
 
                     await _sqlContext.SaveChangesAsync(cancellationToken);
+
+                    var _count = 2;
+                    while (_count > 2)
+                    {
+                        var _team = _count == 2 ? _match.Player1 : _match.Player2;
+                        await _email.SendEmail(_team, eStatus.Winner, null, _match, _alter); // manda Winner para entrar no else
+                    }
                 }
 
                 return true;

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Configurations;
+using Application.Services;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -43,6 +44,8 @@ namespace PS.Game.API
             services.AddDependencyInjection();
 
             services.AddMediatR(typeof(Startup));
+
+            //services.AddHostedService<BackgroundService>();
 
             //services.AddHangfire(Configuration);
         }

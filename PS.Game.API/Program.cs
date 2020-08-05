@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Persistence.Contexts;
 
 namespace PS.Game.API
 {
@@ -21,7 +22,10 @@ namespace PS.Game.API
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .CaptureStartupErrors(true)
+                .UseSetting("detailedErrors", "true")
                 .UseStartup<Startup>()
+                .UseDefaultServiceProvider(options => options.ValidateScopes = false)
                 .ConfigureServices((context, services) =>
                 {
                     services.AddHostedService<BackgroundService>();

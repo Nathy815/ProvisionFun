@@ -27,7 +27,7 @@ namespace PS.Game.Application.SubscryptionConfigurationContext.Queries
         {
             try
             {
-                if (request.teams == null || request.teams.Count == 0)
+                /*if (request.teams == null || request.teams.Count == 0)
                     throw new Exception("Por favor informe ao menos uma inscrição.");
 
                 var _teams = await _sqlContext.Set<Team>()
@@ -36,8 +36,16 @@ namespace PS.Game.Application.SubscryptionConfigurationContext.Queries
                                         .Include(t => t.Players)
                                             .ThenInclude(p => p.Player)
                                         .Where(t => request.teams.Any(id => id == t.Id))
+                                        .ToListAsync();*/
+
+                var _teams = await _sqlContext.Set<Team>()
+                                        .Include(t => t.Payments)
+                                        .Include(t => t.Condominium)
+                                        .Include(t => t.Players)
+                                            .ThenInclude(p => p.Player)
+                                        .Where(t => t.Active && t.Status == Domain.Enums.eStatus.Payment)
                                         .ToListAsync();
-                
+
                 var _file = await _boleto.GenerateShipping(_teams);
 
                 return _file;

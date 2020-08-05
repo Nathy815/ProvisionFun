@@ -93,6 +93,24 @@ namespace Persistence.Configurations
                     ModifiedDate = Convert.ToDateTime("04/07/2020 13:55:00"),
                     Key = "ShippingFile",
                     Value = "1"
+                },
+                new Setup
+                {
+                    Id = new Guid("b3a92942-b10c-4a82-bc2e-e58627ee7010"),
+                    Active = true,
+                    CreatedDate = Convert.ToDateTime("04/07/2020 13:55:00"),
+                    ModifiedDate = Convert.ToDateTime("04/07/2020 13:55:00"),
+                    Key = "HomeBanner2",
+                    Value = ""
+                },
+                new Setup
+                {
+                    Id = new Guid("e180712c-a3a9-489b-ac61-2a64defa8c34"),
+                    Active = true,
+                    CreatedDate = Convert.ToDateTime("04/07/2020 13:55:00"),
+                    ModifiedDate = Convert.ToDateTime("04/07/2020 13:55:00"),
+                    Key = "HomeBanner3",
+                    Value = ""
                 }
             );
         }

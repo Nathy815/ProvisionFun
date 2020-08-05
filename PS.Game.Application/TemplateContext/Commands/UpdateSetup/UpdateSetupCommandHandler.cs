@@ -31,13 +31,36 @@ namespace Application.TemplateContext.Commands.UpdateSetup
                                         .ToListAsync();
 
                 var _hometitle = _setups.Where(s => s.Key.Equals("HomeTitle")).FirstOrDefault();
-                _hometitle.Value = request.HomeTitle;
+                if (!string.IsNullOrEmpty(request.HomeTitle))
+                    _hometitle.Value = request.HomeTitle;
 
                 if (request.HomeBanner != null)
                 {
                     var _homeBanner = _setups.Where(s => s.Key.Equals("HomeBanner")).FirstOrDefault();
 
                     var _banner = UploadFile(request.HomeBanner, _homeBanner.Id.ToString());
+                    if (string.IsNullOrEmpty(_banner))
+                        throw new Exception();
+
+                    _homeBanner.Value = _banner;
+                }
+
+                if (request.HomeBanner2 != null)
+                {
+                    var _homeBanner = _setups.Where(s => s.Key.Equals("HomeBanner2")).FirstOrDefault();
+
+                    var _banner = UploadFile(request.HomeBanner2, _homeBanner.Id.ToString());
+                    if (string.IsNullOrEmpty(_banner))
+                        throw new Exception();
+
+                    _homeBanner.Value = _banner;
+                }
+
+                if (request.HomeBanner3 != null)
+                {
+                    var _homeBanner = _setups.Where(s => s.Key.Equals("HomeBanner3")).FirstOrDefault();
+
+                    var _banner = UploadFile(request.HomeBanner3, _homeBanner.Id.ToString());
                     if (string.IsNullOrEmpty(_banner))
                         throw new Exception();
 
@@ -56,7 +79,8 @@ namespace Application.TemplateContext.Commands.UpdateSetup
                 }
 
                 var _regulation = _setups.Where(s => s.Key.Equals("Regulation")).FirstOrDefault();
-                _regulation.Value = request.Regulation;
+                if (!string.IsNullOrEmpty(request.Regulation))
+                    _regulation.Value = request.Regulation;
 
                 if (request.ResponsabilityTerm != null)
                 {
