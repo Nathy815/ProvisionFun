@@ -3,8 +3,10 @@ using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Contexts;
+using PS.Game.Domain.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -12,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace PS.Game.Application.SubscryptionConfigurationContext.Queries
 {
-    public class GetShippingQueryHandler : IRequestHandler<GetShippingQuery, string>
+    public class GetShippingQueryHandler : IRequestHandler<GetShippingQuery, ShippingVM>
     {
         private readonly IBoleto _boleto;
         private readonly MySqlContext _sqlContext;
@@ -23,21 +25,10 @@ namespace PS.Game.Application.SubscryptionConfigurationContext.Queries
             _boleto = boleto;
         }
 
-        public async Task<string> Handle(GetShippingQuery request, CancellationToken cancellationToken)
+        public async Task<ShippingVM> Handle(GetShippingQuery request, CancellationToken cancellationToken)
         {
             try
             {
-                /*if (request.teams == null || request.teams.Count == 0)
-                    throw new Exception("Por favor informe ao menos uma inscrição.");
-
-                var _teams = await _sqlContext.Set<Team>()
-                                        .Include(t => t.Payments)
-                                        .Include(t => t.Condominium)
-                                        .Include(t => t.Players)
-                                            .ThenInclude(p => p.Player)
-                                        .Where(t => request.teams.Any(id => id == t.Id))
-                                        .ToListAsync();*/
-
                 var _teams = await _sqlContext.Set<Team>()
                                         .Include(t => t.Payments)
                                         .Include(t => t.Condominium)
@@ -48,7 +39,7 @@ namespace PS.Game.Application.SubscryptionConfigurationContext.Queries
 
                 var _file = await _boleto.GenerateShipping(_teams);
 
-                return _file;
+                return new ShippingVM(_file);
             }
             catch(Exception ex)
             {

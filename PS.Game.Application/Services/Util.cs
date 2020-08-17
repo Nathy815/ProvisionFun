@@ -14,7 +14,7 @@ namespace Application.Services
     public class Util : IUtil
     {
         private static string pathToSave { get; set; }
-        private readonly string virtualPath = "http://provisionfun.com.br/api/resources/";
+        private readonly string virtualPath = "http://ec2-54-207-37-149.sa-east-1.compute.amazonaws.com/api/resources/";
         private readonly IEmail _email;
 
         public Util(IEmail email)

@@ -15,24 +15,30 @@ using System.Threading.Tasks;
 using Domain.Entities;
 using System.Linq;
 using System.Net.Mime;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 
 namespace Application.Services
 {
     public class Email : IEmail
     {
         private readonly MySqlContext _sqlContext;
-        private string virtualPath = "http://provisionfun.com.br/api/Resources/";
+        public string physicalPath { get; set; }
+        private readonly IHostingEnvironment _env;
+        private readonly IConfiguration _configuration;
 
-        public Email(MySqlContext sqlContext)
+        public Email(MySqlContext sqlContext, IConfiguration configuration, IHostingEnvironment env)
         {
             _sqlContext = sqlContext;
+            _configuration = configuration;
+            _env = env;
+            physicalPath = _env.ContentRootPath + "\\Resources\\";
         }
 
         private string ConfirmationTemplate(string name)
         {
             return string.Format(@"<p>Oi {0}, sua inscrição foi recebida por nossa equipe.</p>
-                                   <br>
-                                   <p>Estamos analisando seus dados para aprovação e em breve você receberá mais informações nesse e - mail.</p>
+                                   <p>Estamos analisando seus dados para aprovação e em breve você receberá mais informações nesse e-mail.</p>
                                    <br>
                                    <p>Aguarde!</p>
                                    <p>Equipe Provision Fun</p>",
@@ -106,7 +112,7 @@ namespace Application.Services
 
         public async Task<bool> SendLog(string title, string message)
         {
-            return await Send(new EmailVM("nathalialcoimbra@gmail.com", title, message));
+            return await Send(new EmailVM("nathalialcoimbra@gmail.com", title, message, _configuration));
         }
 
         public async Task<bool> SendEmail(Team team, eStatus status, string attach = null, Match match = null, bool? alter = null)
@@ -114,20 +120,20 @@ namespace Application.Services
             var _player = team.Players.Where(p => p.IsPrincipal).FirstOrDefault().Player;
 
             if (status == eStatus.Validation)
-                return await Send(new EmailVM(_player.Email, "Provision Fun - Inscrição Recebida", ConfirmationTemplate(_player.Name)), "C:/inetpub/wwwroot/provisionfun_api/Resources/Heads-Emails1.png", true);
+                return await Send(new EmailVM(_player.Email, "Provision Fun - Inscrição Recebida", ConfirmationTemplate(_player.Name), _configuration), attach, "Heads-Emails1.png");
             else if (status == eStatus.Payment)
-                return await Send(new EmailVM(_player.Email, "Provision Fun - Inscrição Aprovada", ChargeTemplate(_player.Name, team.Price)), attach);
+                return await Send(new EmailVM(_player.Email, "Provision Fun - Inscrição Aprovada", ChargeTemplate(_player.Name, team.Price), _configuration), attach, "Heads-Emails2.png");
             else if (status == eStatus.Finished)
-                return await Send(new EmailVM(_player.Email, "Provision Fun - Inscrição Confirmada", FinishTemplate(_player.Name)));
+                return await Send(new EmailVM(_player.Email, "Provision Fun - Inscrição Confirmada", FinishTemplate(_player.Name), _configuration), attach, "Heads-Emails3.png");
             else if (status == eStatus.Eliminated)
-                return await Send(new EmailVM(_player.Email, "Provision Fun - Eliminação", EliminatedTemplate(_player.Name)));
+                return await Send(new EmailVM(_player.Email, "Provision Fun - Eliminação", EliminatedTemplate(_player.Name), _configuration));
             else if (status == eStatus.Cancelled)
-                return await Send(new EmailVM(_player.Email, "Provision Fun - Inscrição Cancelada", CancelledTemplate(_player.Name, team.CancellationComments)));
+                return await Send(new EmailVM(_player.Email, "Provision Fun - Inscrição Cancelada", CancelledTemplate(_player.Name, team.CancellationComments), _configuration), attach, "Heads-Emails4.png");
             else
-                return await Send(new EmailVM(_player.Email, "Provision Fun - Informações de Partida", MatchInform(_player.Name, team.Id, match, alter.Value)));
+                return await Send(new EmailVM(_player.Email, "Provision Fun - Informações de Partida", MatchInform(_player.Name, team.Id, match, alter.Value), _configuration));
         }
 
-        private async Task<bool> Send(EmailVM request, string attach = null, bool inline = false)
+        private async Task<bool> Send(EmailVM request, string attach = null, string image = null)
         {
             try
             {
@@ -149,69 +155,43 @@ namespace Application.Services
                     email.From = new MailAddress(request.EmailFrom.Trim());
                     email.To.Add(_email);
                     email.Subject = request.Subject.Trim();
-
+                    email.Body = request.Message.Trim();
                     email.IsBodyHtml = request.IsBodyHTML;
+                    email.Bcc.Add(new MailAddress(request.EmailFrom.Trim())); //Envia cópia para o próprio cliente
+
+                    if (!string.IsNullOrEmpty(image))
+                    {
+                        var source = (physicalPath + image);
+                        var attachment = new Attachment(source);
+                        attachment.ContentId = "img_banner";
+                        email.Body = "<img src=\"cid:" + "img_banner" + "\"><br>" + email.Body;
+                        email.Attachments.Add(attachment);
+                    }
 
                     if (!string.IsNullOrEmpty(attach))
                     {
-                        email.Body = request.Message.Trim();
-
-                        if (!inline)
-                        {
-                            email.Body = request.Message.Trim();
-                            MemoryStream ms = new MemoryStream();
-                            PdfWriter writer = new PdfWriter(ms);
-                            Document document = HtmlConverter.ConvertToDocument(attach, writer);
-                            writer.SetCloseStream(false);
-                            document.Close();
-                            ms.Position = 0;
-                            email.Attachments.Add(new Attachment(ms, "Boleto.pdf"));
-                        }
-                        /*else
-                        {
-                            LinkedResource res = new LinkedResource(attach);
-                            res.ContentId = Guid.NewGuid().ToString();
-                            var body = "<img src='cid:" + res.ContentId + "'/><br><br>" + request.Message.Trim();
-                            AlternateView alt = AlternateView.CreateAlternateViewFromString(body, null, MediaTypeNames.Text.Html);
-                            alt.LinkedResources.Add(res);
-                            email.AlternateViews.Add(alt);
-                        }*/
+                        MemoryStream ms = new MemoryStream();
+                        PdfWriter writer = new PdfWriter(ms);
+                        Document document = HtmlConverter.ConvertToDocument(attach, writer);
+                        writer.SetCloseStream(false);
+                        document.Close();
+                        ms.Position = 0;
+                        email.Attachments.Add(new Attachment(ms, "Boleto.pdf"));
                     }
-                    else
-                        email.Body = request.Message.Trim();
 
-                    SmtpClient client = new SmtpClient(host, port);
-                    client.EnableSsl = request.UseSSL;
-
-                    if (username != null && password != null)
+                    using (var client = new SmtpClient(host, port))
                     {
-                        client.UseDefaultCredentials = false;
-                        NetworkCredential credential = new NetworkCredential(username, password);
-                        client.Credentials = credential;
-                    }
-                    else
-                        client.UseDefaultCredentials = true;
+                        client.Credentials = new NetworkCredential(username, password);
+                        client.EnableSsl = request.UseSSL;
 
-                    await client.SendMailAsync(email);
+                        await client.SendMailAsync(email);
+                    }
                 }
 
                 return true;
             }
             catch (Exception ex)
             {
-                var _setup = _sqlContext.Set<Setup>()
-                                    .Where(s => s.Key.Equals("Logo"))
-                                    .FirstOrDefault();
-
-                if (string.IsNullOrEmpty(ex.InnerException.Message))
-                    _setup.Value = ex.Message;
-                else
-                    _setup.Value = ex.InnerException.Message;
-
-                _sqlContext.Setups.Update(_setup);
-
-                await _sqlContext.SaveChangesAsync();
-
                 return false;
             }
         }

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PS.Game.Application.SubscryptionConfigurationContext.Commands.Cancel;
 using PS.Game.Application.SubscryptionConfigurationContext.Queries;
+using PS.Game.Domain.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,16 +49,16 @@ namespace API.Controllers
             return await _mediator.Send(request);
         }
 
-        [HttpPost("shipping")]
+        [HttpGet("shipping")]
         [Authorize(Roles = "Administrador")]
-        public async Task<string> Shipping([FromBody] GetShippingQuery request)
+        public async Task<ShippingVM> Shipping()
         {
-            return await _mediator.Send(request);
+            return await _mediator.Send(new GetShippingQuery());
         }
 
         [HttpGet]
         [Authorize(Roles = "Administrador")]
-        public async Task<List<GetSubscryptionVM>> Subscryptions()
+        public async Task<ListSubscryptionsQueryVM> Subscryptions()
         {
             return await _mediator.Send(new ListSubscryptionsQuery());
         }

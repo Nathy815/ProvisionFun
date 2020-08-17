@@ -9,10 +9,11 @@ using Persistence.Contexts;
 using Domain.Entities;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using PS.Game.Domain.ViewModels;
 
 namespace Application.SubscryptionConfigurationContext.Queries
 {
-    public class ListSubscryptionsQueryHandler : IRequestHandler<ListSubscryptionsQuery, List<GetSubscryptionVM>>
+    public class ListSubscryptionsQueryHandler : IRequestHandler<ListSubscryptionsQuery, ListSubscryptionsQueryVM>
     {
         private readonly MySqlContext _sqlContext;
 
@@ -21,7 +22,7 @@ namespace Application.SubscryptionConfigurationContext.Queries
             _sqlContext = sqlContext;
         }
 
-        public async Task<List<GetSubscryptionVM>> Handle(ListSubscryptionsQuery request, CancellationToken cancellationToken)
+        public async Task<ListSubscryptionsQueryVM> Handle(ListSubscryptionsQuery request, CancellationToken cancellationToken)
         {
             try
             {
@@ -31,10 +32,7 @@ namespace Application.SubscryptionConfigurationContext.Queries
                                         .Where(t => t.Active)
                                         .ToListAsync();
 
-                var _list = new List<GetSubscryptionVM>();
-
-                foreach (var _team in _teams)
-                    _list.Add(new GetSubscryptionVM(_team));
+                var _list = new ListSubscryptionsQueryVM(_teams);
 
                 return _list;
             }

@@ -12,17 +12,19 @@ using Microsoft.EntityFrameworkCore;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 using PS.Game.Application.Services.Interfaces;
+using Microsoft.Extensions.Hosting;
 
 namespace Application.Services
 {
     public class Boleto : IBoleto
     {
-        private static string pathToSave = Path.Combine(Directory.GetCurrentDirectory(), "Resources");
-        private readonly string virtualPath = "http://provisionfun.com.br/api/resources/";
+        private string pathToSave { get; set; }
+        private readonly string virtualPath = "http://ec2-54-207-37-149.sa-east-1.compute.amazonaws.com/api/resources/";
         
         private readonly MySqlContext _sqlContext;
         private readonly IEmail _email;
         private readonly IUtil _util;
+        private readonly IHostingEnvironment _env;
         private IBanco _banco { get; set; }
 
         private Beneficiario GerarBeneficiario()
@@ -57,11 +59,13 @@ namespace Application.Services
             };
         }
 
-        public Boleto(MySqlContext sqlContext, IEmail email, IUtil util)
+        public Boleto(MySqlContext sqlContext, IEmail email, IUtil util, IHostingEnvironment env)
         {
             _sqlContext = sqlContext;
             _email = email;
             _util = util;
+            _env = env;
+            pathToSave = _env.ContentRootPath + "\\Resources\\";
         }
 
         private string GetDVNossoNumero(string nossoNumero)
@@ -187,6 +191,17 @@ namespace Application.Services
             }
             catch(Exception ex)
             {
+                var _setup = _sqlContext.Set<Setup>()
+                                        .Where(s => s.Key.Equals("Logo"))
+                                        .FirstOrDefault();
+
+                _setup.Value = "Path: " + pathToSave + " | Message: " + ex.Message;
+                if (ex.InnerException != null && !string.IsNullOrEmpty(ex.InnerException.Message))
+                    _setup.Value = _setup.Value + " | Trace: " + ex.InnerException.Message;
+                _sqlContext.Setups.Update(_setup);
+
+                _sqlContext.SaveChanges();
+
                 return null;
             }
         }
@@ -248,10 +263,23 @@ namespace Application.Services
                 var _fileName = _util.GetFileName("Remessa");
                 
                 var fullPath = Path.Combine(pathToSave, _fileName);
+                var _base64 = string.Empty;
 
+                // Salva arquivo localmente
                 using (var stream = new FileStream(fullPath, FileMode.Create))
                 {
                     _shippingFile.GerarArquivoRemessa(_boletos, stream);
+                }
+
+                // Converte arquivo para base64
+                using (var stream = new FileStream(fullPath, FileMode.Open))
+                {
+                    var bytes = new Byte[(int)stream.Length];
+
+                    stream.Seek(0, SeekOrigin.Begin);
+                    stream.Read(bytes, 0, (int)stream.Length);
+
+                    _base64 = Convert.ToBase64String(bytes);
                 }
 
                 _parameter.Value = (_remessaCount + 1).ToString();
@@ -259,7 +287,7 @@ namespace Application.Services
 
                 await _sqlContext.SaveChangesAsync();
 
-                return Path.Combine(virtualPath, _fileName);
+                return _base64;
             }
             catch(Exception ex)
             {
@@ -294,7 +322,8 @@ namespace Application.Services
                                                                             p.Number.Equals(_boleto.NossoNumero.Trim())))
                                             .FirstOrDefaultAsync();
 
-                    if (_team != null)
+                    if (_team != null &&
+                        Convert.ToDouble(_boleto.ValorPago) == _team.Price)
                     {
                         _team.Status = PS.Game.Domain.Enums.eStatus.Finished;
 

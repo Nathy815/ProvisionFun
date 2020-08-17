@@ -160,14 +160,6 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
             }
             catch(Exception ex)
             {
-                var _message = ex.Message;
-                if (ex.InnerException != null)
-                    _message += " | Inner Exception: " + ex.InnerException;
-                if (ex.StackTrace != null)
-                    _message += " | Trace: " + ex.StackTrace;
-
-                await _email.SendLog("CreateSubscryptionCommandHandler", _message);
-
                 return false;
             }
         }

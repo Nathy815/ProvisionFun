@@ -55,9 +55,9 @@ namespace API.Configurations
                     .AddTransient<IRequestHandler<ConfirmPaymentCommand, bool>, ConfirmPaymentCommandHandler>()
                     .AddTransient<IRequestHandler<CancelSubscryptionCommand, bool>, CancelSubscryptionCommandHandler>();
 
-            services.AddTransient<IRequestHandler<ListSubscryptionsQuery, List<GetSubscryptionVM>>, ListSubscryptionsQueryHandler>()
+            services.AddTransient<IRequestHandler<ListSubscryptionsQuery, ListSubscryptionsQueryVM>, ListSubscryptionsQueryHandler>()
                     .AddTransient<IRequestHandler<GetSubscryptionQuery, GetSubscryptionDetailVM>, GetSubscryptionQueryHandler>()
-                    .AddTransient<IRequestHandler<GetShippingQuery, string>, GetShippingQueryHandler>();
+                    .AddTransient<IRequestHandler<GetShippingQuery, ShippingVM>, GetShippingQueryHandler>();
 
             services.AddTransient<IValidator<CreateSubscryptionCommand>, CreateSubscryptionCommandValidator>()
                     .AddTransient<IValidator<ValidateSubscryptionCommand>, ValidateSubscryptionCommandValidator>()
