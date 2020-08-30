@@ -17,6 +17,7 @@ namespace Domain.ViewModels
         public string Plataform { get; set; }
         public eMode Mode { get; set; }
         public eGame Game { get; set; }
+        public bool MatchesEnabled { get; set; }
 
         public GetTournamentQueryVM(Tournament tournament)
         {
@@ -29,6 +30,17 @@ namespace Domain.ViewModels
             PlayerLimit = tournament.PlayerLimit;
             Mode = tournament.Mode;
             Game = tournament.Game;
+            MatchesEnabled = !HasStarted(tournament) && DateTime.Now > tournament.EndSubscryption ? true : false;
+        }
+
+        private bool HasStarted(Tournament tournament)
+        {
+            if ((tournament.RoundSolo != eRound.NotStarted &&
+                (tournament.Mode == eMode.Both || tournament.Mode == eMode.Solo)) ||
+                (tournament.RoundTeam != eRound.NotStarted &&
+                (tournament.Mode == eMode.Both || tournament.Mode == eMode.Team)))
+                return true;
+            return false;
         }
     }
 }

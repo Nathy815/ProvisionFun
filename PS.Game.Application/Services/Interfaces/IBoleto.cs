@@ -12,6 +12,6 @@ namespace Application.Services.Interfaces
     {
         Task<string> GeneratePayment(Team team);
         Task<string> GenerateShipping(List<Team> teams);
-        Task<bool> ImportReturn(IFormFile file);
+        Task<int?> ImportReturn(IFormFile file);
     }
 }

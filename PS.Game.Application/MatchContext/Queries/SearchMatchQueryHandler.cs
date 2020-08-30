@@ -34,6 +34,7 @@ namespace Application.MatchContext.Queries
                                             .ThenInclude(m => m.Players)
                                                 .ThenInclude(m => m.Player)
                                         .Where(m => m.Active &&
+                                                    m.Tournament.Active &&
                                                     m.Date > DateTime.Now &&
                                                     (m.Player1.Players.Any(p => p.Active &&
                                                                                p.Player.CPF.Equals(request.CPF)) ||

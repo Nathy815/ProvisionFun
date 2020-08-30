@@ -20,12 +20,13 @@ namespace PS.Game.Domain.ViewModels
 
             foreach (var status in _status)
             {
-                var value = teams.Where(t => t.Active && t.Status == (eStatus)status).ToList().Count;
+                var value = teams.Where(t => t.Status == (eStatus)status).ToList().Count;
                 Totalizers.Add(new ListSubscryptionsQueryStatusVM((eStatus)status, value));
             }
             
             Subscryptions = new List<GetSubscryptionVM>();
-            foreach (var _team in teams)
+            var _teams = teams.Where(t => t.Active).ToList();
+            foreach (var _team in _teams)
                 Subscryptions.Add(new GetSubscryptionVM(_team));
         }
     }

@@ -21,6 +21,13 @@ namespace PS.Game.API.Controllers
     {
         public MatchController(IMediator mediator) : base(mediator) { }
 
+        [HttpGet("generate/{id}")]
+        [Authorize]
+        public async Task<bool> Generate([FromRoute] Guid id)
+        {
+            return await _mediator.Send(new GenerateMatchesQuery(id));
+        }
+
         [HttpGet("{id}")]
         [Authorize]
         public async Task<MatchVM> Get([FromRoute] Guid id)

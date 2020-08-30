@@ -29,6 +29,9 @@ using PS.Game.Domain.ViewModels;
 using Application.MatchContext.Commands.Update;
 using PS.Game.Application.MatchContext.Queries;
 using Application.MatchContext.Queries;
+using PS.Game.Application.SubscryptionConfigurationContext.Commands.BankSlip;
+using PS.Game.Application.TournamentContext.Commands.DeleteTournament;
+using PS.Game.Application.Services;
 
 namespace API.Configurations
 {
@@ -40,7 +43,8 @@ namespace API.Configurations
 
             services.AddTransient<IRequestHandler<UpdateMatchCommand, bool>, UpdateMatchCommandHandler>();
 
-            services.AddTransient<IRequestHandler<GetMatchQuery, MatchVM>, GetMatchQueryHandler>()
+            services.AddTransient<IRequestHandler<GenerateMatchesQuery, bool>, GenerateMatchesQueryHandler>()
+                    .AddTransient<IRequestHandler<GetMatchQuery, MatchVM>, GetMatchQueryHandler>()
                     .AddTransient<IRequestHandler<ListMatchesQuery, MatchesVM>, ListMatchesQueryHandler>()
                     .AddTransient<IRequestHandler<SearchMatchQuery, List<GetMatchQueryVM>>, SearchMatchQueryHandler>();
 
@@ -50,9 +54,10 @@ namespace API.Configurations
 
             #region Subscryptions
 
-            services.AddTransient<IRequestHandler<CreateSubscryptionCommand, bool>, CreateSubscryptionCommandHandler>()
+            services.AddTransient<IRequestHandler<BankSlipCommand, bool>, BankSlipCommandHandler>()
+                    .AddTransient<IRequestHandler<CreateSubscryptionCommand, bool>, CreateSubscryptionCommandHandler>()
                     .AddTransient<IRequestHandler<ValidateSubscryptionCommand, bool>, ValidateSubscryptionCommandHandler>()
-                    .AddTransient<IRequestHandler<ConfirmPaymentCommand, bool>, ConfirmPaymentCommandHandler>()
+                    .AddTransient<IRequestHandler<ConfirmPaymentCommand, int?>, ConfirmPaymentCommandHandler>()
                     .AddTransient<IRequestHandler<CancelSubscryptionCommand, bool>, CancelSubscryptionCommandHandler>();
 
             services.AddTransient<IRequestHandler<ListSubscryptionsQuery, ListSubscryptionsQueryVM>, ListSubscryptionsQueryHandler>()
@@ -97,6 +102,7 @@ namespace API.Configurations
             #region Tournament
 
             services.AddTransient<IRequestHandler<CreateTournamentCommand, bool>, CreateTournamentCommandHandler>()
+                    .AddTransient<IRequestHandler<DeleteTournamentCommand, bool>, DeleteTournamentCommandHandler>()
                     .AddTransient<IRequestHandler<UpdateTournamentCommand, bool>, UpdateTournamentCommandHandler>();
 
             services.AddTransient<IRequestHandler<GetGameQuery, GetGameQueryVM>, GetGameQueryHandler>()
@@ -113,8 +119,9 @@ namespace API.Configurations
 
             #region Services
 
-            services.AddTransient<IEmail, Email>()
-                    .AddTransient<IBoleto, Boleto>()
+            services.AddTransient<IBoleto, Boleto>()
+                    .AddTransient<IEmail, Email>()
+                    .AddTransient<IMatchService, MatchService>()
                     .AddTransient<IUtil, Util>();
 
             #endregion

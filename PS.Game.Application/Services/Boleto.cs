@@ -142,7 +142,7 @@ namespace Application.Services
 
                 var _boleto = new BoletoNetCore.Boleto(_banco)
                 {
-                    DataVencimento = DateTime.Now.AddDays(3),
+                    DataVencimento = DateTime.Now.AddDays(10),
                     ValorTitulo = (decimal)team.Price,
                     NossoNumero = _novoNossoNumero.ToString(),
                     NumeroDocumento = "BB" + _novoNossoNumero.ToString("D6") + (char)(65),
@@ -295,7 +295,7 @@ namespace Application.Services
             }
         }
 
-        public async Task<bool> ImportReturn(IFormFile file)
+        public async Task<int?> ImportReturn(IFormFile file)
         {
             try
             {
@@ -310,6 +310,8 @@ namespace Application.Services
                     arquivoRetorno.LerArquivoRetorno(reader.BaseStream);
                 }
 
+                var _total = 0;
+
                 foreach (var _boleto in arquivoRetorno.Boletos)
                 {
                     var _team = await _sqlContext.Set<Team>()
@@ -321,6 +323,7 @@ namespace Application.Services
                                                         t.Payments.Any(p => p.DocumentNumber.Equals(_boleto.NumeroDocumento.Trim()) &&
                                                                             p.Number.Equals(_boleto.NossoNumero.Trim())))
                                             .FirstOrDefaultAsync();
+
 
                     if (_team != null &&
                         Convert.ToDouble(_boleto.ValorPago) == _team.Price)
@@ -335,18 +338,21 @@ namespace Application.Services
                                                                  p.Number.Equals(_boleto.NossoNumero)).FirstOrDefault();
 
                         _payment.Validated = true;
+                        _team.PaymentDate = DateTime.Now;
 
                         _sqlContext.Teams.Update(_team);
+
+                        _total += 1;
                     }
                 }
 
                 await _sqlContext.SaveChangesAsync();
 
-                return true;
+                return _total;
             }
             catch(Exception ex)
             {
-                return false;
+                return null;
             }
         }
     }

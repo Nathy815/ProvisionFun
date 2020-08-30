@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Domain.Entities;
 
@@ -24,8 +25,9 @@ namespace Domain.ViewModels
             Condominium = new GetCondominiumQueryVM(team.Condominium);
 
             Players = new List<GetSubscryptionPlayerVM>();
-            foreach (var _player in team.Players)
-                Players.Add(new GetSubscryptionPlayerVM(_player.Player));
+            var _players = team.Players.OrderBy(p => p.IsPrincipal);
+            foreach (var _player in _players)
+                Players.Add(new GetSubscryptionPlayerVM(_player.Player, _player.IsPrincipal));
         }
     }
 
@@ -39,10 +41,10 @@ namespace Domain.ViewModels
         public string Email { get; set; }
         public string Document { get; set; }
 
-        public GetSubscryptionPlayerVM(Player player)
+        public GetSubscryptionPlayerVM(Player player, bool isPrincipal)
         {
             Id = player.Id;
-            Name = player.Name;
+            Name = player.Name + (isPrincipal ? " *" : "");
             Cellphone = player.Cellphone;
             BirthDate = player.BirthDate;
             CPF = player.CPF;

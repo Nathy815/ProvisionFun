@@ -3,6 +3,7 @@ using PS.Game.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace PS.Game.Domain.ViewModels
 {
@@ -44,6 +45,7 @@ namespace PS.Game.Domain.ViewModels
         public Guid? Winner { get; set; }
         public double Player1Score { get; set; }
         public double Player2Score { get; set; }
+        public Guid AuditorID { get; set; }
         public string Auditor { get; set; }
         public string Comments { get; set; }
         
@@ -59,7 +61,10 @@ namespace PS.Game.Domain.ViewModels
             Player1Score = match.Player1Score;
             Player2Score = match.Player2Score;
             if (match.Auditor != null)
+            {
+                AuditorID = match.AuditorID.Value;
                 Auditor = match.Auditor.Name;
+            }
             Comments = match.Comments;
         }
     }
@@ -68,11 +73,19 @@ namespace PS.Game.Domain.ViewModels
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public string Player { get; set; }
+        public string CPF { get; set; }
 
         public PlayerVM(Team player)
         {
             Id = player.Id;
             Name = player.Name;
+            var _player = player.Players.Where(p => p.IsPrincipal).FirstOrDefault();
+            if (_player != null)
+            {
+                Player = _player.Player.Name;
+                CPF = _player.Player.CPF;
+            }
         }
     }
 }

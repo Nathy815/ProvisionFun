@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.SubscryptionConfigurationContext.Commands.Payment
 {
-    public class ConfirmPaymentCommandHandler : IRequestHandler<ConfirmPaymentCommand, bool>
+    public class ConfirmPaymentCommandHandler : IRequestHandler<ConfirmPaymentCommand, int?>
     {
         private readonly IBoleto _boleto;
         
@@ -17,7 +17,7 @@ namespace Application.SubscryptionConfigurationContext.Commands.Payment
             _boleto = boleto;
         }
 
-        public async Task<bool> Handle(ConfirmPaymentCommand request, CancellationToken cancellationToken)
+        public async Task<int?> Handle(ConfirmPaymentCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -27,7 +27,7 @@ namespace Application.SubscryptionConfigurationContext.Commands.Payment
             }
             catch(Exception ex)
             {
-                return false;
+                return null;
             }
         }
     }

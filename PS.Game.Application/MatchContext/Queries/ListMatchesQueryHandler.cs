@@ -28,9 +28,13 @@ namespace PS.Game.Application.MatchContext.Queries
                 var _matches = await _sqlContext.Set<Match>()
                                          .Include(m => m.Auditor)
                                          .Include(m => m.Player1)
+                                            .ThenInclude(p => p.Players)
+                                                .ThenInclude(p => p.Player)
                                          .Include(m => m.Player2)
+                                            .ThenInclude(p => p.Players)
+                                                .ThenInclude(p => p.Player)
                                          .Include(m => m.Tournament)
-                                         .Where(m => m.Active)
+                                         .Where(m => m.Active && m.Tournament.Active)
                                          .ToListAsync();
 
                 var _list = new MatchesVM(_matches);

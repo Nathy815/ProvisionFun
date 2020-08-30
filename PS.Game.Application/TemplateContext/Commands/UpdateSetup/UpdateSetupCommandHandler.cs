@@ -29,10 +29,13 @@ namespace Application.TemplateContext.Commands.UpdateSetup
                 var _setups = await _sqlContext.Set<Setup>()
                                         .Where(s => s.Active)
                                         .ToListAsync();
-
-                var _hometitle = _setups.Where(s => s.Key.Equals("HomeTitle")).FirstOrDefault();
+                
                 if (!string.IsNullOrEmpty(request.HomeTitle))
+                {
+                    var _hometitle = _setups.Where(s => s.Key.Equals("HomeTitle")).FirstOrDefault();
+
                     _hometitle.Value = request.HomeTitle;
+                }
 
                 if (request.HomeBanner != null)
                 {
@@ -77,10 +80,13 @@ namespace Application.TemplateContext.Commands.UpdateSetup
 
                     _registryBanner.Value = _banner;
                 }
-
-                var _regulation = _setups.Where(s => s.Key.Equals("Regulation")).FirstOrDefault();
+                
                 if (!string.IsNullOrEmpty(request.Regulation))
+                {
+                    var _regulation = _setups.Where(s => s.Key.Equals("Regulation")).FirstOrDefault();
+
                     _regulation.Value = request.Regulation;
+                }
 
                 if (request.ResponsabilityTerm != null)
                 {

@@ -26,17 +26,6 @@ namespace Application.TemplateContext.Queries
         {
             try
             {
-                /*var _games = await _sqlContext.Set<Game>()
-                                        .Include(g => g.Tournaments)
-                                            .ThenInclude(t => t.Teams)
-                                        .Where(g => g.Active)
-                                        .ToListAsync();
-
-                var _list = new List<TemplateGameVM>();
-                foreach (var _game in _games)
-                    if (_game.Tournaments.Count > 0)
-                        _list.Add(new TemplateGameVM(_game));*/
-
                 var _tournaments = await _sqlContext.Set<Tournament>()
                                              .Include(t => t.Teams)
                                              .Where(t => t.Active)

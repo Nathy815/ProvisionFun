@@ -56,6 +56,12 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
                                             .Where(t => t.Id == request.TournamentId)
                                             .FirstOrDefaultAsync();
 
+                var _price = 20D;
+                var _startDate = _tournament.StartSubscryption.Date;
+                if ((request.Mode == PS.Game.Domain.Enums.eMode.Solo && DateTime.Now.Date > _startDate.AddDays(21)) ||
+                    (request.Mode == PS.Game.Domain.Enums.eMode.Team && DateTime.Now.Date > _startDate.AddDays(14)))
+                    _price = 30D;
+
                 var _team = new Team
                 {
                     Id = Guid.NewGuid(),
@@ -65,7 +71,7 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
                     Mode = request.Mode,
                     Name = request.Nickname,
                     TournamentID = request.TournamentId,
-                    Price = DateTime.Now <= _tournament.StartSubscryption.AddDays(15) ? 20D : 30D
+                    Price = _price
                 };
 
                 await _sqlContext.Teams.AddAsync(_team, cancellationToken);
@@ -73,7 +79,7 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
                 var _player = await _sqlContext.Set<Player>()
                                         .Where(p => p.CPF.Equals(request.Player.CPF))
                                         .FirstOrDefaultAsync();
-
+                
                 if (_player == null)
                 {
                     var _id = Guid.NewGuid();

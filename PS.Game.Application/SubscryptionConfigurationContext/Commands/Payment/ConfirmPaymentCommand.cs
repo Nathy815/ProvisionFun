@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Application.SubscryptionConfigurationContext.Commands.Payment
 {
-    public class ConfirmPaymentCommand : IRequest<bool>
+    public class ConfirmPaymentCommand : IRequest<int?>
     {
         public IFormFile file { get; set; }
     }

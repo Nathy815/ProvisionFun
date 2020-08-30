@@ -28,8 +28,9 @@ namespace Application.SubscryptionConfigurationContext.Queries
             {
                 var _teams = await _sqlContext.Set<Team>()
                                         .Include(t => t.Players)
+                                            .ThenInclude(p => p.Player)
                                         .Include(t => t.Tournament)
-                                        .Where(t => t.Active)
+                                        .Where(t => t.Tournament.Active)
                                         .ToListAsync();
 
                 var _list = new ListSubscryptionsQueryVM(_teams);

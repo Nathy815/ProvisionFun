@@ -7,6 +7,7 @@ using Domain.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PS.Game.Application.SubscryptionConfigurationContext.Commands.BankSlip;
 using PS.Game.Application.SubscryptionConfigurationContext.Commands.Cancel;
 using PS.Game.Application.SubscryptionConfigurationContext.Queries;
 using PS.Game.Domain.ViewModels;
@@ -23,16 +24,23 @@ namespace API.Controllers
     {
         public SubscryptionController(IMediator mediator) : base(mediator) { }
 
-        [HttpDelete("cancel")]
-        [Authorize(Roles = "Administrador")]
+        [HttpPost("bankslip/{id}")]
+        [Authorize]
+        public async Task<bool> BankSlip([FromRoute] Guid Id)
+        {
+            return await _mediator.Send(new BankSlipCommand(Id));
+        }
+
+        [HttpPost("cancel")]
+        [Authorize]
         public async Task<bool> Cancel([FromBody] CancelSubscryptionCommand request)
         {
             return await _mediator.Send(request);
         }
 
         [HttpPatch("confirm/{id}")]
-        [Authorize(Roles = "Administrador")]
-        public async Task<bool> Confirm([FromForm] ConfirmPaymentCommand request)
+        [Authorize]
+        public async Task<int?> Confirm([FromForm] ConfirmPaymentCommand request)
         {
             return await _mediator.Send(request);
         }
@@ -44,34 +52,34 @@ namespace API.Controllers
         }
 
         [HttpPatch("payment"), DisableRequestSizeLimit]
-        public async Task<bool> Payment([FromForm] ConfirmPaymentCommand request)
+        public async Task<int?> Payment([FromForm] ConfirmPaymentCommand request)
         {
             return await _mediator.Send(request);
         }
 
         [HttpGet("shipping")]
-        [Authorize(Roles = "Administrador")]
+        [Authorize]
         public async Task<ShippingVM> Shipping()
         {
             return await _mediator.Send(new GetShippingQuery());
         }
 
         [HttpGet]
-        [Authorize(Roles = "Administrador")]
+        [Authorize]
         public async Task<ListSubscryptionsQueryVM> Subscryptions()
         {
             return await _mediator.Send(new ListSubscryptionsQuery());
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "Administrador")]
+        [Authorize]
         public async Task<GetSubscryptionDetailVM> SubscryptionDetail([FromRoute] Guid id)
         {
             return await _mediator.Send(new GetSubscryptionQuery(id));
         }
         
         [HttpPatch("validate")]
-        [Authorize(Roles = "Administrador")]
+        [Authorize]
         public async Task<bool> Validate([FromBody] ValidateSubscryptionCommand request)
         {
             return await _mediator.Send(request);

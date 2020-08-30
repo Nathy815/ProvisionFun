@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Contexts;
+using PS.Game.Application.Services.Interfaces;
 using PS.Game.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -15,15 +16,17 @@ using System.Threading.Tasks;
 
 namespace Application.MatchContext.Commands.Update
 {
-    public class UpdateMatchCommandHandler : BackgroundService, IRequestHandler<UpdateMatchCommand, bool>
+    public class UpdateMatchCommandHandler : IRequestHandler<UpdateMatchCommand, bool>
     {
         private readonly MySqlContext _sqlContext;
+        private readonly IMatchService _service;
         private readonly IEmail _email;
 
-        public UpdateMatchCommandHandler(MySqlContext sqlContext, IEmail email, IServiceScopeFactory scopeFactory) : base(scopeFactory, email)
+        public UpdateMatchCommandHandler(MySqlContext sqlContext, IEmail email, IMatchService service)
         {
             _sqlContext = sqlContext;
             _email = email;
+            _service = service;
         }
 
         public async Task<bool> Handle(UpdateMatchCommand request, CancellationToken cancellationToken)
@@ -35,48 +38,56 @@ namespace Application.MatchContext.Commands.Update
                                             .ThenInclude(p => p.Players)
                                         .Include(m => m.Player2)
                                             .ThenInclude(p => p.Players)
+                                        .Include(m => m.Tournament)
                                         .Where(m => m.Id == request.Id)
                                         .FirstOrDefaultAsync();
+
+                if (request.AuditorID.HasValue) _match.AuditorID = request.AuditorID.Value;
+                if (request.Date.HasValue) _match.Date = request.Date.Value.AddHours(-3);
+                if (request.Winner.HasValue) _match.Winner = request.Winner.Value;
+                _match.Player1Score = request.ScorePlayer1.HasValue ? request.ScorePlayer1.Value : 0;
+                _match.Player2Score = request.ScorePlayer2.HasValue ? request.ScorePlayer2.Value : 0;
+                _match.Comments = request.Comments;
+
+                _sqlContext.Matches.Update(_match);
 
                 // Se vai informar o vencedor, é uma partida agendada
                 if (request.Winner.HasValue)
                 {
-                    _match.Winner = request.Winner.Value;
-                    _match.Player1Score = request.ScorePlayer1.HasValue ? request.ScorePlayer1.Value : 0;
-                    _match.Player2Score = request.ScorePlayer2.HasValue ? request.ScorePlayer2.Value : 0;
-                    _match.Comments = request.Comments;
-
                     var _tournament = await _sqlContext.Set<Tournament>()
-                                                .Include(t => t.Matches)
-                                                    .ThenInclude(m => m.Player1)
-                                                        .ThenInclude(p => p.Players)
-                                                            .ThenInclude(p => p.Player)
-                                                .Include(t => t.Matches)
-                                                    .ThenInclude(m => m.Player2)
-                                                        .ThenInclude(p => p.Players)
-                                                            .ThenInclude(p => p.Player)
                                                 .Include(t => t.Teams)
                                                     .ThenInclude(t => t.Condominium)
+                                                .Include(t => t.Teams)
+                                                    .ThenInclude(t => t.Players)
+                                                        .ThenInclude(p => p.Player)
                                                 .Where(t => t.Id == _match.TournamentID)
                                                 .FirstOrDefaultAsync();
 
-                    var _mode = _match.Player1.Players.Count == 1 ? eMode.Solo : eMode.Team;
+                    var _eliminate = false;
 
-                    // Verifica a quantidade de times que ainda estão na disputa
-                    var _pendingTeams = _tournament.Teams.Where(t => t.Active &&
-                                                                     t.Mode == _mode &&
-                                                                     t.Status == eStatus.Finished).Count();
-
-                    var _pendingMatches = _tournament.Matches.Where(m => m.Active &&
-                                                                         m.Player1.Mode == _mode &&
-                                                                         !m.Winner.HasValue).Count();
-
-                    var _round = _tournament.Mode == eMode.Solo ? _tournament.RoundSolo : _tournament.RoundTeam;
-
-                    // Se for fase 2 ou 4, o perdedor está eliminado
-                    if (_round == eRound.Fase2 || _round == eRound.Fase4)
+                    // Se for uma fase de números ímpares, verifica se o usuário tem outra partida marcada
+                    if (_match.Round == eRound.Fase1 || _match.Round == eRound.Fase3)
                     {
-                        if (_match.Winner.Value == _match.Player1ID)
+                        var _dbMatch = await _sqlContext.Set<Match>()
+                                                    .Where(m => m.Active &&
+                                                                m.Id != _match.Id &&
+                                                                !m.Winner.HasValue &&
+                                                                m.TournamentID == _match.TournamentID &&
+                                                                (m.Player1ID == _match.Player1ID ||
+                                                                m.Player2ID == _match.Player1ID ||
+                                                                m.Player1ID == _match.Player2ID ||
+                                                                m.Player2ID == _match.Player2ID))
+                                                    .FirstOrDefaultAsync();
+
+                        if (_dbMatch == null)
+                            _eliminate = true;
+                    }
+                    else // Se for uma fase de números pares, elimina o perdedor automaticamente
+                        _eliminate = true;
+
+                    if (_eliminate)
+                    { 
+                        if (_match.Player1ID == _match.Winner.Value)
                         {
                             _match.Player2.Status = eStatus.Eliminated;
                             await _email.SendEmail(_match.Player2, eStatus.Eliminated);
@@ -88,53 +99,43 @@ namespace Application.MatchContext.Commands.Update
                         }
                     }
 
-                    // Se tiver menos de 3 times na disputa, o vencedor da partida é o campeão
-                    if (_pendingTeams < 3)
-                    {
-                        if (_match.Winner.Value == _match.Player1ID)
-                            _match.Player1.Status = eStatus.Winner;
-                        else
-                            _match.Player2.Status = eStatus.Winner;
-
-                        // Se já tem vencedor, o torneio é inativado
-                        _tournament.Active = false;
-
-                        _sqlContext.Matches.Update(_match);
-
-                        _sqlContext.Tournaments.Update(_tournament);
-
-                        await _sqlContext.SaveChangesAsync(cancellationToken);
-                    }
-                    else if (_pendingMatches == 0) // Se não terminou, mas não tem mais partidas pendentes, gera próxima rodada
-                        await GerarPartida(_tournament, _sqlContext, _mode, new CancellationToken());
-                }
-                else // senão, é uma partida pendente
-                {
-                    var _alter = false;
-
-                    if (request.Date.HasValue)
-                    {
-                        _alter = _match.Date.HasValue ? true : false;
-                        _match.Date = request.Date;
-                    }
-
-                    if (request.AuditorID != null)
-                    {
-                        _alter = _match.AuditorID.HasValue ? true : false;
-                        _match.AuditorID = request.AuditorID;
-                    }
-
                     _sqlContext.Matches.Update(_match);
 
-                    await _sqlContext.SaveChangesAsync(cancellationToken);
-
-                    var _count = 2;
-                    while (_count > 2)
+                    // Verifica se é a última partida da fase
+                    var _matches = _tournament.Matches.Where(m => m.Active &&
+                                                                  m.Round == _match.Round &&
+                                                                  m.TournamentID == _match.TournamentID &&
+                                                                  !m.Winner.HasValue &&
+                                                                  m.Id != _match.Id).ToList();
+                    
+                    if (_matches.Count == 0)
                     {
-                        var _team = _count == 2 ? _match.Player1 : _match.Player2;
-                        await _email.SendEmail(_team, eStatus.Winner, null, _match, _alter); // manda Winner para entrar no else
+                        if (_match.Round == eRound.Fase4)
+                        {
+                            if (_match.Player2ID == _match.Winner.Value)
+                                _match.Player2.Status = eStatus.Winner;
+                            else
+                                _match.Player1.Status = eStatus.Winner;
+
+                            _sqlContext.Matches.Update(_match);
+                        }
+                        else
+                        {
+                            var _newMatches = new List<Match>();
+
+                            if (_match.Round == eRound.Fase1)
+                                _newMatches.AddRange(await _service.GenerateRound2(_tournament, _match.Player1.Mode));
+                            else if (_match.Round == eRound.Fase2)
+                                _newMatches.AddRange(await _service.GenerateRound3(_tournament, _match.Player1.Mode));
+                            else
+                                _newMatches.AddRange(await _service.GenerateRound4(_tournament, _match.Player1.Mode));
+
+                            await _sqlContext.Matches.AddRangeAsync(_newMatches, cancellationToken);
+                        }
                     }
                 }
+
+                await _sqlContext.SaveChangesAsync(cancellationToken);
 
                 return true;
             }
