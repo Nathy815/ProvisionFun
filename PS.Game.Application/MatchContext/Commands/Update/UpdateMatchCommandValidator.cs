@@ -17,7 +17,7 @@ namespace Application.MatchContext.Commands.Update
         {
             _sqlContext = sqlContext;
 
-            RuleFor(m => m.Id)
+            /*RuleFor(m => m.Id)
                 .NotEmpty()
                     .WithMessage("Por favor, informe o id da partida.");
 
@@ -34,7 +34,7 @@ namespace Application.MatchContext.Commands.Update
             RuleFor(m => m.Winner)
                 .NotEmpty()
                     .When(m => IsMatchScheduled(m.Id))
-                    .WithMessage("Por favor, informe o vencedor da partida.");
+                    .WithMessage("Por favor, informe o vencedor da partida.");*/
         }
 
         private bool IsMatchScheduled(Guid id)

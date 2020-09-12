@@ -158,7 +158,11 @@ namespace Application.SubscryptionConfigurationContext.Commands.Create
                     }
                 }
 
+                await _sqlContext.SaveChangesAsync(cancellationToken);
+
                 _team.SubscryptionSent = await _email.SendEmail(_team, PS.Game.Domain.Enums.eStatus.Validation);
+
+                _sqlContext.Teams.Update(_team);
 
                 await _sqlContext.SaveChangesAsync(cancellationToken);
 

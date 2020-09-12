@@ -77,6 +77,12 @@ namespace API.Controllers
         {
             return await _mediator.Send(new GetSubscryptionQuery(id));
         }
+
+        [HttpGet("teste")]
+        public async Task<bool> Teste()
+        {
+            return await _mediator.Send(new TesteQuery());
+        }
         
         [HttpPatch("validate")]
         [Authorize]
