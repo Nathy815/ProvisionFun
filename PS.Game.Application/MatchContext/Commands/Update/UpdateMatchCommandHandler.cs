@@ -73,10 +73,8 @@ namespace Application.MatchContext.Commands.Update
                                                                 m.Id != _match.Id &&
                                                                 !m.Winner.HasValue &&
                                                                 m.TournamentID == _match.TournamentID &&
-                                                                (m.Player1ID == _match.Player1ID ||
-                                                                m.Player2ID == _match.Player1ID ||
-                                                                m.Player1ID == _match.Player2ID ||
-                                                                m.Player2ID == _match.Player2ID))
+                                                                (m.Player1ID == _match.Winner.Value ||
+                                                                m.Player2ID == _match.Winner.Value))
                                                     .FirstOrDefaultAsync();
 
                         if (_dbMatch == null)
